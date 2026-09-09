@@ -1,6 +1,6 @@
 using GuildManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 namespace GuildManager.Api.Controllers;
 
 [ApiController]

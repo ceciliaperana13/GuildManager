@@ -1,12 +1,9 @@
 namespace GuildManager.Domain.Entities;
 
-//playerAt 
-public class Turn
+public class QuestMalus
 {
     public int Id { get; set; }
-    public int GuildMemberId { get; set; }
-    public int TurnNumber { get; set; }
-    public int GuildGoldAfter { get; set; }
-    public int GuildFoodAfter { get; set; }
-    public DateTime PlayedAt { get; set; }
+    public int QuestId { get; set; }
+    public string MalusType { get; set; } = null!;
+    public int Amount { get; set; }
 }

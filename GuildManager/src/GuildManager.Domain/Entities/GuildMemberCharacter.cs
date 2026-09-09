@@ -1,13 +1,15 @@
 namespace GuildManager.Domain.Entities;
 
-public class Quest
+public class GuildMemberCharacter
 {
     public int Id { get; set; }
-    public int QuestTypeId { get; set; }
-    public string Name { get; set; } = null!;
-    public int RequiredGuildLevel { get; set; }
-    public int StoryStep { get; set; }
-    public int BaseSuccessRate { get; set; }
-    public int MinPartySize { get; set; }
-    public int MaxPartySize { get; set; }
+    public int GuildMemberId { get; set; }
+    public int CharacterTemplateId { get; set; }
+    public string Nickname { get; set; } = null!;
+    public int Level { get; set; }
+    public int Xp { get; set; }
+    public int CurrentHp { get; set; }
+    public string Status { get; set; } = null!;
+    public bool IsHealerMode { get; set; }
+    public DateTime RecruitedAt { get; set; }
 }

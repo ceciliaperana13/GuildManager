@@ -1,12 +1,10 @@
 namespace GuildManager.Domain.Entities;
 
-public class QuestAttempt
+public class QuestAttemptMember
 {
     public int Id { get; set; }
-    public int QuestId { get; set; }
-    public int GuildMemberId { get; set; }
-    public int TurnNumber { get; set; }
-    public int ComputedSuccessRate { get; set; }
-    public bool IsSuccess { get; set; }
-    public DateTime ResolvedAt { get; set; }
+    public int QuestAttemptId { get; set; }
+    public int GuildMemberCharacterId { get; set; }
+    public bool Survived { get; set; }
+    public int HpLost { get; set; }
 }

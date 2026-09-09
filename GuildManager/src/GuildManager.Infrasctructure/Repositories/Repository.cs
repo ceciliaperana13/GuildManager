@@ -27,7 +27,7 @@ public class Repository<T> : IRepository<T> where T : class
     public void Update(T entity) => _set.Update(entity);
 
     public void Remove(T entity) => _set.Remove(entity);
-
+//expression lambda
     public Task<int> SaveChangesAsync(CancellationToken ct = default)
         => _context.SaveChangesAsync(ct);
 }

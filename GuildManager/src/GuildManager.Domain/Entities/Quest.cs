@@ -1,13 +1,13 @@
 namespace GuildManager.Domain.Entities;
 
-public class Item
+public class Quest
 {
     public int Id { get; set; }
+    public int QuestTypeId { get; set; }
     public string Name { get; set; } = null!;
-    public string Slot { get; set; } = null!;
-    public string Rarity { get; set; } = null!;
-    public int BonusAttack { get; set; }
-    public int BonusDefence { get; set; }
-    public int BonusMagic { get; set; }
-    public int BonusHp { get; set; }
+    public int RequiredGuildLevel { get; set; }
+    public int StoryStep { get; set; }
+    public int BaseSuccessRate { get; set; }
+    public int MinPartySize { get; set; }
+    public int MaxPartySize { get; set; }
 }

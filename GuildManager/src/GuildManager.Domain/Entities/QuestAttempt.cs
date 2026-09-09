@@ -1,11 +1,12 @@
 namespace GuildManager.Domain.Entities;
 
-public class UserSession
+public class QuestAttempt
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
-    public string Token { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
-    public DateTime ExpiresAt { get; set; }
-    public string? IpAddress { get; set; }
+    public int QuestId { get; set; }
+    public int GuildMemberId { get; set; }
+    public int TurnNumber { get; set; }
+    public int ComputedSuccessRate { get; set; }
+    public bool IsSuccess { get; set; }
+    public DateTime ResolvedAt { get; set; }
 }

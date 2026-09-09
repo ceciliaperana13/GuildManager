@@ -1,10 +1,13 @@
 namespace GuildManager.Domain.Entities;
 
-public class QuestAttemptRewardLog
+public class User
 {
     public int Id { get; set; }
-    public int QuestAttemptId { get; set; }
-    public string RewardType { get; set; } = null!;
-    public int Amount { get; set; }
-    public int? ItemId { get; set; }
+    public string Username { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string PasswordHash { get; set; } = null!;
+    public string Salt { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
+    public DateTime? LastLoginAt { get; set; }
+    public bool IsActive { get; set; }
 }

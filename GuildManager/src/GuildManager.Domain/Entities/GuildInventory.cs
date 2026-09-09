@@ -1,10 +1,9 @@
 namespace GuildManager.Domain.Entities;
 
-public class QuestAttemptMember
+public class GuildInventory
 {
     public int Id { get; set; }
-    public int QuestAttemptId { get; set; }
-    public int GuildMemberCharacterId { get; set; }
-    public bool Survived { get; set; }
-    public int HpLost { get; set; }
+    public int GuildId { get; set; }
+    public int ItemId { get; set; }
+    public int Quantity { get; set; }
 }

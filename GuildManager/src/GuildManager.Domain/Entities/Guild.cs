@@ -1,12 +1,14 @@
 namespace GuildManager.Domain.Entities;
 
-
-public class RecruitmentOffer
+public class Guild
 {
     public int Id { get; set; }
-    public int GuildMemberId { get; set; }
-    public int CharacterTemplateId { get; set; }
-    public int TurnNumber { get; set; }
-    public int GoldCost { get; set; }
-    public bool IsPurchased { get; set; }
+    public int FounderUserId { get; set; }
+    public string Name { get; set; } = null!;
+    public int Level { get; set; }
+    public int Gold { get; set; }
+    public int Food { get; set; }
+    public int ReputationTotal { get; set; }
+    public bool IsDefeated { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

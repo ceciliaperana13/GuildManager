@@ -1,11 +1,11 @@
 namespace GuildManager.Domain.Entities;
 
-
-public class QuestReward
+public class UserSession
 {
     public int Id { get; set; }
-    public int QuestId { get; set; }
-    public string RewardType { get; set; } = null!;
-    public int Amount { get; set; }
-    public int? ItemId { get; set; }
+    public int UserId { get; set; }
+    public string Token { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
+    public DateTime ExpiresAt { get; set; }
+    public string? IpAddress { get; set; }
 }
