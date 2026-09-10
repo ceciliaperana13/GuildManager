@@ -32,7 +32,7 @@ public class GuildManagerDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // --- Clés composites (telles que représentées sur le diagramme) ---
+        // Clés composites 
         modelBuilder.Entity<RecruitmentOffer>().HasKey(x => new { x.Id, x.GuildMemberId });
         modelBuilder.Entity<QuestReward>().HasKey(x => new { x.Id, x.QuestId });
 
@@ -41,8 +41,7 @@ public class GuildManagerDbContext : DbContext
         modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
         modelBuilder.Entity<UserSession>().HasIndex(x => x.Token).IsUnique();
 
-        // --- Relations (toutes en Restrict pour éviter les conflits de
-        // cascade multiple côté PostgreSQL ; à ajuster selon les besoins métier) ---
+       
         modelBuilder.Entity<UserSession>()
             .HasOne<User>().WithMany()
             .HasForeignKey(x => x.UserId)
