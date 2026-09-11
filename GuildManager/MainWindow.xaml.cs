@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MonProjet.View;
 
-
 namespace MonProjet;
 
 public partial class MainWindow : Window
@@ -50,7 +49,7 @@ public partial class MainWindow : Window
                     return;
                 }
 
-                Console.WriteLine("=== Mode SOLO ===");
+                Console.WriteLine(" Mode solo");
                 Console.WriteLine("Connexion à la base locale : OK");
             }
             catch (Exception ex)
@@ -64,7 +63,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        // --- Multijoueur (Host ou Guest) ---
+        // Multijoueur
         var isHost = mode == StartupMode.Host;
         StartupPanel.SetStatus("Connexion en cours...");
 
@@ -72,7 +71,7 @@ public partial class MainWindow : Window
 
         if (isHost)
         {
-            Console.WriteLine("=== Mode HÔTE ===");
+            Console.WriteLine("__Mode Hote__");
 
             var builder = WebApplication.CreateBuilder(new WebApplicationOptions
             {
@@ -82,6 +81,7 @@ public partial class MainWindow : Window
             builder.Services.AddControllers();
             builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddSingleton<PlayerConnectionTracker>();
+            builder.Services.AddHostedService<PlayerStatusReporter>(); 
 
             _apiApp = builder.Build();
             _apiApp.MapControllers();
@@ -91,7 +91,7 @@ public partial class MainWindow : Window
         }
         else
         {
-            Console.WriteLine("=== Mode INVITÉ ===");
+            Console.WriteLine(" Mode invité");
             Console.WriteLine($"Connexion à l'hôte : {apiBaseUrl}");
         }
 

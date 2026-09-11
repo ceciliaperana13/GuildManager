@@ -13,7 +13,7 @@ public enum StartupMode
 
 public partial class StartupView : UserControl
 {
-    public event Action<StartupMode, string>? ModeSelected; // (mode, hostIp — vide si Solo)
+    public event Action<StartupMode, string>? ModeSelected; // mode, hostIp — vide si Solo
 
     public StartupView() => InitializeComponent();
 
@@ -25,7 +25,7 @@ public partial class StartupView : UserControl
         MainChoicePanel.Visibility = Visibility.Collapsed;
         MultiplayerChoicePanel.Visibility = Visibility.Visible;
     }
-
+   
     private void Back_Click(object sender, RoutedEventArgs e)
     {
         MultiplayerChoicePanel.Visibility = Visibility.Collapsed;
