@@ -11,11 +11,14 @@ using System.Windows.Shapes;
 
 namespace MonProjet;
 
+using GuildManager.Client.ViewModel;
+
 
 public partial class MainWindow : Window
 {
     public MainWindow()
     {
         InitializeComponent();
+        DataContext = new MainWindowViewModel();
     }
 }
