@@ -8,6 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GuildManager.Client.ViewModel;
+using GuildManager.Client.Services;
+
 
 namespace MonProjet;
 
@@ -19,6 +22,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        DataContext = new MainWindowViewModel();
+        var mainWindowViewModel = new MainWindowViewModel();
+        DataContext = mainWindowViewModel;
+        GuildManager.Client.Services.NavigationService.Initialize(mainWindowViewModel);
     }
 }

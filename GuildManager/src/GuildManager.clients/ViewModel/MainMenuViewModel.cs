@@ -1,4 +1,4 @@
-// ViewModel/MainMenuViewModel.cs
+
 
 using GuildManager.Client.ViewModel;
 

@@ -25,9 +25,12 @@
   <ItemGroup>
     <Resource Include="Assets\UI\**\*.jpg" />
     <Resource Include="Assets\UI\**\*.jfif" />
+    <Resource Include="Assets\UI\**\*.png" />
+    <Resource Include="Assets\UI\**\*.ico" />
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
 
 </Project>

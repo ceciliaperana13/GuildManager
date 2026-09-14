@@ -13,6 +13,9 @@
         <DataTemplate DataType="{x:Type vm:CoopMenuViewModel}">
             <v:CoopMenuView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PlayMenuViewModel}">
+            <v:PlayMenuView/>
+        </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
