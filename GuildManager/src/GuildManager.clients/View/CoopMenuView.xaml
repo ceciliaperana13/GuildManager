@@ -1,12 +1,28 @@
 <UserControl x:Class="GuildManager.Client.View.CoopMenuView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Unloaded="UserControl_Unloaded">
 
     <Grid Background="#66000000">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
-            <TextBlock Text="Adresse du salon" Foreground="Gold" FontSize="16" Margin="0,0,0,6"/>
-            <TextBox Padding="8" FontSize="14" Background="#2E2318" Foreground="Gold" BorderBrush="#C9A24B" BorderThickness="2"/>
-            <Button Content="Rejoindre" Width="150" Height="40" Margin="0,16,0,0"/>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="320">
+            <TextBlock Text="Mode coop" Foreground="Gold" FontSize="24"
+                   HorizontalAlignment="Center" Margin="0,0,0,20"/>
+            <Button x:Name="HostButton" Content="Héberger une partie" Height="40" Margin="0,0,0,10"
+                Click="HostButton_Click"/>
+            <Button Content="Rejoindre une partie" Height="40" Margin="0,0,0,10"
+                Click="ShowJoinPanel_Click"/>
+            <StackPanel x:Name="JoinPanel" Visibility="Collapsed" Margin="0,10,0,0">
+            <TextBlock Text="Adresse IP de l'hôte" Foreground="Gold" Margin="0,0,0,6"/>
+            <TextBox x:Name="HostIpTextBox" Padding="8" FontSize="14"
+                 Background="#2E2318" Foreground="Gold"
+                 BorderBrush="#C9A24B" BorderThickness="2"/>
+            <Button Content="Se connecter" Height="40" Margin="0,12,0,0"
+                Click="JoinButton_Click"/>
+            </StackPanel>
+            <TextBlock x:Name="StatusText" Foreground="White" TextWrapping="Wrap"
+                   HorizontalAlignment="Center" Margin="0,16,0,0"/>
+            <Button Content="Retour" Width="120" Height="34" Margin="0,18,0,0"
+                Click="BackButton_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

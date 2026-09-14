@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MonProjet"
             xmlns:vm="clr-namespace:GuildManager.Client.ViewModel"
-            xmlns:v="clr-namespace:GuildManager.Client.View"
-             StartupUri="MainWindow.xaml">
+             xmlns:v="clr-namespace:GuildManager.Client.View">
     <Application.Resources>
          <ResourceDictionary>
         <DataTemplate DataType="{x:Type vm:MainMenuViewModel}">
