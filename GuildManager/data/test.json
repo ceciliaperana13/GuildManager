@@ -48,6 +48,18 @@
         "image": "assets/image/perso secondaires/guerrier1.png",
         "debuff": [],
         "isHurted": false
+      },
+      {
+        "name": "Aldric",
+        "job": "tank",
+        "lvl": 5,
+        "health": 16,
+        "physicAttack": 38,
+        "magicAttack": 3,
+        "def": 43,
+        "image": "assets/image/perso secondaires/tank1.png",
+        "debuff": [],
+        "isHurted": false
       }
     ],
     "rewards": {

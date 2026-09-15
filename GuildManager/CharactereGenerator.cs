@@ -1,8 +1,8 @@
 using System;
 using System.Security.Cryptography;
-public class CaracterGenerator
+public class CharacterGenerator
 {
-    public Adventurer generateCaracter(int lvl)
+    public Adventurer generateCharacter(int lvl)
     {
         // choix de la classe aléatoire :
         string[] jobs = ["mage", "guerrier", "tank"];
