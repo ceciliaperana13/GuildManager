@@ -1,8 +1,13 @@
 using System;
-using System.Security.Cryptography;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+
 public class CharacterGenerator
 {
-    public Adventurer generateCharacter(int lvl)
+    private const string DataFile = "data/adventurers.json";
+
+    public Adventurer generateCharacter(int lvl, int id)
     {
         // choix de la classe aléatoire :
         string[] jobs = ["mage", "guerrier", "tank"];
@@ -11,7 +16,7 @@ public class CharacterGenerator
         string job = jobs[index];
 
         // génération des stats :
-        int stats = 4 * lvl * 5; // à modifier pour l'équilibrage
+        int stats = 4 * lvl * 5; // à modifier selon l'équilibrage
         int health = 0;
         int magic = 0;
         int physic = 0;
@@ -51,14 +56,56 @@ public class CharacterGenerator
         }
         string image = $"assets/image/perso secondaires/{job + type}.png";
 
-        return new Adventurer(generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false);
+        return new Adventurer(id, generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false);
     }
 
     public string generateRandomName(int type)
     {
-        string[][] names = [["Aldric", "Théodran", "Kaelorn", "Eldran", "Gareth", "Valerian", "Draven", "Arthus", "Tharion", "Eryndor"], ["Elyria", "Isolde", "Aelwen", "Morgane", "Lysandra", "Elowen", "Seraphine", "Maëlys", "Nymeria", "Ariandel"]];
+        string[][] names = [
+            ["Aldric", "Théodran", "Kaelorn", "Eldran", "Gareth", "Valerian", "Draven", "Arthus", "Tharion", "Eryndor"],
+            ["Elyria", "Isolde", "Aelwen", "Morgane", "Lysandra", "Elowen", "Seraphine", "Maëlys", "Nymeria", "Ariandel"]
+        ];
 
         Random random = new Random();
-        return names[type-1][random.Next(names[type-1].Length)];
+        return names[type - 1][random.Next(names[type - 1].Length)];
+    }
+
+    public void addNewAdventurer(int lvl)
+    {
+        string json = File.ReadAllText(DataFile);
+        JsonObject root = JsonNode.Parse(json)!.AsObject();
+
+        // Source de vérité unique : "idCount" dans le fichier JSON
+        int idCount = root["idCount"]?.GetValue<int>() ?? 0;
+
+        Adventurer adventurer = generateCharacter(lvl, idCount);
+
+        var newAdventurer = new JsonObject
+        {
+            ["id"] = adventurer.id,
+            ["name"] = adventurer.name,
+            ["job"] = adventurer.job,
+            ["lvl"] = adventurer.lvl,
+            ["health"] = adventurer.health,
+            ["physicAttack"] = adventurer.physicAttack,
+            ["magicAttack"] = adventurer.magicAttack,
+            ["def"] = adventurer.def,
+            ["image"] = adventurer.image,
+            ["debuff"] = JsonSerializer.SerializeToNode(adventurer.debuff),
+            ["isHurted"] = adventurer.isHurted
+        };
+
+        if (root["adventurers"] is not JsonArray adventurers)
+        {
+            adventurers = new JsonArray();
+            root["adventurers"] = adventurers;
+        }
+
+        adventurers.Add(newAdventurer);
+
+        root["idCount"] = idCount + 1;
+
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        File.WriteAllText(DataFile, root.ToJsonString(options));
     }
 }

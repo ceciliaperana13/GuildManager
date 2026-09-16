@@ -1,13 +1,14 @@
 public class Adventurer : Character
 {
+    public int id {get; private set;}
     public string job {get; private set;}
     //Inventory inventory;
     public List<string> debuff {get; private set;} //à changer par une list d'objet debuff ?
     public bool isHurted {get; private set;}
 
-
-    public Adventurer(string name, string job, int lvl, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted) : base(name, lvl, health, def, magicAttack, physicAttack, image)
+    public Adventurer(int id, string name, string job, int lvl, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted) : base(name, lvl, health, def, magicAttack, physicAttack, image)
     {
+        this.id = id;
         this.job = job;
         this.debuff = debuff;
         this.isHurted = isHurted;  

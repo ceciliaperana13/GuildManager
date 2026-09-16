@@ -1,0 +1,110 @@
+{
+  "idCount": 8,
+  "mainAdventurers": [],
+  "adventurers": [
+    {
+      "id": 0,
+      "name": "Isolde",
+      "job": "guerrier",
+      "lvl": 5,
+      "health": 42,
+      "physicAttack": 33,
+      "magicAttack": 9,
+      "def": 16,
+      "image": "assets/image/perso secondaires/guerrier2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1,
+      "name": "Th\u00E9odran",
+      "job": "tank",
+      "lvl": 5,
+      "health": 53,
+      "physicAttack": 0,
+      "magicAttack": 11,
+      "def": 36,
+      "image": "assets/image/perso secondaires/tank1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 2,
+      "name": "Th\u00E9odran",
+      "job": "guerrier",
+      "lvl": 5,
+      "health": 41,
+      "physicAttack": 46,
+      "magicAttack": 9,
+      "def": 4,
+      "image": "assets/image/perso secondaires/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 3,
+      "name": "Aldric",
+      "job": "mage",
+      "lvl": 5,
+      "health": 45,
+      "physicAttack": 8,
+      "magicAttack": 45,
+      "def": 2,
+      "image": "assets/image/perso secondaires/mage1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 4,
+      "name": "Th\u00E9odran",
+      "job": "mage",
+      "lvl": 5,
+      "health": 42,
+      "physicAttack": 1,
+      "magicAttack": 41,
+      "def": 16,
+      "image": "assets/image/perso secondaires/mage1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 5,
+      "name": "Aelwen",
+      "job": "guerrier",
+      "lvl": 5,
+      "health": 20,
+      "physicAttack": 49,
+      "magicAttack": 10,
+      "def": 21,
+      "image": "assets/image/perso secondaires/guerrier2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 6,
+      "name": "Th\u00E9odran",
+      "job": "mage",
+      "lvl": 5,
+      "health": 55,
+      "physicAttack": 4,
+      "magicAttack": 40,
+      "def": 1,
+      "image": "assets/image/perso secondaires/mage1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 7,
+      "name": "Ariandel",
+      "job": "tank",
+      "lvl": 5,
+      "health": 32,
+      "physicAttack": 26,
+      "magicAttack": 7,
+      "def": 35,
+      "image": "assets/image/perso secondaires/tank2.png",
+      "debuff": [],
+      "isHurted": false
+    }
+  ]
+}

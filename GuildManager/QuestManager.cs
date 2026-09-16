@@ -58,10 +58,11 @@ public class QuestManager
         File.WriteAllText(path, quests.ToJsonString(options));
     }
 
-    public void addAdventurerToQuest(string questName,  Adventurer adventurer)
+    public void addAdventurerToQuest(string questName, Adventurer adventurer)
     {
         var newAdventurer = new JsonObject
         {
+            ["id"] = adventurer.id,
             ["name"] = adventurer.name,
             ["job"] = adventurer.job,
             ["lvl"] = adventurer.lvl,
