@@ -13,7 +13,7 @@ namespace GuildManager.Client.ViewModel
 
         public MainWindowViewModel()
         {
-            CurrentView = new MainMenuViewModel(); // écran de démarrage
+            CurrentView = new AuthChoiceViewModel(); // écran de démarrage
         }
 
         public void NavigateTo(IScreenViewModel viewModel) => CurrentView = viewModel;

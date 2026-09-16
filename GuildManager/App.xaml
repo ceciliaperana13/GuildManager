@@ -15,6 +15,15 @@
         <DataTemplate DataType="{x:Type vm:PlayMenuViewModel}">
             <v:PlayMenuView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LoginMenuViewModel}">
+            <v:LoginMenuView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RegisterMenuViewModel}">
+            <v:RegisterMenuView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AuthChoiceViewModel}">
+            <v:AuthChoiceView/>
+        </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
