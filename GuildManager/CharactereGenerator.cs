@@ -7,7 +7,7 @@ public class CharacterGenerator
 {
     private const string DataFile = "data/adventurers.json";
 
-    public Adventurer generateCharacter(int lvl, int id)
+    public Adventurer generateCharacter(int lvl)
     {
         // choix de la classe aléatoire :
         string[] jobs = ["mage", "guerrier", "tank"];
@@ -56,7 +56,17 @@ public class CharacterGenerator
         }
         string image = $"assets/image/perso secondaires/{job + type}.png";
 
-        return new Adventurer(id, generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false);
+        // def de l'id :
+        string json = File.ReadAllText(DataFile);
+        JsonObject root = JsonNode.Parse(json)!.AsObject();
+        int idCount = root["idCount"]?.GetValue<int>() ?? 0;
+
+        root["idCount"] = idCount + 1;
+
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        File.WriteAllText(DataFile, root.ToJsonString(options));
+
+        return new Adventurer(idCount, generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false);
     }
 
     public string generateRandomName(int type)
@@ -70,15 +80,11 @@ public class CharacterGenerator
         return names[type - 1][random.Next(names[type - 1].Length)];
     }
 
-    public void addNewAdventurer(int lvl)
+    public void addNewAdventurer(Adventurer adventurer)
     {
         string json = File.ReadAllText(DataFile);
         JsonObject root = JsonNode.Parse(json)!.AsObject();
 
-        // Source de vérité unique : "idCount" dans le fichier JSON
-        int idCount = root["idCount"]?.GetValue<int>() ?? 0;
-
-        Adventurer adventurer = generateCharacter(lvl, idCount);
 
         var newAdventurer = new JsonObject
         {
@@ -102,8 +108,6 @@ public class CharacterGenerator
         }
 
         adventurers.Add(newAdventurer);
-
-        root["idCount"] = idCount + 1;
 
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));

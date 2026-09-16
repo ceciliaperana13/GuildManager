@@ -16,9 +16,9 @@
         // }
 
         CharacterGenerator characterGenerator = new CharacterGenerator();
-        // Adventurer adventurer = characterGenerator.generateCharacter(1);
+        Adventurer adventurer = characterGenerator.generateCharacter(10);
         // Console.WriteLine($"ID : {adventurer.id}\nNom : {adventurer.name}\nClasse : {adventurer.job}\nNiveau : {adventurer.lvl}\nSanté : {adventurer.health}\nMagie : {adventurer.magicAttack}\nPhysique : {adventurer.physicAttack}\ndéfense : {adventurer.def}\nImage : {adventurer.image}");
-        characterGenerator.addNewAdventurer(5);
+        characterGenerator.addNewAdventurer(adventurer);
 
     }
 }
