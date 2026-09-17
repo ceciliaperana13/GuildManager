@@ -3,12 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:GuildManager.Client.View.Controls">
     <Viewbox Stretch="Uniform">
-        <Canvas Width="1536" Height="1024">
-            <Image Source="/Assets/UI/guilde_background.png" Width="1536" Height="1024"/>
+        <Canvas Width="1867" Height="819">
+            <Image Source="/Assets/Backgrounds/guilde_background.png" Width="1867" Height="819"/>
 
-            <controls:HoverHotspot Canvas.Left="100" Canvas.Top="260"
-                                   Width="520" Height="440"
-                                   Clicked="OnQuestBoardClicked"/>
+            <!-- Store : l'échoppe à gauche -->
+            <controls:HoverHotspot Canvas.Left="10" Canvas.Top="180"
+                                    Width="420" Height="460"
+                                    Clicked="OnStoreClicked"/>
+
+            <!-- Quêtes : le tableau au centre -->
+            <controls:HoverHotspot Canvas.Left="530" Canvas.Top="190"
+                                    Width="630" Height="460"
+                                    Clicked="OnQuestBoardClicked"/>
+
+            <!-- Recrutement : le bureau de réception à droite -->
+            <controls:HoverHotspot Canvas.Left="1220" Canvas.Top="375"
+                                    Width="470" Height="260"
+                                    Clicked="OnReceptionClicked"/>
         </Canvas>
     </Viewbox>
 </UserControl>

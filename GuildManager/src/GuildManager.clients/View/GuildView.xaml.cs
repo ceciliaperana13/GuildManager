@@ -13,4 +13,11 @@ public partial class GuildView : UserControl
     private void OnQuestBoardClicked(object sender, RoutedEventArgs e)
     {
     }
+
+    private void OnReceptionClicked(object sender, RoutedEventArgs e)
+    {
+    }
+    private void OnStoreClicked(object sender, RoutedEventArgs e)
+    {
+    }
 }
