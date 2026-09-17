@@ -24,6 +24,9 @@
         <DataTemplate DataType="{x:Type vm:AuthChoiceViewModel}">
             <v:AuthChoiceView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:GuildViewModel}">
+        <v:GuildView/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

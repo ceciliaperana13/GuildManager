@@ -46,6 +46,8 @@ public partial class PlayMenuView : UserControl
             Console.WriteLine("Mode solo");
             Console.WriteLine("Connexion à la base locale : OK");
             StatusText.Text = "Connexion à la base locale : OK";
+
+             NavigationService.NavigateTo(new GuildViewModel());
         }
         catch (Exception ex)
         {
@@ -54,6 +56,7 @@ public partial class PlayMenuView : UserControl
         finally
         {
             SoloButton.IsEnabled = true;
+            
         }
     }
 
