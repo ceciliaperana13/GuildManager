@@ -64,6 +64,17 @@ public partial class RegisterMenuView : UserControl
             AppSession.UserId = result!.Id;
             AppSession.Username = result.Username;
 
+            // Enregistrement dans le tracker de connexions (pseudo réel, pas le nom de la machine)
+            try
+            {
+                await client.PostAsJsonAsync("api/session/hello",
+                    new { PlayerName = AppSession.Username });
+            }
+            catch
+            {
+                // Le tracker est optionnel 
+            }
+
             NavigationService.NavigateTo(new MainMenuViewModel());
         }
         catch (Exception ex)

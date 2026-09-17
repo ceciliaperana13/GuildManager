@@ -1,7 +1,6 @@
 <UserControl x:Class="GuildManager.Client.View.CoopMenuView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Unloaded="UserControl_Unloaded">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid Background="#66000000">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="320">
