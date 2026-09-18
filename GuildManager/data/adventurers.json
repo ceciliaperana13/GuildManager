@@ -1,5 +1,5 @@
 {
-  "idCount": 712,
+  "idCount": 718,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -77,6 +77,19 @@
       "magicAttack": 1,
       "def": 6,
       "image": "assets/image/perso secondaires/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 717,
+      "name": "Elaria",
+      "job": "guerrier",
+      "lvl": 9,
+      "health": 51,
+      "physicAttack": 65,
+      "magicAttack": 16,
+      "def": 48,
+      "image": "assets/image/perso secondaires/guerrier2.png",
       "debuff": [],
       "isHurted": false
     }

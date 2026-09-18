@@ -7,7 +7,7 @@ public class CharacterGenerator
 {
     private const string DataFile = "data/adventurers.json";
 
-    public Adventurer generateCharacter(int lvl)
+    public Adventurer generateCharacter(int prestige)
     {
         // choix de la classe aléatoire :
         string[] jobs = ["mage", "guerrier", "tank"];
@@ -16,6 +16,7 @@ public class CharacterGenerator
         string job = jobs[index];
 
         // génération des stats :
+        int lvl = random.Next((prestige - 1) * 10 + 1, prestige * 10 + 1);
         int stats = 4 * lvl * 5; // à modifier selon l'équilibrage
         int health = 0;
         int magic = 0;

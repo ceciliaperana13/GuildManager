@@ -43,7 +43,7 @@ public class Game
         Console.WriteLine("Personnage à acheter : ");
         for(int i = 0; i < 3; i++) // nombre d'aventurier à acheter
             {
-                Adventurer adventurer = characterGenerator.generateCharacter(this.prestige + 1);
+                Adventurer adventurer = characterGenerator.generateCharacter(this.prestige);
                 this.adventurersToBuy.Add(adventurer);
                 adventurer.Write();
                 Console.WriteLine("\n");
@@ -137,6 +137,15 @@ public class Game
 
     public void playTurn()
     {   
+        // complétion des quêtes après le tour
+        foreach(Quest quest in this.questManager.quests)
+        {
+            if (quest.inProgress)
+            {
+                this.claimReward(quest.giveReward());
+            }
+        } 
+
         this.turnInProgress = true;
         while (this.turnInProgress)
         {
@@ -188,15 +197,6 @@ public class Game
                     {
                         this.questManager.quests[int.Parse(questChoice)-1].addAdventurer(this.searchAdventurerById(int.Parse(id)));
                     }
-
-                    // implémenter la complétion des quêtes après le tour
-                    foreach(Quest quest in this.questManager.quests)
-                    {
-                        if (quest.inProgress)
-                        {
-                                this.claimReward(quest.giveReward());
-                        }
-                    } 
                 }
             }
             
