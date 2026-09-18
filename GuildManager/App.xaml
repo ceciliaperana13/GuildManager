@@ -30,7 +30,10 @@
             </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ReceptionViewModel}">
         <game:ReceptionView/>
-</DataTemplate>    
+</DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RecruitmentViewModel}">
+        <v:RecruitmentView/>
+        </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

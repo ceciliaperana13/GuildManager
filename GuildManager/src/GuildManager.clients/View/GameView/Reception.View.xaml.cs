@@ -19,6 +19,6 @@ public partial class ReceptionView : UserControl
 
     private void OnRecruitClicked(object sender, RoutedEventArgs e)
     {
-        // NavigationService.NavigateTo(new RecruitmentViewModel());
+     NavigationService.NavigateTo(new RecruitmentViewModel());
     }
 }
