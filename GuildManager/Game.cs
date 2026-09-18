@@ -11,11 +11,8 @@ public class Game
     public int prestige {get; private set;}
     public int xp {get; private set;}
     public List<Item> inventory;
-    //public List<Quest> quests;
     public List<Adventurer> specialAdventurers;
-    public List<Adventurer> adventurers;
-    public List<Adventurer> adventurersToBuy;
-    CharacterGenerator characterGenerator = new CharacterGenerator();
+    AdventurerManager adventurerManager = new AdventurerManager();
     public QuestManager questManager = new QuestManager();
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
@@ -30,29 +27,10 @@ public class Game
         this.food = food;
         this.prestige = prestige;
         this.xp = xp;
-        this.adventurers = characterGenerator.generateAdventurerFromJson("adventurers");
-        this.specialAdventurers = characterGenerator.generateAdventurerFromJson("mainAdventurers");
-        //this.quests = new List<Quest>();
-        this.adventurersToBuy = new List<Adventurer>();
+        //this.adventurers = characterGenerator.generateAdventurerFromJson("adventurers");
+        this.specialAdventurers = adventurerManager.generateAdventurerFromJson("mainAdventurers");
+        //this.adventurersToBuy = new List<Adventurer>();
         this.turnInProgress = true;
-    }
-
-    public void refreshadventurersTobuy()
-    {
-        this.adventurersToBuy.Clear();
-        Console.WriteLine("Personnage à acheter : ");
-        for(int i = 0; i < 3; i++) // nombre d'aventurier à acheter
-            {
-                Adventurer adventurer = characterGenerator.generateCharacter(this.prestige);
-                this.adventurersToBuy.Add(adventurer);
-                adventurer.Write();
-                Console.WriteLine("\n");
-            }
-    }
-
-    public void refreshAdventurers()
-    {
-        this.adventurers = characterGenerator.generateAdventurerFromJson("adventurers");
     }
 
     public void refreshSpecialadventurers()
@@ -64,8 +42,7 @@ public class Game
     {
         if (this.gold >= adventurer.goldPrice)
         {
-            adventurers.Add(adventurer);
-            characterGenerator.addAdventurerToJson(adventurer);
+            adventurerManager.AddAdventurer(adventurer);
             this.gold -= adventurer.goldPrice;
             Console.WriteLine(adventurer.name + " recruté.");
             return true;
@@ -92,16 +69,7 @@ public class Game
     //     this.questManager.quests.Add(questManager.generateQuest("Recherche", this.prestige, 100));// 100 à modifier ou enlevé
     // }
 
-    public Adventurer searchAdventurerById(int id)
-    {
-        foreach(Adventurer adventurer in this.adventurers)
-        {
-            if (adventurer.id == id)
-                return adventurer;
-        }
-        //return new Adventurer(0, "", "", 0, 0, 0, 0, 0, "", [], false, 0, 0);
-        return null;
-    }
+    
 
     public void prestigeUp()
     {
@@ -154,10 +122,10 @@ public class Game
             string action = Console.ReadLine();
             if (action == "1")
             {
-                this.refreshadventurersTobuy();
+                this.adventurerManager.refreshadventurersToHire(this.prestige);
                 Console.WriteLine("Quel personnage voulez-vous acheter (1, 2 ou 3) : ");
                 string choice = Console.ReadLine();
-                this.buyAdventurer(this.adventurersToBuy[int.Parse(choice)-1]);
+                this.buyAdventurer(this.adventurerManager.adventurersToHire[int.Parse(choice)-1]);
             }
             else if (action == "2")
             {
@@ -176,8 +144,8 @@ public class Game
                 }
 
                 Console.WriteLine("Aventuriers disponibles : ");
-                this.refreshAdventurers();
-                foreach (Adventurer adventurer in this.adventurers)
+                this.adventurerManager.generateAdventurerFromJson("adventurers");
+                foreach (Adventurer adventurer in this.adventurerManager.adventurers)
                 {
                     adventurer.Write();
                 }
@@ -195,11 +163,10 @@ public class Game
                     }
                     else
                     {
-                        this.questManager.quests[int.Parse(questChoice)-1].addAdventurer(this.searchAdventurerById(int.Parse(id)));
+                        this.questManager.quests[int.Parse(questChoice)-1].addAdventurer(this.adventurerManager.searchAdventurerById(int.Parse(id)));
                     }
                 }
-            }
-            
+            }      
             else {
                 Console.WriteLine("Tour suivant");
                 this.turnInProgress = false;

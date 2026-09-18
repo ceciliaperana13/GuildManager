@@ -86,7 +86,8 @@ public class Quest
                 return 0; // évite une division par 0
 
             //return teamPower / (teamPower + enemiesPower) * 100;
-            return 1/(1+10*(enemiesPower-teamPower)/100)*100;
+            //return 1/(1+10*(enemiesPower-teamPower)/100)*100;
+            return 1.0 / (1.0 + Math.Pow(10, (enemiesPower - teamPower) / 100.0)) * 100.0;
         }
         
     }

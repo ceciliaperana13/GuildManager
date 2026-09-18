@@ -3,9 +3,17 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-public class CharacterGenerator
+public class AdventurerManager
 {
     private const string DataFile = "data/adventurers.json";
+    public List<Adventurer> adventurers;
+    public List<Adventurer> adventurersToHire;
+
+    public AdventurerManager()
+    {
+        this.adventurers = new List<Adventurer>();
+        this.adventurersToHire = new List<Adventurer>();
+    }
 
     public Adventurer generateCharacter(int prestige)
     {
@@ -128,5 +136,39 @@ public class CharacterGenerator
         return adventurers;
     }
 
-    
+    public void refreshadventurersToHire(int prestige)
+    {
+        this.adventurersToHire.Clear();
+        Console.WriteLine("Personnage à acheter : ");
+        for(int i = 0; i < 3; i++)
+        {
+            Adventurer adventurer = this.generateCharacter(prestige);
+            this.adventurersToHire.Add(adventurer);
+            adventurer.Write();
+            Console.WriteLine("\n");
+        }
+    }
+
+    public void refreshAdventurers()
+    {
+        this.adventurers = generateAdventurerFromJson("adventurers");
+    }
+
+    public void AddAdventurer(Adventurer adventurer)
+    {
+        this.adventurers.Add(adventurer);
+        this.addAdventurerToJson(adventurer);        
+    }
+
+    public Adventurer searchAdventurerById(int id)
+    {
+        refreshAdventurers();
+        foreach(Adventurer adventurer in this.adventurers)
+        {
+            if (adventurer.id == id)
+                return adventurer;
+        }
+        //return new Adventurer(0, "", "", 0, 0, 0, 0, 0, "", [], false, 0, 0);
+        return null;
+    }
 }
