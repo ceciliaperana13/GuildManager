@@ -6,6 +6,7 @@ using System.Text.Json.Nodes;
 public class AdventurerManager
 {
     private const string DataFile = "data/adventurers.json";
+    public List<Adventurer> mainAdventurers;
     public List<Adventurer> adventurers;
     public List<Adventurer> adventurersToHire;
 
@@ -13,6 +14,7 @@ public class AdventurerManager
     {
         this.adventurers = new List<Adventurer>();
         this.adventurersToHire = new List<Adventurer>();
+        this.mainAdventurers = new List<Adventurer>();
     }
 
     public Adventurer generateCharacter(int prestige)
@@ -152,6 +154,11 @@ public class AdventurerManager
     public void refreshAdventurers()
     {
         this.adventurers = generateAdventurerFromJson("adventurers");
+    }
+
+    public void refreshMainAdventurers()
+    {
+        this.mainAdventurers = generateAdventurerFromJson("mainAdventurers");
     }
 
     public void AddAdventurer(Adventurer adventurer)
