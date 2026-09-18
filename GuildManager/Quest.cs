@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 public class Quest
 {
@@ -11,11 +12,13 @@ public class Quest
     public List<Monster> enemies { get; private set; }
     public List<Adventurer> adventurers { get; private set; }
     public double winRate { get; private set; }
-    public (int gold, int food, int prestige, List<Item> items) rewards { get; private set; } // faire une struct ?
-    public int remainingTime { get; private set; }
+    //public (int gold, int food, int prestige, List<Item> items) rewards { get; private set; } // faire une struct ?
+    public Reward rewards { get; private set; }
+    public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
 
-    public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, (int gold, int food, int prestige, List<Item>) rewards, int remainingTime, bool inProgress)
+    [JsonConstructor]
+    public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress)
     {
         this.name = name;
         this.type = type;
@@ -27,6 +30,20 @@ public class Quest
         this.remainingTime = remainingTime;
         this.inProgress = inProgress;
         this.winRate = refreshWinRate();
+    }
+
+    public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress, double winRate)
+    {
+        this.name = name;
+        this.type = type;
+        this.lvl = lvl;
+        this.description = description;
+        this.enemies = enemies;
+        this.adventurers = adventurers;
+        this.rewards = rewards;
+        this.remainingTime = remainingTime;
+        this.inProgress = inProgress;
+        this.winRate = winRate;
     }
 
     void refreshCharacterPower()
@@ -41,26 +58,37 @@ public class Quest
         }
     }
 
-    double refreshWinRate()
+    public double refreshWinRate()
     {
-        double enemiesPower = 0;
-        double teamPower = 0;
-
-        refreshCharacterPower();
-
-        foreach (Monster enemy in this.enemies)
+        if (this.type == "Recherche")
         {
-            enemiesPower += enemy.power;
+            return this.winRate;
         }
-        foreach (Adventurer adventurer in this.adventurers)
+        else
         {
-            teamPower += adventurer.power;
+            double enemiesPower = 0;
+            double teamPower = 0;
+
+            refreshCharacterPower();
+
+            foreach (Monster enemy in this.enemies)
+            {
+                enemiesPower += enemy.power;
+            }
+            foreach (Adventurer adventurer in this.adventurers)
+            {
+                teamPower += adventurer.power;
+                
+            }
+            Console.WriteLine("PUissance adventurers : " + teamPower);
+            Console.WriteLine("PUissance enemy : " + enemiesPower);
+            if (teamPower + enemiesPower == 0)
+                return 0; // évite une division par 0
+
+            //return teamPower / (teamPower + enemiesPower) * 100;
+            return 1/(1+10*(enemiesPower-teamPower)/100)*100;
         }
-
-        if (teamPower + enemiesPower == 0)
-            return 0; // évite une division par 0
-
-        return teamPower / (teamPower + enemiesPower) * 100;
+        
     }
 
     public void addAdventurer(Adventurer adventurer)
@@ -86,8 +114,22 @@ public class Quest
         double num = random.NextDouble() * 100;
 
         if (num <= this.winRate)
+        {
+            Console.WriteLine($"Quête : {this.name} réussie");
             return true; // cas de victoire
-        else
-            return false; // cas de défaite
+        } 
+        Console.WriteLine($"Quête : {this.name} échouée");
+        return false; // cas de défaite
+    }
+
+    public Reward giveReward()
+    {
+        if (this.completeQuest())
+        {
+            //Console.WriteLine($"récompenses : {this.rewards.gold}");
+            return this.rewards;
+        }
+        else 
+            return new Reward(0, 0, 0, []);  
     }
 }

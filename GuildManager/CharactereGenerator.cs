@@ -60,27 +60,31 @@ public class CharacterGenerator
         string json = File.ReadAllText(DataFile);
         JsonObject root = JsonNode.Parse(json)!.AsObject();
         int idCount = root["idCount"]?.GetValue<int>() ?? 0;
-
+        // incrementation de l'id
         root["idCount"] = idCount + 1;
+
+        //def des prix
+        int goldPrice = 100; // à modifier selon les stats du perso
+        int foodPrice = 20;
 
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));
 
-        return new Adventurer(idCount, generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false);
+        return new Adventurer(idCount, generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false, goldPrice, foodPrice);
     }
 
     public string generateRandomName(int type)
     {
         string[][] names = [
-            ["Aldric", "Théodran", "Kaelorn", "Eldran", "Gareth", "Valerian", "Draven", "Arthus", "Tharion", "Eryndor"],
-            ["Elyria", "Isolde", "Aelwen", "Morgane", "Lysandra", "Elowen", "Seraphine", "Maëlys", "Nymeria", "Ariandel"]
+            ["Aldric", "Théodran", "Kaelorn", "Eldran", "Gareth", "Valerian", "Draven", "Arthus", "Tharion", "Eryndor", "Roderic", "Alaric", "Kaelvar", "Darian", "Galdren", "Edrik", "Faelorn", "Lorcan", "Varendel", "Orvann"],
+            ["Elyria", "Isolde", "Aelwen", "Morgane", "Lysandra", "Elowen", "Seraphine", "Maëlys", "Nymeria", "Ariandel", "Althéa", "Elaria", "Vaelith", "Rhianna", "Aveline", "Liora", "Thalyra", "Evania", "Miralys", "Faelina"]
         ];
 
         Random random = new Random();
         return names[type - 1][random.Next(names[type - 1].Length)];
     }
 
-    public void addNewAdventurer(Adventurer adventurer)
+    public void addAdventurerToJson(Adventurer adventurer)
     {
         string json = File.ReadAllText(DataFile);
         JsonObject root = JsonNode.Parse(json)!.AsObject();
@@ -112,4 +116,16 @@ public class CharacterGenerator
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));
     }
+
+    public List<Adventurer> generateAdventurerFromJson(string type)
+    {
+        string json = File.ReadAllText("data/adventurers.json");
+        using JsonDocument doc = JsonDocument.Parse(json);
+        JsonElement adventurersJson = doc.RootElement.GetProperty(type);
+        List<Adventurer> adventurers = JsonSerializer.Deserialize<List<Adventurer>>(adventurersJson.GetRawText()) ?? new List<Adventurer>();
+
+        return adventurers;
+    }
+
+    
 }

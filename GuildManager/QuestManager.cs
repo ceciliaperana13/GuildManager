@@ -6,6 +6,13 @@ using System.Text.Json.Nodes;
 
 public class QuestManager
 {
+    public List<Quest> quests {get ; private set;}
+
+    public QuestManager()
+    {
+        this.quests = new List<Quest>();
+    }
+
     public List<Quest> generateQuestsFromJson(string file)
     {
         string json = File.ReadAllText(file);
@@ -16,7 +23,7 @@ public class QuestManager
 
     public Quest generateQuest(string type, int lvl, int levelGap = 5)
     {
-        List<Quest> quests = generateQuestsFromJson("data/test.json"); // à modifier par le chemin du fichier
+        List<Quest> quests = generateQuestsFromJson("data/quest.json"); 
         List<Quest> availableQuests = new List<Quest>();
 
         foreach (Quest quest in quests)
@@ -40,7 +47,7 @@ public class QuestManager
 
     public void editQuestData(string questname, string attribute, JsonNode newValue)
     {
-        string path = "data/test.json"; // à modifier
+        string path = "data/quest.json"; // à modifier
         string json = File.ReadAllText(path);
 
         JsonArray quests = JsonNode.Parse(json)!.AsArray();
@@ -72,9 +79,11 @@ public class QuestManager
             ["def"] = adventurer.def,
             ["image"] = adventurer.image,
             ["debuff"] = JsonSerializer.SerializeToNode(adventurer.debuff),
-            ["isHurted"] = adventurer.isHurted
+            ["isHurted"] = adventurer.isHurted,
+            ["goldPrice"] = adventurer.goldPrice,
+            ["foodPrice"] = adventurer.foodPrice
         };
-        string path = "data/test.json";
+        string path = "data/quest.json";
         string json = File.ReadAllText(path);
 
         JsonArray quests = JsonNode.Parse(json)!.AsArray();
@@ -99,5 +108,30 @@ public class QuestManager
         File.WriteAllText(path, quests.ToJsonString(options));
     }
 
-    
+    public void refreshQuests(int prestige)
+    {
+        //remove old quests
+        List<Quest> newQuests = new List<Quest>();
+        foreach(Quest quest in this.quests)
+        {
+            quest.remainingTime--;
+            if (quest.remainingTime > 0)
+            {
+                //this.editQuestData(quest.name, "adventurers", new JsonArray());
+                newQuests.Add(quest);
+            }   
+        }
+        this.quests = newQuests;
+
+        // creation of new quests
+        List<string> types = ["Combat", "Recherche"];
+        if (prestige >= 4 && !types.Contains("Donjon"))
+            types.Add("Donjon");
+
+        Random random = new Random();
+        foreach (string type in types)
+        {
+            this.quests.Add(generateQuest(type, random.Next((prestige-1)*10+1, prestige*10-1), 100));
+        }
+    }
 }

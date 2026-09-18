@@ -7,4 +7,9 @@ public class Monster : Character // à développer ou supprimmer ?
     {
         this.power = this.health + this.magicAttack + this.physicAttack + this.def;
     }
+
+    public void Write()
+    {
+        Console.WriteLine($"Nom : {this.name}\nNiveau : {this.lvl}\nSanté : {this.health}\nMagie : {this.magicAttack}\nPhysique : {this.physicAttack}\ndéfense : {this.def}\nImage : {this.image}\n");
+    }
 }

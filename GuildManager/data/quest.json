@@ -1,14 +1,14 @@
 [
   {
     "name": "Chasse aux slimes",
-    "type": "Hunt",
+    "type": "Combat",
     "lvl": 5,
     "description": "Chassez les slime qui sont apparus dans les bois aux abords de la ville.",
     "enemies": [
       {
         "name": "Slime",
         "lvl": 1,
-        "health": 25,
+        "health": 6,
         "def": 0,
         "magicAttack": 0,
         "physicAttack": 3,
@@ -17,7 +17,7 @@
       {
         "name": "Slime",
         "lvl": 2,
-        "health": 25,
+        "health": 6,
         "physicAttack": 4,
         "magicAttack": 0,
         "def": 0,
@@ -25,50 +25,12 @@
       }
     ],
     "adventurers": [
-      {
-        "id": 1,
-        "name": "Seraphine",
-        "job": "guerrier",
-        "lvl": 5,
-        "health": 4,
-        "physicAttack": 35,
-        "magicAttack": 61,
-        "def": 0,
-        "image": "assets/image/perso secondaires/guerrier2.png",
-        "debuff": [],
-        "isHurted": false
-      },
-      {
-        "id": 1,
-        "name": "Aldric",
-        "job": "tank",
-        "lvl": 5,
-        "health": 22,
-        "physicAttack": 18,
-        "magicAttack": 15,
-        "def": 45,
-        "image": "assets/image/perso secondaires/tank1.png",
-        "debuff": [],
-        "isHurted": false
-      },
-      {
-        "id": 1,
-        "name": "Isolde",
-        "job": "mage",
-        "lvl": 5,
-        "health": 47,
-        "physicAttack": 8,
-        "magicAttack": 44,
-        "def": 1,
-        "image": "assets/image/perso secondaires/mage2.png",
-        "debuff": [],
-        "isHurted": false
-      }
+      
     ],
     "rewards": {
       "gold": 150,
       "food": 20,
-      "prestige": 5,
+      "prestige": 200,
       "items": []
     },
     "remainingTime": 1,
@@ -76,7 +38,7 @@
   },
   {
     "name": "Escorte de la caravane",
-    "type": "Escort",
+    "type": "Combat",
     "lvl": 8,
     "description": "Prot\u00E9gez une caravane de marchands sur la route menant au village voisin.",
     "enemies": [
@@ -94,22 +56,22 @@
     "rewards": {
       "gold": 300,
       "food": 10,
-      "prestige": 15,
+      "prestige": 200,
       "items": []
     },
-    "remainingTime": 2,
+    "remainingTime": 1,
     "inProgress": false
   },
   {
     "name": "Extermination de gobelins",
-    "type": "Hunt",
+    "type": "Combat",
     "lvl": 8,
     "description": "Un petit groupe de gobelins \u00E0 \u00E9t\u00E9 aper\u00E7ut r\u00F4dant pr\u00E8s d\u0027un village, chassez les avant qu\u0027ils ne s\u0027attaquent aux villageois.",
     "enemies": [
       {
         "name": "Gobelin",
         "lvl": 6,
-        "health": 40,
+        "health": 10,
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
@@ -118,7 +80,7 @@
       {
         "name": "Gobelin",
         "lvl": 6,
-        "health": 40,
+        "health": 10,
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
@@ -127,7 +89,7 @@
       {
         "name": "Gobelin",
         "lvl": 6,
-        "health": 40,
+        "health": 10,
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
@@ -135,27 +97,31 @@
       }
     ],
     "adventurers": [
-      {
-        "id": 1,
-        "name": "Lysandra",
-        "job": "guerrier",
-        "lvl": 5,
-        "health": 8,
-        "physicAttack": 37,
-        "magicAttack": 6,
-        "def": 49,
-        "image": "assets/image/perso secondaires/guerrier2.png",
-        "debuff": [],
-        "isHurted": false
-      }
     ],
+    "rewards": {
+      "gold": 300,
+      "food": 10,
+      "prestige": 200,
+      "items": []
+    },
+    "remainingTime": 1,
+    "inProgress": false
+  },
+  {
+    "name": "Récolte d'herbes médicinales",
+    "type": "Recherche",
+    "lvl": 8,
+    "description": "La guilde des apothicaire a besoin de divers herbes pour la fabrication de potionsde soin",
+    "enemies": [
+    ],
+    "adventurers": [],
     "rewards": {
       "gold": 300,
       "food": 10,
       "prestige": 15,
       "items": []
     },
-    "remainingTime": 2,
+    "remainingTime": 1,
     "inProgress": false
   }
 ]
