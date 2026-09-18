@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:MonProjet"
             xmlns:vm="clr-namespace:GuildManager.Client.ViewModel"
-             xmlns:v="clr-namespace:GuildManager.Client.View">
+             xmlns:v="clr-namespace:GuildManager.Client.View"
+             xmlns:game="clr-namespace:GuildManager.Client.View.GameView">
     <Application.Resources>
          <ResourceDictionary>
         <DataTemplate DataType="{x:Type vm:MainMenuViewModel}">
@@ -27,6 +28,9 @@
         <DataTemplate DataType="{x:Type vm:GuildViewModel}">
         <v:GuildView/>
             </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReceptionViewModel}">
+        <game:ReceptionView/>
+</DataTemplate>    
         </ResourceDictionary>
     </Application.Resources>
 </Application>

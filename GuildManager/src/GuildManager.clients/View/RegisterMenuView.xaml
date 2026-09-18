@@ -6,10 +6,13 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="Inscription" Foreground="Gold" FontSize="28"
                        HorizontalAlignment="Center" Margin="0,0,0,20"/>
-
+            <TextBlock Text="Nom d'utilisateur" Foreground="Gold" FontSize="16" Margin="0,6"/>
             <controls:FantasyTextBox x:Name="UsernameBox" Width="400" Height="70" Margin="0,6"/>
+            <TextBlock Text="Adresse e-mail" Foreground="Gold" FontSize="16" Margin="0,6"/>
             <controls:FantasyTextBox x:Name="EmailBox" Width="400" Height="70" Margin="0,6"/>
+            <TextBlock Text="Mot de passe" Foreground="Gold" FontSize="16" Margin="0,6"/>
             <controls:FantasyTextBox x:Name="PasswordBox" Width="400" Height="70" Margin="0,6"/>
+            <TextBlock Text="Confirmer le mot de passe" Foreground="Gold" FontSize="16" Margin="0,6"/>
             <controls:FantasyTextBox x:Name="ConfirmPasswordBox" Width="400" Height="70" Margin="0,6"/>
 
             <controls:FantasyMenuButton NormalImage="/Assets/UI/bouton_s'incrire.png"
