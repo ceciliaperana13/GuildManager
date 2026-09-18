@@ -6,8 +6,11 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="320">
             <TextBlock Text="Mode coop" Foreground="Gold" FontSize="24"
                    HorizontalAlignment="Center" Margin="0,0,0,20"/>
-            <Button x:Name="HostButton" Content="Héberger une partie" Height="40" Margin="0,0,0,10"
-                Click="HostButton_Click"/>
+
+            <TextBlock x:Name="LocalIpText" Foreground="White" FontSize="13"
+                       TextWrapping="Wrap" HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+
             <Button Content="Rejoindre une partie" Height="40" Margin="0,0,0,10"
                 Click="ShowJoinPanel_Click"/>
             <StackPanel x:Name="JoinPanel" Visibility="Collapsed" Margin="0,10,0,0">

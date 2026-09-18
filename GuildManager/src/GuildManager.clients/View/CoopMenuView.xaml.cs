@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.Services;
@@ -12,6 +15,7 @@ public partial class CoopMenuView : UserControl
     public CoopMenuView()
     {
         InitializeComponent();
+        LocalIpText.Text = $"Ton IP (à communiquer) : {GetLocalIpAddress()}";
     }
 
     private void ShowJoinPanel_Click(object sender, RoutedEventArgs e)
@@ -20,15 +24,7 @@ public partial class CoopMenuView : UserControl
         HostIpTextBox.Focus();
     }
 
-    // Héberger : l'API locale tourne déjà depuis le lancement de l'appli,
-    private void HostButton_Click(object sender, RoutedEventArgs e)
-    {
-        AppSession.IsHost = true;
-        StatusText.Text = $"Partie hébergée en tant que {AppSession.Username}.";
-        // TODO (côté logique de jeu) : NavigationService.NavigateTo(new GameViewModel());
-    }
-
-        private async void JoinButton_Click(object sender, RoutedEventArgs e)
+    private async void JoinButton_Click(object sender, RoutedEventArgs e)
     {
         var hostIp = HostIpTextBox.Text.Trim();
         if (string.IsNullOrWhiteSpace(hostIp))
@@ -69,4 +65,18 @@ public partial class CoopMenuView : UserControl
 
     private void BackButton_Click(object sender, RoutedEventArgs e)
         => NavigationService.GoBack();
+
+    private static string GetLocalIpAddress()
+    {
+        try
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ip = host.AddressList.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork);
+            return ip?.ToString() ?? "introuvable";
+        }
+        catch
+        {
+            return "introuvable";
+        }
+    }
 }
