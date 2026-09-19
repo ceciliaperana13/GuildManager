@@ -53,16 +53,8 @@ public partial class LoginMenuView : UserControl
             AppSession.UserId = result!.Id;
             AppSession.Username = result.Username;
 
-            // Enregistrement dans le tracker de connexions (pseudo réel, pas le nom de la machine)
-            try
-            {
-                await client.PostAsJsonAsync("api/session/hello",
-                    new { PlayerName = AppSession.Username });
-            }
-            catch
-            {
-                // Le tracker est optionnel : un échec ne doit pas bloquer l'entrée en jeu.
-            }
+            // Enregistrement + heartbeat en continu, tant que l'appli reste ouverte
+            SessionKeepAlive.Start(AppSession.ApiBaseUrl, AppSession.Username);
 
             NavigationService.NavigateTo(new GuildViewModel());
         }
