@@ -75,7 +75,7 @@ public partial class RegisterMenuView : UserControl
                 // Le tracker est optionnel 
             }
 
-            NavigationService.NavigateTo(new MainMenuViewModel());
+            NavigationService.NavigateTo(new GuildViewModel());
         }
         catch (Exception ex)
         {

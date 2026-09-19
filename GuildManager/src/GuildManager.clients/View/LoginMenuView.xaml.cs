@@ -64,7 +64,7 @@ public partial class LoginMenuView : UserControl
                 // Le tracker est optionnel : un échec ne doit pas bloquer l'entrée en jeu.
             }
 
-            NavigationService.NavigateTo(new MainMenuViewModel());
+            NavigationService.NavigateTo(new GuildViewModel());
         }
         catch (Exception ex)
         {
