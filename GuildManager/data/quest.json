@@ -1,0 +1,127 @@
+[
+  {
+    "name": "Chasse aux slimes",
+    "type": "Combat",
+    "lvl": 5,
+    "description": "Chassez les slime qui sont apparus dans les bois aux abords de la ville.",
+    "enemies": [
+      {
+        "name": "Slime",
+        "lvl": 1,
+        "health": 6,
+        "def": 0,
+        "magicAttack": 0,
+        "physicAttack": 3,
+        "image": "assets/image.png"
+      },
+      {
+        "name": "Slime",
+        "lvl": 2,
+        "health": 6,
+        "physicAttack": 4,
+        "magicAttack": 0,
+        "def": 0,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [
+      
+    ],
+    "rewards": {
+      "gold": 150,
+      "food": 20,
+      "prestige": 200,
+      "items": []
+    },
+    "remainingTime": 1,
+    "inProgress": false
+  },
+  {
+    "name": "Escorte de la caravane",
+    "type": "Combat",
+    "lvl": 8,
+    "description": "Prot\u00E9gez une caravane de marchands sur la route menant au village voisin.",
+    "enemies": [
+      {
+        "name": "Bandit",
+        "lvl": 6,
+        "health": 40,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 300,
+      "food": 10,
+      "prestige": 200,
+      "items": []
+    },
+    "remainingTime": 1,
+    "inProgress": false
+  },
+  {
+    "name": "Extermination de gobelins",
+    "type": "Combat",
+    "lvl": 8,
+    "description": "Un petit groupe de gobelins \u00E0 \u00E9t\u00E9 aper\u00E7ut r\u00F4dant pr\u00E8s d\u0027un village, chassez les avant qu\u0027ils ne s\u0027attaquent aux villageois.",
+    "enemies": [
+      {
+        "name": "Gobelin",
+        "lvl": 6,
+        "health": 10,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Gobelin",
+        "lvl": 6,
+        "health": 10,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Gobelin",
+        "lvl": 6,
+        "health": 10,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [
+    ],
+    "rewards": {
+      "gold": 300,
+      "food": 10,
+      "prestige": 200,
+      "items": []
+    },
+    "remainingTime": 1,
+    "inProgress": false
+  },
+  {
+    "name": "Récolte d'herbes médicinales",
+    "type": "Recherche",
+    "lvl": 8,
+    "description": "La guilde des apothicaire a besoin de divers herbes pour la fabrication de potionsde soin",
+    "enemies": [
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 300,
+      "food": 10,
+      "prestige": 15,
+      "items": []
+    },
+    "remainingTime": 1,
+    "inProgress": false
+  }
+]

@@ -1,0 +1,10 @@
+{
+    "playerName" : "",
+    "turn" : 0,
+    "mainProgress" : 0,
+    "gold" : 1000,
+    "food" : 1000,
+    "prestige" : 1,
+    "xp" : 0,
+    "quests" : []
+}
