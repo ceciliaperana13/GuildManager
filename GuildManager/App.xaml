@@ -34,6 +34,12 @@
         <DataTemplate DataType="{x:Type vm:RecruitmentViewModel}">
         <v:RecruitmentView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AdventurerRosterViewModel}">
+    <v:AdventurerRosterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:QuestListViewModel}">
+    <v:QuestListView/>
+        </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

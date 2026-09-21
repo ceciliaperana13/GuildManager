@@ -14,7 +14,7 @@ public partial class ReceptionView : UserControl
 
     private void OnMyAdventurersClicked(object sender, RoutedEventArgs e)
     {
-        // NavigationService.NavigateTo(new AdventurerRosterViewModel());
+        NavigationService.NavigateTo(new AdventurerRosterViewModel());
     }
 
     private void OnRecruitClicked(object sender, RoutedEventArgs e)

@@ -1,5 +1,5 @@
 using System.Collections.ObjectModel;
-
+using GuildManager.Client.Models;
 namespace GuildManager.Client.ViewModel;
 
 public class AdventurerRosterViewModel : IScreenViewModel
