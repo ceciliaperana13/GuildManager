@@ -8,13 +8,11 @@ class Program
         bool running = true;
         while (running)
         {
-            //game.turnInProgress = true;
             game.turn ++;
             game.playTurn();
             if (game.Win())
                 running = false;
             
-        }
-            
+        }      
     }
 }

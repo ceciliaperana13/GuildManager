@@ -2,7 +2,7 @@ public class Adventurer : Character
 {
     public int id {get; private set;}
     public string job {get; private set;}
-    //Inventory inventory;
+    // Inventory inventory;
     public List<string> debuff {get; private set;} //à changer par une list d'objet debuff ?
     public bool isHurted {get; private set;}
     public int goldPrice {get; private set;}
