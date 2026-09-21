@@ -14,6 +14,7 @@ public partial class GuildView : UserControl
 
     private void OnQuestBoardClicked(object sender, RoutedEventArgs e)
     {
+        NavigationService.NavigateTo(new QuestListViewModel());
     }
 
     private void OnReceptionClicked(object sender, RoutedEventArgs e)

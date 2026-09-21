@@ -40,6 +40,9 @@
         <DataTemplate DataType="{x:Type vm:QuestListViewModel}">
     <v:QuestListView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:QuestPreparationViewModel}">
+    <v:QuestPreparationView/>   
+    </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

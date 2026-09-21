@@ -18,7 +18,7 @@ public partial class QuestListView : UserControl
     {
         if (sender is FrameworkElement fe && fe.DataContext is Quest quest)
         {
-           //NavigationService.NavigateTo(new QuestPreparationViewModel(quest));
+           NavigationService.NavigateTo(new QuestPreparationViewModel(quest));
         }
     }
 }
