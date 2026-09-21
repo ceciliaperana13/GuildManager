@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Configuration;
-using System.Data;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace MonProjet;
-
+//log
 public partial class App : Application
 {
     [DllImport("kernel32.dll")]

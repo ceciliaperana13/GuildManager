@@ -23,6 +23,21 @@
             <controls:HoverHotspot Canvas.Left="1420" Canvas.Top="375"
                                     Width="460" Height="260"
                                     Clicked="OnReceptionClicked"/>
+
+            <!-- Joueurs connectés -->
+            <Border Canvas.Left="20" Canvas.Top="20" Background="#AA000000"
+                    CornerRadius="6" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Joueurs connectés" Foreground="Gold" FontWeight="Bold" Margin="0,0,0,6"/>
+                    <ItemsControl x:Name="OnlinePlayersList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Foreground="White" Text="{Binding}" Margin="0,2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
         </Canvas>
     </Viewbox>
 </UserControl>

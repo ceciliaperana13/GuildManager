@@ -1,39 +1,103 @@
-
 using System;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
+using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Api.Services;
 using GuildManager.Client.Services;
 using GuildManager.Client.ViewModel;
 using GuildManager.Infrastructure.Configurations;
+using GuildManager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GuildManager.Client.View;
 
 public partial class CoopMenuView : UserControl
 {
-    private WebApplication? _apiApp;
-    private System.Timers.Timer? _heartbeatTimer;
-    private HttpClient? _sessionClient;
-    private string? _playerName;
+    private static WebApplication? _apiApp; // static : reste vivante tant que l'appli tourne
 
     public CoopMenuView()
     {
         InitializeComponent();
+        Loaded += CoopMenuView_Loaded;
     }
+
+    private async void CoopMenuView_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (_apiApp is not null)
+        {
+            ShowHostReady();
+            return;
+        }
+
+        LocalIpText.Text = "Démarrage de votre partie...";
+
+        try
+        {
+            var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+            {
+                ContentRootPath = AppContext.BaseDirectory
+            });
+
+            builder.Services.AddControllers();
+            builder.Services.AddInfrastructure(builder.Configuration);
+            builder.Services.AddSingleton<PlayerConnectionTracker>();
+            builder.Services.AddHostedService<PlayerStatusReporter>();
+            builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
+
+            var app = builder.Build();
+            app.MapControllers();
+            app.Urls.Add("http://0.0.0.0:5080");
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<GuildManagerDbContext>();
+                await db.Database.MigrateAsync();
+            }
+
+            await app.StartAsync();
+            _apiApp = app;
+
+            AppSession.ApiBaseUrl = "http://localhost:5080";
+            AppSession.IsHost = true;
+
+            ShowHostReady();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"Impossible de démarrer votre partie (port 5080 déjà utilisé, base de données injoignable, etc.).\n\n{ex.Message}",
+                "GuildManager - Erreur de démarrage",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            LocalIpText.Text = "Échec du démarrage de votre partie.";
+        }
+    }
+
+    private void ShowHostReady()
+    {
+        var localIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList
+            .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+
+        LocalIpText.Text = localIp is not null
+            ? $"Votre partie est hébergée. Donnez cette adresse aux autres joueurs :\n{localIp}"
+            : "Votre partie est hébergée, mais votre IP locale n'a pas pu être détectée.";
+
+        EnterGameButton.Visibility = Visibility.Visible;
+    }
+
+    private void EnterGameButton_Click(object sender, RoutedEventArgs e)
+        => NavigationService.NavigateTo(new AuthChoiceViewModel());
 
     private void ShowJoinPanel_Click(object sender, RoutedEventArgs e)
     {
         JoinPanel.Visibility = Visibility.Visible;
         HostIpTextBox.Focus();
     }
-
-    private async void HostButton_Click(object sender, RoutedEventArgs e)
-        => await ConnectAsync(true, "localhost");
 
     private async void JoinButton_Click(object sender, RoutedEventArgs e)
     {
@@ -44,104 +108,35 @@ public partial class CoopMenuView : UserControl
             return;
         }
 
-        await ConnectAsync(false, hostIp);
-    }
-
-    private async Task ConnectAsync(bool isHost, string hostIp)
-    {
-        SetBusy(true, isHost ? "Démarrage de la partie..." : "Connexion en cours...");
-        var apiBaseUrl = $"http://{hostIp}:5080";
+        var remoteUrl = $"http://{hostIp}:5080";
+        StatusText.Text = "Vérification de l'hôte distant...";
 
         try
         {
-            if (isHost)
-            {
-                var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-                {
-                    ContentRootPath = AppContext.BaseDirectory
-                });
-                builder.Services.AddControllers();
-                builder.Services.AddInfrastructure(builder.Configuration);
-                builder.Services.AddSingleton<PlayerConnectionTracker>();
-                builder.Services.AddHostedService<PlayerStatusReporter>();
-
-                _apiApp = builder.Build();
-                _apiApp.MapControllers();
-                _apiApp.Urls.Add("http://0.0.0.0:5080");
-                await _apiApp.StartAsync();
-            }
-
-            _sessionClient = new HttpClient { BaseAddress = new Uri(apiBaseUrl) };
-            _playerName = Environment.MachineName;
-            var response = await _sessionClient.PostAsJsonAsync(
-                "api/session/hello", new { PlayerName = _playerName });
+            using var client = new HttpClient { BaseAddress = new Uri(remoteUrl), Timeout = TimeSpan.FromSeconds(5) };
+            var response = await client.GetAsync("api/health");
 
             if (!response.IsSuccessStatusCode)
             {
-                StatusText.Text = $"Échec de connexion ({response.StatusCode}).";
-                await StopApiAsync();
+                StatusText.Text = "Impossible de joindre cet hôte.";
                 return;
             }
-
-            _heartbeatTimer = new System.Timers.Timer(10000);
-            _heartbeatTimer.Elapsed += async (_, _) =>
-            {
-                try
-                {
-                    if (_sessionClient is not null && _playerName is not null)
-                        await _sessionClient.PostAsJsonAsync(
-                            "api/session/heartbeat", new { PlayerName = _playerName });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Heartbeat échoué : {ex.Message}");
-                }
-            };
-            _heartbeatTimer.Start();
-            StatusText.Text = $"Connecté en tant que {_playerName}.";
         }
         catch (Exception ex)
         {
-            StatusText.Text = isHost
-                ? $"Impossible de démarrer la partie : {ex.Message}"
-                : "Impossible de joindre l'hôte. Vérifiez l'IP et le pare-feu.";
-            await StopApiAsync();
+            StatusText.Text = $"Impossible de joindre l'hôte : {ex.Message}";
+            return;
         }
-        finally
-        {
-            SetBusy(false, StatusText.Text);
-        }
+
+        AppSession.ApiBaseUrl = remoteUrl;
+        AppSession.IsHost = false;
+        AppSession.UserId = 0;
+        AppSession.Username = string.Empty;
+
+        StatusText.Text = "Connecté à l'hôte.";
+        NavigationService.NavigateTo(new AuthChoiceViewModel());
     }
 
-    private void SetBusy(bool isBusy, string status)
-    {
-        HostButton.IsEnabled = !isBusy;
-        JoinPanel.IsEnabled = !isBusy;
-        StatusText.Text = status;
-    }
-
-    private async void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        await StopApiAsync();
-        NavigationService.NavigateTo(new PlayMenuViewModel());
-    }
-
-    private async Task StopApiAsync()
-    {
-        _heartbeatTimer?.Stop();
-        _heartbeatTimer?.Dispose();
-        _heartbeatTimer = null;
-        _sessionClient?.Dispose();
-        _sessionClient = null;
-
-        if (_apiApp is not null)
-        {
-            await _apiApp.StopAsync();
-            await _apiApp.DisposeAsync();
-            _apiApp = null;
-        }
-    }
-
-    private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        => await StopApiAsync();
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+        => NavigationService.GoBack();
 }
