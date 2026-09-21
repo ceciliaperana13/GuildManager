@@ -27,6 +27,8 @@
                 </ItemsControl>
             </controls:ScrollReveal.ScrollContent>
         </controls:ScrollReveal>
+        <controls:BackButton HorizontalAlignment="Left" VerticalAlignment="Top"
+                      Width="60" Height="60" Margin="20"/>
     </Grid>
 </UserControl>    
 
