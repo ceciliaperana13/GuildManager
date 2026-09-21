@@ -8,7 +8,7 @@
 
             <!-- Store : l'échoppe à gauche -->
             <controls:HoverHotspot Canvas.Left="10" Canvas.Top="180"
-                                    Width="420" Height="460"
+                                    Width="520" Height="460"
                                     Clicked="OnStoreClicked"/>
 
             <!-- Quêtes : le tableau au centre -->
@@ -17,8 +17,8 @@
                                     Clicked="OnQuestBoardClicked"/>
 
             <!-- Recrutement : le bureau de réception à droite -->
-            <controls:HoverHotspot Canvas.Left="1220" Canvas.Top="375"
-                                    Width="470" Height="260"
+            <controls:HoverHotspot Canvas.Left="1420" Canvas.Top="375"
+                                    Width="460" Height="260"
                                     Clicked="OnReceptionClicked"/>
 
             <!-- Joueurs connectés -->
