@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using GuildManager.Client.ViewModel;
 using GuildManager.Client.Services;
-
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace MonProjet;
 

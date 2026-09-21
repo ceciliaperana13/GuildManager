@@ -1,3 +1,6 @@
+using System.Configuration;
+using GuildManager.Aplication.Guilds.Controls;
+
 namespace GuildManager.Client.ViewModel;
 
 public class GuildViewModel : IScreenViewModel

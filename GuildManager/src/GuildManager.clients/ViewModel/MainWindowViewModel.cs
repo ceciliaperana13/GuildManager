@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.ViewModel
 {
@@ -16,6 +17,7 @@ namespace GuildManager.Client.ViewModel
             CurrentView = new MainMenuViewModel(); // écran de démarrage : Jouer / Options / Quitter
         }
 
+        public void NavigateTo(IScreenViewModel viewModel, Game game) => CurrentView = viewModel;
         public void NavigateTo(IScreenViewModel viewModel) => CurrentView = viewModel;
 
         public event PropertyChangedEventHandler? PropertyChanged;
