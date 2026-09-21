@@ -10,8 +10,8 @@ public partial class BackButton : UserControl
     public BackButton()
     {
         InitializeComponent();
-        MouseEnter += (s, e) => SetImage("/Assets/UI/icon_retour_hover.png");
-        MouseLeave += (s, e) => SetImage("/Assets/UI/icon_retour.png");
+        MouseEnter += (s, e) => SetImage("/Assets/UI/Icon_retour_hover.png");
+        MouseLeave += (s, e) => SetImage("/Assets/UI/Icon_retour.png");
     }
 
     private void SetImage(string path)

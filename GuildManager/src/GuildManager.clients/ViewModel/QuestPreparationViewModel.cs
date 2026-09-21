@@ -6,7 +6,7 @@ namespace GuildManager.Client.ViewModel;
 
 public class QuestPreparationViewModel : IScreenViewModel
 {
-    public string BackgroundPath => "/Assets/UI/quest_background.png";
+    public string BackgroundPath => "/Assets/UI/Quest_background.png";
     public Quest? SelectedQuest { get; }
 
     public ObservableCollection<Adventurer?> SelectedSlots { get; } = new() { null, null, null };

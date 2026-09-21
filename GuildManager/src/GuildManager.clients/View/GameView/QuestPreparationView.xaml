@@ -23,7 +23,7 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Assets/UI/equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
+                        <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                     </Button>
                 </StackPanel>
 
@@ -42,7 +42,7 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Assets/UI/equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
+                        <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                     </Button>
                 </StackPanel>
 
@@ -61,7 +61,7 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Assets/UI/equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
+                        <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                     </Button>
                 </StackPanel>
 
@@ -69,15 +69,15 @@
 
             <!-- Jauge de % de victoire -->
             <Grid Width="600" Height="90" Margin="0,30,0,0">
-                <Image Source="/Assets/UI/victory_bar.png" Stretch="Fill"/>
+                <Image Source="/Assets/UI/Victory_bar.png" Stretch="Fill"/>
                 <Border x:Name="FillBar" Background="#66FFD700" HorizontalAlignment="Left"
                         Width="0" Height="50" Margin="70,0,70,0" CornerRadius="4"/>
                 <TextBlock x:Name="PercentageText" Text="--%" FontSize="22" FontWeight="Bold"
                            Foreground="#3B2412" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
 
-            <controls:FantasyMenuButton NormalImage="/Assets/UI/bouton_lancer_quete.png"
-                                         HoverImage="/Assets/UI/bouton_lancer_quete_hover.png"
+            <controls:FantasyMenuButton NormalImage="/Assets/UI/bouton_jouer.png"
+                                         HoverImage="/Assets/UI/bouton_jouer_hover.png"
                                          Clicked="OnLaunchQuestClicked"
                                          Width="260" Height="70" Margin="0,24,0,0"/>
         </StackPanel>
