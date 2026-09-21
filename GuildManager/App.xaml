@@ -43,6 +43,9 @@
         <DataTemplate DataType="{x:Type vm:QuestPreparationViewModel}">
     <v:QuestPreparationView/>   
     </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:DialogueViewModel}">
+    <v:DialogueView/>
+</DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
