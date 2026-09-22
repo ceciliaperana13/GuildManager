@@ -1,0 +1,718 @@
+[
+  {
+    "id": "intro_01",
+    "act": 0,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Approche, mon garçon. J'ai une nouvelle qui ne va pas te plaire outre mesure... ou peut-être que si.",
+      "Après des décennies à la tête de cette guilde, je songe à raccrocher. Mes vieux os ne suivent plus le rythme.",
+      "Je te nomme chef adjoint. À partir d'aujourd'hui, c'est toi qui géreras le recrutement, les quêtes, les ressources.",
+      "La paix nous a ramollis. Les aventuriers se font rares, et les monstres, eux, ne cessent de se multiplier aux abords de la capitale.",
+      "Redonne à cette guilde sa gloire passée. Je compte sur toi."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "tutorial_start",
+    "act": 0,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Pour commencer, embauche ton premier aventurier et envoie-le en quête de récolte. Rien de dangereux, juste de quoi te faire la main."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "tutorial_victory",
+    "act": 0,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Bien joué ! Tu progresses vite.",
+      "Si tu te sens prêt, il paraît que des slimes traînent aux abords des bois. Rien de sérieux, mais une bonne occasion de continuer à t'entraîner."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "tutorial_defeat",
+    "act": 0,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Pas de panique, ça arrive même aux meilleurs. Renvoie ton équipe sur la même quête, ils ont dû apprendre de leurs erreurs."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act1_intro",
+    "act": 1,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "J'ai quelqu'un à te présenter.",
+      "Voici [Aventurier Prometteur]. On m'a dit le plus grand bien de lui, je pense qu'il pourra t'être précieux.",
+      "Justement, j'ai reçu un décret royal ce matin. Un clan d'orcs s'est installé dans les montagnes et se comporte de façon... étrange.",
+      "Le roi veut que la guilde règle ça, et vite. Tu n'as qu'un nombre limité de tours avant que la situation ne dégénère."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act1_victory",
+    "act": 1,
+    "trigger": "questResult",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "Mission accomplie. Le clan orc est neutralisé.",
+      "Mais on a trouvé quelque chose d'étrange sur leur campement : un cristal sombre, lié à un rituel de magie noire.",
+      "C'est louche... les orcs ne savent pas utiliser la magie, d'habitude."
+    ],
+    "choices": [
+      {
+        "text": "Payer un mage pour analyser le cristal",
+        "effects": { "gold": -100, "flag_cristal_analyse": true },
+        "nextDialogueId": null
+      },
+      {
+        "text": "Garder le cristal sans l'analyser pour l'instant",
+        "effects": {},
+        "nextDialogueId": null
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act1_defeat_01",
+    "act": 1,
+    "trigger": "questResult",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "On... on n'a pas réussi. Ils étaient trop nombreux, trop organisés.",
+      "Je suis rentré blessé, mais vivant. Le clan orc se prépare maintenant à marcher sur la ville."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act1_defeat_02",
+    "act": 1,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Un second échec... Les orcs ne vont plus nous laisser de seconde chance.",
+      "C'est fini. La guilde ne s'en relèvera pas de celui-là."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act1_timeout",
+    "act": 1,
+    "trigger": "turnStart",
+    "speaker": "Messager royal",
+    "characterId": "messager_royal",
+    "lines": [
+      "Une lettre du roi, pour vous. Il n'est pas content.",
+      "\"Le clan orc approche des portes de la capitale. Réglez ce problème immédiatement, ou j'en tiendrai la guilde pour responsable.\""
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act1_timeout_defeat",
+    "act": 1,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Les orcs ont atteint la ville. C'est terminé pour nous."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act2_intro",
+    "act": 2,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "De nouvelles rumeurs nous parviennent de deux villages voisins.",
+      "D'un côté, un monstre inconnu sème la terreur. De l'autre, on parle d'esprits maudits qui rôdent la nuit.",
+      "On ne peut pas se permettre d'enquêter sur les deux fronts à la fois. Laquelle de ces pistes veux-tu suivre en premier ?"
+    ],
+    "choices": [
+      {
+        "text": "Enquêter sur les esprits maudits",
+        "effects": {},
+        "nextDialogueId": "act2_esprits_intro"
+      },
+      {
+        "text": "Enquêter sur le monstre inconnu",
+        "effects": {},
+        "nextDialogueId": "act2_monstre_intro"
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act2_esprits_intro",
+    "act": 2,
+    "trigger": "manual",
+    "speaker": "Villageois",
+    "characterId": "villageois_generique",
+    "lines": [
+      "Ils sortent la nuit, entre les tombes du vieux cimetière. Des silhouettes... pas vivantes, pas mortes non plus."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act2_esprits_victory",
+    "act": 2,
+    "trigger": "questResult",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "C'était bien des morts-vivants, invoqués par un nécromancien.",
+      "Il a réussi à s'échapper via un rituel de portail, juste avant qu'on ne l'attrape."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act2_esprits_victory_cristal",
+    "act": 2,
+    "trigger": "questResult",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "C'était bien des morts-vivants, invoqués par un nécromancien.",
+      "Mais grâce à l'analyse du cristal sombre, on savait à quoi s'attendre : on l'a capturé avant qu'il ne s'échappe !",
+      "Il pourrait bien nous en dire long sur ce qui se trame vraiment."
+    ],
+    "choices": null,
+    "endsGame": false,
+    "condition": "flag_cristal_analyse == true"
+  },
+  {
+    "id": "act2_esprits_defeat",
+    "act": 2,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Cette quête est désormais hors de portée, on a perdu leur trace.",
+      "Et il y a pire : un de tes aventuriers est revenu... différent. Maudit, semble-t-il. Il ne pourra plus être assigné à quoi que ce soit pour l'instant."
+    ],
+    "choices": null,
+    "effects": { "curse_random_character": true },
+    "endsGame": false
+  },
+  {
+    "id": "act2_monstre_intro",
+    "act": 2,
+    "trigger": "manual",
+    "speaker": "Villageois",
+    "characterId": "villageois_generique",
+    "lines": [
+      "Une bête énorme, jamais vue dans la région. Elle a décimé nos troupeaux en une nuit."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act2_monstre_victory",
+    "act": 2,
+    "trigger": "questResult",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "On l'a eue. Mais ce n'était pas une bête naturelle : une chimère, assemblée de toutes pièces.",
+      "Quelqu'un, quelque part, fabrique des monstres. Une tierce partie est clairement impliquée là-dedans."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act2_monstre_defeat",
+    "act": 2,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Cette quête est désormais hors de portée.",
+      "Un de tes aventuriers est revenu empoisonné. Il faudra recruter un mage en urgence pour espérer le soigner."
+    ],
+    "choices": null,
+    "effects": { "poison_random_character": true },
+    "endsGame": false
+  },
+  {
+    "id": "act2_macaron_event",
+    "act": 2,
+    "trigger": "manual",
+    "speaker": "Macaron le Charlatan",
+    "characterId": "macaron",
+    "lines": [
+      "Ah, quel plaisir de croiser des aventuriers aussi... occupés ! J'ai justement ce qu'il vous faut.",
+      "J'ai en ma possession deux remèdes miracles. Voyez plutôt : la Poudre de Perlimpimpin, qui agit sur l'âme elle-même...",
+      "...ou la Fiole de Spécimen 49-3, garantie de guérir tous les maux. Alors, qu'en dites-vous ?"
+    ],
+    "choices": [
+      {
+        "text": "Acheter la Poudre de Perlimpimpin",
+        "effects": { "gold": -150, "item_poudre_perlimpimpin": true },
+        "nextDialogueId": null
+      },
+      {
+        "text": "Acheter la Fiole de Spécimen 49-3",
+        "effects": { "gold": -150, "item_fiole_specimen": true },
+        "nextDialogueId": null
+      },
+      {
+        "text": "Refuser poliment",
+        "effects": {},
+        "nextDialogueId": null
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act3_intro",
+    "act": 3,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "J'ai deux candidats à te présenter, tous deux mages. Il va falloir choisir, la guilde ne peut se permettre d'en recruter qu'un seul pour l'instant.",
+      "[Sorcier] : il affirme pouvoir soigner la malédiction, en plusieurs tours.",
+      "[Alchimiste] : elle prétend pouvoir guérir l'empoisonnement, également en plusieurs tours.",
+      "À toi de choisir lequel rejoindra nos rangs."
+    ],
+    "choices": [
+      {
+        "text": "Recruter le Sorcier",
+        "effects": { "recruit_sorcier": true },
+        "nextDialogueId": null
+      },
+      {
+        "text": "Recruter l'Alchimiste",
+        "effects": { "recruit_alchimiste": true },
+        "nextDialogueId": null
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act3_disparitions_teaser",
+    "act": 3,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Autre chose, plus préoccupant : de nombreuses disparitions ont été signalées dans la capitale.",
+      "J'ai déjà des aventuriers sur le coup, mais je veux que tu prépares des renforts, au cas où.",
+      "En attendant, je te conseille d'envoyer une équipe conquérir un donjon : une antique cité naine, tombée en ruine dans les plus hautes montagnes du royaume. De quoi refaire le plein d'équipement."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act3_donjon_victory",
+    "act": 3,
+    "trigger": "questResult",
+    "speaker": "Nain",
+    "characterId": "nain_tank",
+    "lines": [
+      "Par les barbes de mes ancêtres... des golems ! J'étais tombé en embuscade, seul, depuis des jours.",
+      "Merci de m'avoir sauvé la vie. Si votre guilde cherche du renfort, je suis votre homme."
+    ],
+    "choices": [
+      {
+        "text": "Recruter le Nain",
+        "effects": { "recruit_nain": true },
+        "nextDialogueId": null
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act3_donjon_defeat",
+    "act": 3,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Votre équipe est rentrée blessée. Vous avez trouvé un aventurier pris au piège, mais il n'a pas survécu au trajet du retour.",
+      "Le donjon reste accessible pour une nouvelle tentative, mais ce personnage est perdu à jamais."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act4_intro",
+    "act": 4,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "L'enquête sur les disparitions a enfin abouti. Deux pistes se dessinent.",
+      "La première mène aux égouts de la capitale, où se cacherait une organisation extrémiste : les Alchimistes Anonymes.",
+      "La seconde nous conduit vers les cryptes souterraines, où une secte hérétique semble s'être infiltrée jusque dans l'Église elle-même.",
+      "Laquelle veux-tu investiguer ?"
+    ],
+    "choices": [
+      {
+        "text": "Enquêter sur les Alchimistes Anonymes",
+        "effects": {},
+        "nextDialogueId": "act4_alchimistes_intro"
+      },
+      {
+        "text": "Enquêter sur le Culte du Dernier Souffle",
+        "effects": {},
+        "nextDialogueId": "act4_culte_intro"
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act4_alchimistes_intro",
+    "act": 4,
+    "trigger": "manual",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "Des rumeurs parlent d'expériences menées sur des innocents et des monstres, dans les égouts. Ils chercheraient à faire évoluer la race humaine."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act4_alchimistes_victory",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "On a trouvé leurs installations... et l'identité de leur chef.",
+      "Macaron le Charlatan. Le vendeur de remèdes miracle. Il s'est enfui avec une seringue mystérieuse avant qu'on ne l'attrape."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act4_alchimistes_defeat",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Une horde de monstres mutants s'échappe des égouts et envahit la ville !",
+      "C'est une urgence absolue : il faut organiser le confinement, immédiatement."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act4_alchimistes_confinement_victory",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Le confinement a tenu, mais la ville est meurtrie. La réputation de la guilde s'effondre.",
+      "La population exige de l'aide, or et nourriture, pour se relever."
+    ],
+    "choices": [
+      {
+        "text": "Donner de l'or et de la nourriture à la population",
+        "effects": { "gold": -300, "food": -100, "prestige": 100 },
+        "nextDialogueId": null
+      },
+      {
+        "text": "Refuser",
+        "effects": {},
+        "nextDialogueId": "act4_alchimistes_revolte",
+        "endsGame": true
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act4_alchimistes_revolte",
+    "act": 4,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "La population se révolte. Ils mettent le feu à la guilde. Il ne reste plus rien."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act4_alchimistes_confinement_defeat",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Le confinement a échoué. La ville est détruite. C'est fini pour nous."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act4_culte_intro",
+    "act": 4,
+    "trigger": "manual",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "Une secte de nécromanciens hérétiques, infiltrée jusque dans l'Église elle-même, opérant depuis les cryptes souterraines. Ça promet."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act4_culte_victory",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Aventurier Prometteur",
+    "characterId": "aventurier_prometteur",
+    "lines": [
+      "On a découvert un rituel de magie noire, et le tombeau de l'ancien empereur elfe [Nom à définir].",
+      "Les adeptes se sont enfuis avec sa dépouille et une lanterne mystérieuse, après qu'on a affronté une abomination de chair nécrosée."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act4_culte_defeat",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Des hordes de morts-vivants déferlent sur la ville ! Il faut organiser la défense de la capitale, sans attendre."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act4_culte_defense_victory",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "La défense a tenu, mais la foi envers l'Église est brisée. La cathédrale est en cendres.",
+      "La population exige une contribution de la guilde pour se relever."
+    ],
+    "choices": [
+      {
+        "text": "Contribuer à la reconstruction",
+        "effects": { "gold": -300, "food": -100, "prestige": 100 },
+        "nextDialogueId": null
+      },
+      {
+        "text": "Refuser",
+        "effects": {},
+        "nextDialogueId": "act4_culte_revolte",
+        "endsGame": true
+      }
+    ],
+    "endsGame": false
+  },
+  {
+    "id": "act4_culte_revolte",
+    "act": 4,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "La population se révolte. La guilde est incendiée. C'est terminé."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act4_culte_defense_defeat",
+    "act": 4,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "La défense a échoué. La ville tombe. C'est fini pour la guilde."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "search_antagonist_intro",
+    "act": 4,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Il faut maintenant localiser précisément notre ennemi avant l'affrontement final. Le temps presse."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "search_antagonist_timeout",
+    "act": 4,
+    "trigger": "turnStart",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Nous avons perdu trop de temps. L'ennemi a eu tout le loisir de préparer son prochain coup."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act5_macaron_intro",
+    "act": 5,
+    "trigger": "manual",
+    "speaker": "Macaron le Charlatan",
+    "characterId": "macaron",
+    "lines": [
+      "Vous voilà enfin. Vous arrivez presque à temps pour assister à mon chef-d'œuvre.",
+      "Réfugié dans ce fort en ruine, je suis sur le point de terminer mon grand projet : l'évolution de l'humanité elle-même."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act5_macaron_victory",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "C'est fini. La menace est écartée. La guilde retrouve enfin sa popularité d'antan.",
+      "Bien joué, chef. Vraiment bien joué."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act5_macaron_defeat",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "Macaron le Charlatan (forme parfaite)",
+    "characterId": "macaron_evolue",
+    "lines": [
+      "Trop tard ! Contemplez l'être humain suprême !",
+      "Je marche sur la capitale. Le trône me revient de droit, désormais."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act5_macaron_final_victory",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "La menace est écartée, pour de bon cette fois. La popularité de la guilde est à son apogée.",
+      "Le royaume [Nom à définir] vous doit une fière chandelle."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act5_macaron_final_defeat",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "Narrateur",
+    "characterId": null,
+    "lines": [
+      "La guilde est exterminée. Macaron prend le contrôle du royaume.",
+      "Fin."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act5_liche_intro",
+    "act": 5,
+    "trigger": "manual",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Les adeptes du Culte du Dernier Souffle se sont réfugiés dans une ruine elfique.",
+      "Ils s'apprêtent à ressusciter l'ancien empereur elfe [Nom à définir] sous la forme d'une liche, pour asservir le royaume par le contrôle de la mort elle-même."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act5_liche_victory",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "Le rituel est stoppé net. La menace est écartée."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act5_liche_defeat",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "La Liche",
+    "characterId": "liche",
+    "lines": [
+      "Les adeptes se sont sacrifiés... et me voilà, libre.",
+      "Le royaume va connaître le véritable sens du mot 'mort'."
+    ],
+    "choices": null,
+    "endsGame": false
+  },
+  {
+    "id": "act5_liche_final_defeat",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "Narrateur",
+    "characterId": null,
+    "lines": [
+      "La liche prend la ville et lève une armée de morts-vivants.",
+      "Fin."
+    ],
+    "choices": null,
+    "endsGame": true
+  },
+  {
+    "id": "act5_liche_final_victory",
+    "act": 5,
+    "trigger": "questResult",
+    "speaker": "Chef de guilde",
+    "characterId": "chef_de_guilde",
+    "lines": [
+      "La menace est définitivement éliminée. Le royaume peut enfin respirer.",
+      "Cette victoire restera dans les mémoires."
+    ],
+    "choices": null,
+    "endsGame": true
+  }
+]

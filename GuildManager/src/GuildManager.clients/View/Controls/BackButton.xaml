@@ -1,0 +1,14 @@
+<UserControl x:Class="GuildManager.Client.View.Controls.BackButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Button Click="Button_Click" Cursor="Hand"
+            Background="Transparent" BorderThickness="0"
+            FocusVisualStyle="{x:Null}">
+        <Button.Template>
+            <ControlTemplate TargetType="Button">
+                <ContentPresenter/>
+            </ControlTemplate>
+        </Button.Template>
+        <Image Name="ButtonImage" Source="/Assets/UI/icon_retour.png" Stretch="Uniform"/>
+    </Button>
+</UserControl>

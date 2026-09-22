@@ -1,0 +1,20 @@
+<UserControl x:Class="GuildManager.Client.View.PlayMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:controls="clr-namespace:GuildManager.Client.View.Controls">
+
+<Grid>
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="Play Menu" Foreground="Gold" FontSize="28" 
+                   HorizontalAlignment="Center"/>
+        <controls:FantasyMenuButton x:Name="SoloButton" NormalImage="/Assets/UI/bouton_solo.png"
+                                            HoverImage="/Assets/UI/bouton_solo_hover.png"
+                                            Clicked="OnSoloClicked" Margin="0,8" Width="220"/>
+        <controls:FantasyMenuButton NormalImage="/Assets/UI/bouton_coop.png"
+                                            HoverImage="/Assets/UI/bouton_coop_hover.png"
+                                            Clicked="OnCoopClicked" Margin="0,8" Width="220"/>
+                            <TextBlock x:Name="StatusText" Foreground="White" TextWrapping="Wrap"
+                                   HorizontalAlignment="Center" MaxWidth="320" Margin="0,16,0,0"/>
+    </StackPanel>
+</Grid>
+</UserControl>
