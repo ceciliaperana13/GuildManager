@@ -1,0 +1,43 @@
+<UserControl x:Class="GuildManager.Client.View.Controls.CoinFlip"
+             x:Name="Root"
+             Tag="Victory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="220"
+             d:DesignWidth="220">
+    <UserControl.Resources>
+        <Storyboard x:Key="VictoryFlip" Completed="OnFlipCompleted">
+            <DoubleAnimation Storyboard.TargetName="CoinSide" Storyboard.TargetProperty="Opacity" From="1" To="0" BeginTime="0:0:0.72" Duration="0:0:0.08" />
+            <DoubleAnimation Storyboard.TargetName="CoinSide" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" From="1" To="0.08" Duration="0:0:0.16" AutoReverse="True" RepeatBehavior="2x" />
+            <DoubleAnimation Storyboard.TargetName="CoinVictory" Storyboard.TargetProperty="Opacity" From="0" To="1" BeginTime="0:0:0.72" Duration="0:0:0.28" />
+            <DoubleAnimation Storyboard.TargetName="CoinVictory" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" From="0.08" To="1" BeginTime="0:0:0.72" Duration="0:0:0.28" />
+        </Storyboard>
+        <Storyboard x:Key="DefeatFlip" Completed="OnFlipCompleted">
+            <DoubleAnimation Storyboard.TargetName="CoinSide" Storyboard.TargetProperty="Opacity" From="1" To="0" BeginTime="0:0:0.72" Duration="0:0:0.08" />
+            <DoubleAnimation Storyboard.TargetName="CoinSide" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" From="1" To="0.08" Duration="0:0:0.16" AutoReverse="True" RepeatBehavior="2x" />
+            <DoubleAnimation Storyboard.TargetName="CoinDefeat" Storyboard.TargetProperty="Opacity" From="0" To="1" BeginTime="0:0:0.72" Duration="0:0:0.28" />
+            <DoubleAnimation Storyboard.TargetName="CoinDefeat" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" From="0.08" To="1" BeginTime="0:0:0.72" Duration="0:0:0.28" />
+        </Storyboard>
+    </UserControl.Resources>
+
+    <Grid Width="220" Height="220">
+        <Image x:Name="CoinSide" Source="/Assets/UI/Coin_side.png" Stretch="Uniform" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1" />
+            </Image.RenderTransform>
+        </Image>
+        <Image x:Name="CoinVictory" Source="/Assets/UI/Coin_victory.png" Stretch="Uniform" Opacity="0" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <ScaleTransform ScaleX="0.08" ScaleY="1" />
+            </Image.RenderTransform>
+        </Image>
+        <Image x:Name="CoinDefeat" Source="/Assets/UI/Coin_defeat.png" Stretch="Uniform" Opacity="0" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <ScaleTransform ScaleX="0.08" ScaleY="1" />
+            </Image.RenderTransform>
+        </Image>
+    </Grid>
+</UserControl>

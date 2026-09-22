@@ -12,6 +12,7 @@ namespace GuildManager.Client.View;
 public partial class GuildView : UserControl
 {
     private System.Timers.Timer? _refreshTimer;
+    private Game? Game => (DataContext as GuildViewModel)?.Game;
 
     public GuildView()
     {
@@ -19,8 +20,6 @@ public partial class GuildView : UserControl
         Loaded += GuildView_Loaded;
         Unloaded += GuildView_Unloaded;
     }
-
-    private Game? Game => (DataContext as GuildViewModel)?.Game;
 
     private async void GuildView_Loaded(object sender, RoutedEventArgs e)
     {
@@ -60,4 +59,15 @@ public partial class GuildView : UserControl
     private void OnStoreClicked(object sender, RoutedEventArgs e)
     {
     }
+
+    private void OnFlipClicked(object sender, RoutedEventArgs e)
+{
+    if (Game is null) return;
+
+    Game.passTurn();
+    (DataContext as GuildViewModel)?.RefreshResources();
+
+    GuildCoinFlip.Visibility = Visibility.Visible;
+    GuildCoinFlip.PlayFlip(Random.Shared.Next(2) == 1);
+}
 }
