@@ -6,9 +6,8 @@
         <Canvas Width="1867" Height="819">
             <Image Source="/Assets/Backgrounds/guilde_background.png" Width="1867" Height="819"/>
             <!--resource bar  -->
-            <controls:ResourceBar Gold="{Binding Gold}" Food="{Binding Food}"
-                       HorizontalAlignment="Center" VerticalAlignment="Top"
-                       Margin="0,20,0,0"/>
+            <controls:ResourceBar Gold="{Binding Gold}" Food="{Binding Food}" Prestige="{Binding Prestige}"
+                       Canvas.Left="20" Canvas.Top="10" Width="950" Height="422"/>
             <!-- Store : l'échoppe à gauche -->
             <controls:HoverHotspot Canvas.Left="10" Canvas.Top="180"
                                     Width="520" Height="460"

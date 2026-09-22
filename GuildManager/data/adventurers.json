@@ -1,5 +1,5 @@
 {
-  "idCount": 925,
+  "idCount": 937,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -129,6 +129,19 @@
       "magicAttack": 17,
       "def": 11,
       "image": "/Assets/character/adventurers/mage1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 930,
+      "name": "Morgane",
+      "job": "mage",
+      "lvl": 10,
+      "health": 8,
+      "physicAttack": 80,
+      "magicAttack": 69,
+      "def": 43,
+      "image": "/Assets/character/adventurers/mage2.png",
       "debuff": [],
       "isHurted": false
     }
