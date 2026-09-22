@@ -34,6 +34,18 @@
                                Canvas.Left="740" Canvas.Top="350"
                                Width="220" Height="220"/>
 
+            <!-- Flip : le bureau de flip à droite -->  
+            <controls:FantasyMenuButton NormalImage="/Assets/UI/Coin_victory.png"
+                            HoverImage="/Assets/UI/Coin_victory.png"
+                            Clicked="OnFlipClicked"
+                            Canvas.Left="1520" Canvas.Top="750"
+                            Width="460" Height="160"/>
+            <controls:CoinFlip x:Name="GuildCoinFlip"
+                               Visibility="Collapsed"
+                               IsHitTestVisible="False"
+                               Canvas.Left="740" Canvas.Top="350"
+                               Width="220" Height="220"/>
+
             <!-- Joueurs connectés -->
             <Border Canvas.Left="20" Canvas.Top="20" Background="#AA000000"
                     CornerRadius="6" Padding="10">

@@ -15,8 +15,7 @@ public class RecruitmentViewModel : IScreenViewModel
         Game = game;
         // TODO: remplacer par l'appel réel à la fonction de ton coéquipier
         // Candidates = fonctionDeTirage.GetRandomCandidates(3);
-        AdventurerManager adventurerManager = new AdventurerManager();
-        adventurerManager.refreshadventurersToHire(game.prestige);
+        game.adventurerManager.refreshadventurersToHire(game.prestige);
         for(int i=0; i<3; i++)
         {
             var adventurer = adventurerManager.adventurersToHire[i];
@@ -28,10 +27,6 @@ public class RecruitmentViewModel : IScreenViewModel
                 RecruitmentCost = adventurer.goldPrice
             });
         }
-        // Placeholder temporaire en attendant :
-        // Candidates.Add(new AdventurerCandidate { Name = "???", PortraitPath = "/Assets/UI/placeholder_portrait.png" });
-        // Candidates.Add(new AdventurerCandidate { Name = "???", PortraitPath = "/Assets/UI/placeholder_portrait.png" });
-        // Candidates.Add(new AdventurerCandidate { Name = "???", PortraitPath = "/Assets/UI/placeholder_portrait.png" });
     }
 }
 
