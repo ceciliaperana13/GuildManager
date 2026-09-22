@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace GuildManager.Client.Models;
 
-public class Quest
+public class QuestCard
 {
     public string Title { get; set; } = "";
     public string Description { get; set; } = "";

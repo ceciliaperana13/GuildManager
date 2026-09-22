@@ -106,9 +106,14 @@ public class Quest
         this.winRate = refreshWinRate();
     }
 
-    public void acceptQuest()
+    public bool acceptQuest()
     {
-        this.inProgress = true;
+        if (this.adventurers.Count >= 0)
+        {
+            this.inProgress = true;
+            return true;
+        }
+        return false;
     }
 
     public bool completeQuest()

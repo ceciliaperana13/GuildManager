@@ -1,8 +1,6 @@
-using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using GuildManager.Client.Models;
-using GameLogic = GuildManager.Aplication.Guilds.Controls;
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.ViewModel;
 
@@ -10,23 +8,20 @@ public class QuestListViewModel : IScreenViewModel
 {
     public string BackgroundPath => "/Assets/UI/quest_board.png";
 
-    public ObservableCollection<Quest> Quests { get; } = new();
+    public ObservableCollection<QuestCard> Quests { get; } = new();
 
-    public QuestListViewModel()
+    public QuestListViewModel(Game game)
     {
-        LoadQuests();
+        LoadQuests(game);
     }
 
-    private void LoadQuests()
+    private void LoadQuests(Game game)
     {
-        var questsFilePath = Path.Combine(AppContext.BaseDirectory, "data", "quest.json");
+        game.questManager.refreshQuests(game.prestige);
 
-        var questManager = new GameLogic.QuestManager();
-        var logicQuests = questManager.generateQuestsFromJson(questsFilePath);
-
-        foreach (var logicQuest in logicQuests)
+        foreach (var logicQuest in game.questManager.quests)
         {
-            Quests.Add(new Quest
+            Quests.Add(new QuestCard
             {
                 Title = logicQuest.name,
                 Description = logicQuest.description,

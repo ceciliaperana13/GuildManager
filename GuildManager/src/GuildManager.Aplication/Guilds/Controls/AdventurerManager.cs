@@ -179,4 +179,20 @@ public class AdventurerManager
         //return new Adventurer(0, "", "", 0, 0, 0, 0, 0, "", [], false, 0, 0);
         return null;
     }
+
+    public int adventurersEat()
+    {
+        int totalFood = 0;
+        //random adventurers eat
+        foreach(Adventurer adventurer in this.adventurers)
+        {
+            totalFood += adventurer.foodPrice;
+        }
+        //main adventurers eat
+        foreach(Adventurer adventurer in this.mainAdventurers)
+        {
+            totalFood += adventurer.foodPrice;
+        }
+        return totalFood;
+    }
 }

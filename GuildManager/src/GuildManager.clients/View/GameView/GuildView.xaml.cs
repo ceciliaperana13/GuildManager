@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
 using GuildManager.Client.Services;
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.View;
 
@@ -18,6 +19,8 @@ public partial class GuildView : UserControl
         Loaded += GuildView_Loaded;
         Unloaded += GuildView_Unloaded;
     }
+
+    private Game? Game => (DataContext as GuildViewModel)?.Game;
 
     private async void GuildView_Loaded(object sender, RoutedEventArgs e)
     {
@@ -45,13 +48,15 @@ public partial class GuildView : UserControl
 
     private void OnQuestBoardClicked(object sender, RoutedEventArgs e)
     {
-        NavigationService.NavigateTo(new QuestListViewModel());
+        if (Game is null) return;
+        NavigationService.NavigateTo(new QuestListViewModel(Game));
     }
 
     private void OnReceptionClicked(object sender, RoutedEventArgs e)
     {
         NavigationService.NavigateTo(new ReceptionViewModel());
     }
+
     private void OnStoreClicked(object sender, RoutedEventArgs e)
     {
     }

@@ -1,3 +1,4 @@
+using System.CodeDom;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -102,6 +103,24 @@ public class Game
         return false;
     }
 
+    public void passTurn()
+    {
+        this.turn++;
+        // complétion des quêtes après le tour
+        foreach(Quest quest in this.questManager.quests)
+        {
+            if (quest.inProgress)
+            {
+                this.claimReward(quest.giveReward());
+            }
+        }
+        this.questManager.refreshQuests(this.prestige);
+        this.adventurerManager.refreshadventurersToHire(this.prestige);
+        this.adventurerManager.refreshAdventurers();
+        this.food -= this.adventurerManager.adventurersEat();
+        
+    }
+
     public void playTurn()
     {   
         // complétion des quêtes après le tour
@@ -111,7 +130,8 @@ public class Game
             {
                 this.claimReward(quest.giveReward());
             }
-        } 
+        }
+
 
         this.turnInProgress = true;
         while (this.turnInProgress)

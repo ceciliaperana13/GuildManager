@@ -7,7 +7,7 @@ namespace GuildManager.Client.ViewModel;
 public class QuestPreparationViewModel : IScreenViewModel
 {
     public string BackgroundPath => "/Assets/UI/quest_background.png";
-    public Quest? SelectedQuest { get; }
+    public QuestCard? SelectedQuest { get; }
 
     public ObservableCollection<AdventurerCard?> SelectedSlots { get; } = new() { null, null, null };
 
@@ -20,7 +20,7 @@ public class QuestPreparationViewModel : IScreenViewModel
 
     public event System.Action? PercentageChanged;
 
-    public QuestPreparationViewModel(Quest? quest = null)
+    public QuestPreparationViewModel(QuestCard? quest = null)
     {
         SelectedQuest = quest;
     }
