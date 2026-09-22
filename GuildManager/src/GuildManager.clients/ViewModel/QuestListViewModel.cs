@@ -7,11 +7,13 @@ namespace GuildManager.Client.ViewModel;
 public class QuestListViewModel : IScreenViewModel
 {
     public string BackgroundPath => "/Assets/UI/quest_board.png";
+    public Game Game { get; }
 
     public ObservableCollection<QuestCard> Quests { get; } = new();
 
     public QuestListViewModel(Game game)
     {
+        Game = game;
         LoadQuests(game);
     }
 

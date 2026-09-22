@@ -15,7 +15,7 @@
                         </Button.Template>
                         <Grid Width="140" Height="140">
                             <Image Source="/Assets/UI/portrait_slot.png" Stretch="Uniform"/>
-                            <Image x:Name="Portrait0" Stretch="Uniform" Width="90" Height="90"
+                            <Image x:Name="Portrait0" Source="{Binding SelectedSlots[0].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
@@ -34,7 +34,7 @@
                         </Button.Template>
                         <Grid Width="140" Height="140">
                             <Image Source="/Assets/UI/portrait_slot.png" Stretch="Uniform"/>
-                            <Image x:Name="Portrait1" Stretch="Uniform" Width="90" Height="90"
+                            <Image x:Name="Portrait1" Source="{Binding SelectedSlots[1].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
@@ -53,7 +53,7 @@
                         </Button.Template>
                         <Grid Width="140" Height="140">
                             <Image Source="/Assets/UI/portrait_slot.png" Stretch="Uniform"/>
-                            <Image x:Name="Portrait2" Stretch="Uniform" Width="90" Height="90"
+                            <Image x:Name="Portrait2" Source="{Binding SelectedSlots[2].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>

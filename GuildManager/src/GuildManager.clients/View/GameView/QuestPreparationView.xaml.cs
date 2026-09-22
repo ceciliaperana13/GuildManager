@@ -41,19 +41,13 @@ public partial class QuestPreparationView : UserControl
         Picker.Visibility = Visibility.Collapsed;
     }
 
-      private void OpenPicker(int slotIndex)
+        private void OpenPicker(int slotIndex)
     {
         _activeSlot = slotIndex;
-        // TODO: filtrer sur les aventuriers "disponibles" une fois ce concept ajouté côté Domain
-        Picker.SetAdventurers(new List<AdventurerCard>
-       {
-            new AdventurerCard { Name = "Alice" },
-            new AdventurerCard { Name = "Bob" },
-            new AdventurerCard { Name = "Charlie" }
-       });
-        
-       Picker.Visibility = Visibility.Visible;
+                if (ViewModel is null) return;
 
+                Picker.SetAdventurers(ViewModel.GetAvailableAdventurers());
+                Picker.Visibility = Visibility.Visible;
     }
 
     

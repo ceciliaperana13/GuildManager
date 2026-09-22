@@ -5,7 +5,7 @@ namespace GuildManager.Client.ViewModel;
 
 public class AdventurerRosterViewModel : IScreenViewModel
 {
-    public string BackgroundPath => "/Assets/Backgrounds/table_avanturier.png";
+    public string BackgroundPath => "/Assets/UI/table_avanturier.png";
 
     public ObservableCollection<AdventurerCard> Adventurers { get; } = new();
 

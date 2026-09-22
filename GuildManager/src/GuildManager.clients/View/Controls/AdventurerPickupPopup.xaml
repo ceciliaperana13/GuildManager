@@ -17,7 +17,7 @@
                                         CornerRadius="4" Margin="0,4" Padding="10"
                                         MouseLeftButtonUp="OnAdventurerRowClicked" Cursor="Hand"
                                         Tag="{Binding}">
-                                    <TextBlock Text="{Binding name}" FontSize="15" Foreground="#3B2412"/>
+                                    <TextBlock Text="{Binding Name}" FontSize="15" Foreground="#3B2412"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
