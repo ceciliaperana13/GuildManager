@@ -65,7 +65,7 @@ public class AuthController : ControllerBase
         }
         catch (DbUpdateException ex)
         {
-            // Filet de sécurité si deux inscriptions arrivent en même temps 
+            // security 
             _logger.LogWarning(ex, "Conflit lors de l'inscription de {Username}", username);
             return Conflict("Ce nom d'utilisateur ou cet email est déjà utilisé.");
         }

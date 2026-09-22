@@ -24,7 +24,7 @@ public class SessionController : ControllerBase
     {
         var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "inconnu";
         _tracker.Register(request.PlayerName, ip);
-        _logger.LogInformation("✅ Joueur connecté : {PlayerName} depuis {Ip}", request.PlayerName, ip);
+        _logger.LogInformation("Joueur connecté : {PlayerName} depuis {Ip}", request.PlayerName, ip);
         return Ok(new { status = "connected" });
     }
 
