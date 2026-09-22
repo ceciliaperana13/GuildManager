@@ -8,7 +8,7 @@ namespace GuildManager.Client.View;
 public partial class QuestPreparationView : UserControl
 {
     private readonly QuestPreparationViewModel _viewModel;
-
+    private int _activeSlot = -1;
     public QuestPreparationView()
     {
         InitializeComponent();
@@ -16,6 +16,29 @@ public partial class QuestPreparationView : UserControl
         DataContext = _viewModel;
         _viewModel.PercentageChanged += UpdatePercentageDisplay;
     }
+
+    private void OnSlot0Click(object sender, RoutedEventArgs e) => OpenPicker(0);
+    private void OnSlot1Click(object sender, RoutedEventArgs e) => OpenPicker(1);
+    private void OnSlot2Click(object sender, RoutedEventArgs e) => OpenPicker(2);
+
+      private void OpenPicker(int slotIndex)
+    {
+        _activeSlot = slotIndex;
+        // TODO: filtrer sur les aventuriers "disponibles" une fois ce concept ajouté côté Domain
+        Picker.SetAdventurers(new List<Adventurer>
+       {
+            new Adventurer { Name = "Alice" },
+            new Adventurer { Name = "Bob" },
+            new Adventurer { Name = "Charlie" }
+       });
+        
+       Picker.Visibility = Visibility.Visible;
+
+    }
+
+    
+
+     private void OnPickerCancelled() => Picker.Visibility = Visibility.Collapsed;
 
     private void UpdatePercentageDisplay()
     {
@@ -30,10 +53,6 @@ public partial class QuestPreparationView : UserControl
             FillBar.Width = 0;
         }
     }
-
-    private void OnSlot0Click(object sender, RoutedEventArgs e) => OpenPickerFor(0);
-    private void OnSlot1Click(object sender, RoutedEventArgs e) => OpenPickerFor(1);
-    private void OnSlot2Click(object sender, RoutedEventArgs e) => OpenPickerFor(2);
 
     private void OpenPickerFor(int slotIndex)
     {
