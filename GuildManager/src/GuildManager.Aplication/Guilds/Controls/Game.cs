@@ -117,6 +117,7 @@ public class Game
         this.questManager.refreshQuests(this.prestige);
         this.adventurerManager.refreshadventurersToHire(this.prestige);
         this.adventurerManager.refreshAdventurers();
+        this.adventurerManager.refreshMainAdventurers();
         this.food -= this.adventurerManager.adventurersEat();
         
     }
