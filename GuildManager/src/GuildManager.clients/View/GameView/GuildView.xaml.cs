@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using GuildManager.Aplication.Guilds.Controls;
 using GuildManager.Client.ViewModel;
 using GuildManager.Client.Services;
 
@@ -12,7 +11,6 @@ namespace GuildManager.Client.View;
 public partial class GuildView : UserControl
 {
     private System.Timers.Timer? _refreshTimer;
-    private Game? Game => (DataContext as GuildViewModel)?.Game;
 
     public GuildView()
     {
@@ -60,10 +58,8 @@ public partial class GuildView : UserControl
 
     private void OnFlipClicked(object sender, RoutedEventArgs e)
     {
-        if (Game is null) return;
-
-        Game.PassTurn();
         GuildCoinFlip.Visibility = Visibility.Visible;
         GuildCoinFlip.PlayFlip(Random.Shared.Next(2) == 1);
+        //Next tour
     }
 }

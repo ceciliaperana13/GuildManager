@@ -7,19 +7,39 @@ namespace GuildManager.Client.View;
 
 public partial class QuestPreparationView : UserControl
 {
-    private readonly QuestPreparationViewModel _viewModel;
     private int _activeSlot = -1;
     public QuestPreparationView()
     {
         InitializeComponent();
-        _viewModel = new QuestPreparationViewModel();
-        DataContext = _viewModel;
-        _viewModel.PercentageChanged += UpdatePercentageDisplay;
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    private QuestPreparationViewModel? ViewModel => DataContext as QuestPreparationViewModel;
+
+    private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.OldValue is QuestPreparationViewModel oldViewModel)
+            oldViewModel.PercentageChanged -= UpdatePercentageDisplay;
+
+        if (e.NewValue is QuestPreparationViewModel newViewModel)
+        {
+            newViewModel.PercentageChanged += UpdatePercentageDisplay;
+            UpdatePercentageDisplay();
+        }
     }
 
     private void OnSlot0Click(object sender, RoutedEventArgs e) => OpenPicker(0);
     private void OnSlot1Click(object sender, RoutedEventArgs e) => OpenPicker(1);
     private void OnSlot2Click(object sender, RoutedEventArgs e) => OpenPicker(2);
+
+    private void OnAdventurerPicked(AdventurerCard adventurer)
+    {
+        if (_activeSlot < 0 || ViewModel is null) return;
+
+        ViewModel.AssignAdventurer(_activeSlot, adventurer);
+        _activeSlot = -1;
+        Picker.Visibility = Visibility.Collapsed;
+    }
 
       private void OpenPicker(int slotIndex)
     {
@@ -42,7 +62,7 @@ public partial class QuestPreparationView : UserControl
 
     private void UpdatePercentageDisplay()
     {
-        if (_viewModel.SuccessPercentage is int pct)
+        if (ViewModel?.SuccessPercentage is int pct)
         {
             PercentageText.Text = $"{pct}%";
             FillBar.Width = 460 * (pct / 100.0); // 460 = largeur intérieure approximative de la barre
