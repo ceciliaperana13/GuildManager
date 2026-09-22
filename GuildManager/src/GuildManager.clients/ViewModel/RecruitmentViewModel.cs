@@ -6,23 +6,32 @@ namespace GuildManager.Client.ViewModel;
 public class RecruitmentViewModel : IScreenViewModel
 {
     public string BackgroundPath => "/Assets/UI/table_selection.png";
+    public Game Game { get; }
 
     public ObservableCollection<AdventurerCandidate> Candidates { get; } = new();
 
     public RecruitmentViewModel(Game game)
     {
-        // TODO: remplacer par l'appel réel à la fonction de ton coéquipier
-        // Candidates = fonctionDeTirage.GetRandomCandidates(3);
+        Game = game;
+
         game.adventurerManager.refreshadventurersToHire(game.prestige);
         for(int i=0; i<3; i++)
         {
-            Candidates.Add(new AdventurerCandidate { Name = game.adventurerManager.adventurersToHire[i].name, PortraitPath = game.adventurerManager.adventurersToHire[i].image});
+            var adventurer = game.adventurerManager.adventurersToHire[i];
+            Candidates.Add(new AdventurerCandidate
+            {
+                Adventurer = adventurer,
+                Name = adventurer.name,
+                PortraitPath = adventurer.image,
+                RecruitmentCost = adventurer.goldPrice
+            });
         }
     }
 }
 
 public class AdventurerCandidate
 {
+    public Adventurer Adventurer { get; set; } = null!;
     public string Name { get; set; } = "";
     public string PortraitPath { get; set; } = "";
     public int RecruitmentCost { get; set; }

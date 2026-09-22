@@ -1,5 +1,5 @@
 {
-  "idCount": 991,
+  "idCount": 1021,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -116,6 +116,45 @@
       "magicAttack": 18,
       "def": 8,
       "image": "assets/image/perso secondaires/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1000,
+      "name": "Edrik",
+      "job": "guerrier",
+      "lvl": 2,
+      "health": 11,
+      "physicAttack": 18,
+      "magicAttack": 7,
+      "def": 4,
+      "image": "/Assets/character/adventurers/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1003,
+      "name": "Gareth",
+      "job": "guerrier",
+      "lvl": 1,
+      "health": 13,
+      "physicAttack": 6,
+      "magicAttack": 1,
+      "def": 0,
+      "image": "/Assets/character/adventurers/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1012,
+      "name": "Miralys",
+      "job": "mage",
+      "lvl": 3,
+      "health": 1,
+      "physicAttack": 16,
+      "magicAttack": 29,
+      "def": 14,
+      "image": "/Assets/character/adventurers/mage2.png",
       "debuff": [],
       "isHurted": false
     }

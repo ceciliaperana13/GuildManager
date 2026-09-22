@@ -15,6 +15,7 @@ public class Game
     public List<Item> inventory = new List<Item>();
     public AdventurerManager adventurerManager = new AdventurerManager();
     public QuestManager questManager = new QuestManager();
+    bool isBought;
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
 
@@ -40,18 +41,28 @@ public class Game
 
     public bool buyAdventurer(Adventurer adventurer)
     {
-        if (this.gold >= adventurer.goldPrice)
+        if (!this.isBought)
         {
-            adventurerManager.AddAdventurer(adventurer);
-            this.gold -= adventurer.goldPrice;
-            Console.WriteLine(adventurer.name + " recruté.");
-            return true;
+            if (this.gold >= adventurer.goldPrice)
+            {
+                adventurerManager.AddAdventurer(adventurer);
+                this.gold -= adventurer.goldPrice;
+                Console.WriteLine(adventurer.name + " recruté.");
+                this.isBought = true;
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("Pas assez d'or pour recruter " + adventurer.name);
+                return false;
+            }
         }
         else
         {
-            Console.WriteLine("Pas assez d'or pour recruter " + adventurer.name);
+            Console.WriteLine("Vous avez déjà recruter un aventurier ce tour-ci");
             return false;
         }
+        
     }
 
     // public void refreshQuest()
@@ -104,6 +115,7 @@ public class Game
     public void passTurn()
     {
         this.turn++;
+        this.isBought = false;
         // complétion des quêtes après le tour
         foreach(Quest quest in this.questManager.quests)
         {
