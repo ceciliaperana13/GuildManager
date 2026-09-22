@@ -1,5 +1,5 @@
 {
-  "idCount": 991,
+  "idCount": 1000,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -142,6 +142,19 @@
       "magicAttack": 69,
       "def": 43,
       "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 993,
+      "name": "Rhianna",
+      "job": "tank",
+      "lvl": 1,
+      "health": 5,
+      "physicAttack": 5,
+      "magicAttack": 3,
+      "def": 7,
+      "image": "/Assets/character/adventurers/tank2.png",
       "debuff": [],
       "isHurted": false
     }

@@ -18,7 +18,7 @@ public class RecruitmentViewModel : IScreenViewModel
         game.adventurerManager.refreshadventurersToHire(game.prestige);
         for(int i=0; i<3; i++)
         {
-            var adventurer = adventurerManager.adventurersToHire[i];
+            var adventurer = game.adventurerManager.adventurersToHire[i];
             Candidates.Add(new AdventurerCandidate
             {
                 Adventurer = adventurer,
