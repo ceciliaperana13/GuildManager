@@ -66,7 +66,7 @@ public class AdventurerManager
             stats -= physic;
             magic = stats;
         }
-        string image = $"assets/image/perso secondaires/{job + type}.png";
+        string image = $"/Assets/character/adventurers/{job + type}.png";
 
         // def de l'id :
         string json = File.ReadAllText(DataFile);

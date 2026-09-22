@@ -26,7 +26,8 @@
     <Resource Include="Assets\UI\**\*.jpg" />
     <Resource Include="Assets\UI\**\*.jfif" />
     <Resource Include="Assets\UI\**\*.png" />
-    <Resource Include="Assets\UI\**\*.ico" />
+    <Resource Include="Assets\**\**\*.ico" />
+    <Resource Include="Assets\character\adventurers\**\*.png" />
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

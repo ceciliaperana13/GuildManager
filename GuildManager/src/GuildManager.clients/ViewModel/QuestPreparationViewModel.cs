@@ -9,7 +9,7 @@ public class QuestPreparationViewModel : IScreenViewModel
     public string BackgroundPath => "/Assets/UI/Quest_background.png";
     public Quest? SelectedQuest { get; }
 
-    public ObservableCollection<Adventurer?> SelectedSlots { get; } = new() { null, null, null };
+    public ObservableCollection<AdventurerCard?> SelectedSlots { get; } = new() { null, null, null };
 
     private int? _successPercentage;
     public int? SuccessPercentage
@@ -25,7 +25,7 @@ public class QuestPreparationViewModel : IScreenViewModel
         SelectedQuest = quest;
     }
 
-    public void AssignAdventurer(int slotIndex, Adventurer adventurer)
+    public void AssignAdventurer(int slotIndex, AdventurerCard adventurer)
     {
         SelectedSlots[slotIndex] = adventurer;
         RecalculateSuccessRate();

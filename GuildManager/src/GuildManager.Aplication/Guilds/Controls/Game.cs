@@ -11,9 +11,8 @@ public class Game
     public int food {get; private set;}
     public int prestige {get; private set;}
     public int xp {get; private set;}
-    public List<Item> inventory;
-    public List<Adventurer> specialAdventurers;
-    AdventurerManager adventurerManager = new AdventurerManager();
+    public List<Item> inventory = new List<Item>();
+    public AdventurerManager adventurerManager = new AdventurerManager();
     public QuestManager questManager = new QuestManager();
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
@@ -29,7 +28,6 @@ public class Game
         this.prestige = prestige;
         this.xp = xp;
         //this.adventurers = characterGenerator.generateAdventurerFromJson("adventurers");
-        this.specialAdventurers = adventurerManager.generateAdventurerFromJson("mainAdventurers");
         //this.adventurersToBuy = new List<Adventurer>();
         this.turnInProgress = true;
     }

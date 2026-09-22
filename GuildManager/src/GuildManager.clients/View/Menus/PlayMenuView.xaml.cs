@@ -8,6 +8,7 @@ using GuildManager.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.View;
 
@@ -46,8 +47,9 @@ public partial class PlayMenuView : UserControl
             Console.WriteLine("Mode solo");
             Console.WriteLine("Connexion à la base locale : OK");
             StatusText.Text = "Connexion à la base locale : OK";
-    
-             NavigationService.NavigateTo(new GuildViewModel());
+
+            Game game = new Game("test", 1, 0, 10000, 10000, 1, 0);
+            NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)
         {

@@ -13,7 +13,8 @@
       "Redonne à cette guilde sa gloire passée. Je compte sur toi."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "tutorial_start",
@@ -25,7 +26,8 @@
       "Pour commencer, embauche ton premier aventurier et envoie-le en quête de récolte. Rien de dangereux, juste de quoi te faire la main."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "tutorial_victory",
@@ -38,7 +40,8 @@
       "Si tu te sens prêt, il paraît que des slimes traînent aux abords des bois. Rien de sérieux, mais une bonne occasion de continuer à t'entraîner."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "tutorial_defeat",
@@ -50,7 +53,8 @@
       "Pas de panique, ça arrive même aux meilleurs. Renvoie ton équipe sur la même quête, ils ont dû apprendre de leurs erreurs."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act1_intro",
@@ -65,7 +69,8 @@
       "Le roi veut que la guilde règle ça, et vite. Tu n'as qu'un nombre limité de tours avant que la situation ne dégénère."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act1_victory",
@@ -81,7 +86,10 @@
     "choices": [
       {
         "text": "Payer un mage pour analyser le cristal",
-        "effects": { "gold": -100, "flag_cristal_analyse": true },
+        "effects": {
+          "gold": -100,
+          "flag_cristal_analyse": true
+        },
         "nextDialogueId": null
       },
       {
@@ -90,7 +98,8 @@
         "nextDialogueId": null
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act1_defeat_01",
@@ -103,7 +112,8 @@
       "Je suis rentré blessé, mais vivant. Le clan orc se prépare maintenant à marcher sur la ville."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act1_defeat_02",
@@ -116,7 +126,8 @@
       "C'est fini. La guilde ne s'en relèvera pas de celui-là."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act1_timeout",
@@ -129,7 +140,8 @@
       "\"Le clan orc approche des portes de la capitale. Réglez ce problème immédiatement, ou j'en tiendrai la guilde pour responsable.\""
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/messager.png"
   },
   {
     "id": "act1_timeout_defeat",
@@ -141,7 +153,8 @@
       "Les orcs ont atteint la ville. C'est terminé pour nous."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_intro",
@@ -166,7 +179,8 @@
         "nextDialogueId": "act2_monstre_intro"
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_esprits_intro",
@@ -178,7 +192,8 @@
       "Ils sortent la nuit, entre les tombes du vieux cimetière. Des silhouettes... pas vivantes, pas mortes non plus."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act2_esprits_victory",
@@ -191,7 +206,8 @@
       "Il a réussi à s'échapper via un rituel de portail, juste avant qu'on ne l'attrape."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act2_esprits_victory_cristal",
@@ -206,7 +222,8 @@
     ],
     "choices": null,
     "endsGame": false,
-    "condition": "flag_cristal_analyse == true"
+    "condition": "flag_cristal_analyse == true",
+    "image": null
   },
   {
     "id": "act2_esprits_defeat",
@@ -219,8 +236,11 @@
       "Et il y a pire : un de tes aventuriers est revenu... différent. Maudit, semble-t-il. Il ne pourra plus être assigné à quoi que ce soit pour l'instant."
     ],
     "choices": null,
-    "effects": { "curse_random_character": true },
-    "endsGame": false
+    "effects": {
+      "curse_random_character": true
+    },
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_monstre_intro",
@@ -232,7 +252,8 @@
       "Une bête énorme, jamais vue dans la région. Elle a décimé nos troupeaux en une nuit."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act2_monstre_victory",
@@ -245,7 +266,8 @@
       "Quelqu'un, quelque part, fabrique des monstres. Une tierce partie est clairement impliquée là-dedans."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act2_monstre_defeat",
@@ -258,8 +280,11 @@
       "Un de tes aventuriers est revenu empoisonné. Il faudra recruter un mage en urgence pour espérer le soigner."
     ],
     "choices": null,
-    "effects": { "poison_random_character": true },
-    "endsGame": false
+    "effects": {
+      "poison_random_character": true
+    },
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_macaron_event",
@@ -275,12 +300,18 @@
     "choices": [
       {
         "text": "Acheter la Poudre de Perlimpimpin",
-        "effects": { "gold": -150, "item_poudre_perlimpimpin": true },
+        "effects": {
+          "gold": -150,
+          "item_poudre_perlimpimpin": true
+        },
         "nextDialogueId": null
       },
       {
         "text": "Acheter la Fiole de Spécimen 49-3",
-        "effects": { "gold": -150, "item_fiole_specimen": true },
+        "effects": {
+          "gold": -150,
+          "item_fiole_specimen": true
+        },
         "nextDialogueId": null
       },
       {
@@ -289,7 +320,8 @@
         "nextDialogueId": null
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/Macaron1.png"
   },
   {
     "id": "act3_intro",
@@ -306,16 +338,21 @@
     "choices": [
       {
         "text": "Recruter le Sorcier",
-        "effects": { "recruit_sorcier": true },
+        "effects": {
+          "recruit_sorcier": true
+        },
         "nextDialogueId": null
       },
       {
         "text": "Recruter l'Alchimiste",
-        "effects": { "recruit_alchimiste": true },
+        "effects": {
+          "recruit_alchimiste": true
+        },
         "nextDialogueId": null
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act3_disparitions_teaser",
@@ -329,7 +366,8 @@
       "En attendant, je te conseille d'envoyer une équipe conquérir un donjon : une antique cité naine, tombée en ruine dans les plus hautes montagnes du royaume. De quoi refaire le plein d'équipement."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act3_donjon_victory",
@@ -344,11 +382,14 @@
     "choices": [
       {
         "text": "Recruter le Nain",
-        "effects": { "recruit_nain": true },
+        "effects": {
+          "recruit_nain": true
+        },
         "nextDialogueId": null
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act3_donjon_defeat",
@@ -361,7 +402,8 @@
       "Le donjon reste accessible pour une nouvelle tentative, mais ce personnage est perdu à jamais."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_intro",
@@ -387,7 +429,8 @@
         "nextDialogueId": "act4_culte_intro"
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_intro",
@@ -399,7 +442,8 @@
       "Des rumeurs parlent d'expériences menées sur des innocents et des monstres, dans les égouts. Ils chercheraient à faire évoluer la race humaine."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act4_alchimistes_victory",
@@ -412,7 +456,8 @@
       "Macaron le Charlatan. Le vendeur de remèdes miracle. Il s'est enfui avec une seringue mystérieuse avant qu'on ne l'attrape."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act4_alchimistes_defeat",
@@ -425,7 +470,8 @@
       "C'est une urgence absolue : il faut organiser le confinement, immédiatement."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_confinement_victory",
@@ -440,7 +486,11 @@
     "choices": [
       {
         "text": "Donner de l'or et de la nourriture à la population",
-        "effects": { "gold": -300, "food": -100, "prestige": 100 },
+        "effects": {
+          "gold": -300,
+          "food": -100,
+          "prestige": 100
+        },
         "nextDialogueId": null
       },
       {
@@ -450,7 +500,8 @@
         "endsGame": true
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_revolte",
@@ -462,7 +513,8 @@
       "La population se révolte. Ils mettent le feu à la guilde. Il ne reste plus rien."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_confinement_defeat",
@@ -474,7 +526,8 @@
       "Le confinement a échoué. La ville est détruite. C'est fini pour nous."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_intro",
@@ -486,7 +539,8 @@
       "Une secte de nécromanciens hérétiques, infiltrée jusque dans l'Église elle-même, opérant depuis les cryptes souterraines. Ça promet."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act4_culte_victory",
@@ -499,7 +553,8 @@
       "Les adeptes se sont enfuis avec sa dépouille et une lanterne mystérieuse, après qu'on a affronté une abomination de chair nécrosée."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": null
   },
   {
     "id": "act4_culte_defeat",
@@ -511,7 +566,8 @@
       "Des hordes de morts-vivants déferlent sur la ville ! Il faut organiser la défense de la capitale, sans attendre."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_defense_victory",
@@ -526,7 +582,11 @@
     "choices": [
       {
         "text": "Contribuer à la reconstruction",
-        "effects": { "gold": -300, "food": -100, "prestige": 100 },
+        "effects": {
+          "gold": -300,
+          "food": -100,
+          "prestige": 100
+        },
         "nextDialogueId": null
       },
       {
@@ -536,7 +596,8 @@
         "endsGame": true
       }
     ],
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_revolte",
@@ -548,7 +609,8 @@
       "La population se révolte. La guilde est incendiée. C'est terminé."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_defense_defeat",
@@ -560,7 +622,8 @@
       "La défense a échoué. La ville tombe. C'est fini pour la guilde."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "search_antagonist_intro",
@@ -572,7 +635,8 @@
       "Il faut maintenant localiser précisément notre ennemi avant l'affrontement final. Le temps presse."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "search_antagonist_timeout",
@@ -584,7 +648,8 @@
       "Nous avons perdu trop de temps. L'ennemi a eu tout le loisir de préparer son prochain coup."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_macaron_intro",
@@ -597,7 +662,8 @@
       "Réfugié dans ce fort en ruine, je suis sur le point de terminer mon grand projet : l'évolution de l'humanité elle-même."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/Macaron1.png"
   },
   {
     "id": "act5_macaron_victory",
@@ -610,7 +676,8 @@
       "Bien joué, chef. Vraiment bien joué."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_macaron_defeat",
@@ -623,7 +690,8 @@
       "Je marche sur la capitale. Le trône me revient de droit, désormais."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/macaron3.png"
   },
   {
     "id": "act5_macaron_final_victory",
@@ -636,7 +704,8 @@
       "Le royaume [Nom à définir] vous doit une fière chandelle."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_macaron_final_defeat",
@@ -649,7 +718,8 @@
       "Fin."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": null
   },
   {
     "id": "act5_liche_intro",
@@ -662,7 +732,8 @@
       "Ils s'apprêtent à ressusciter l'ancien empereur elfe [Nom à définir] sous la forme d'une liche, pour asservir le royaume par le contrôle de la mort elle-même."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_liche_victory",
@@ -674,7 +745,8 @@
       "Le rituel est stoppé net. La menace est écartée."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_liche_defeat",
@@ -687,7 +759,8 @@
       "Le royaume va connaître le véritable sens du mot 'mort'."
     ],
     "choices": null,
-    "endsGame": false
+    "endsGame": false,
+    "image": "character/perso non jouables/liche.png"
   },
   {
     "id": "act5_liche_final_defeat",
@@ -700,7 +773,8 @@
       "Fin."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": null
   },
   {
     "id": "act5_liche_final_victory",
@@ -713,6 +787,7 @@
       "Cette victoire restera dans les mémoires."
     ],
     "choices": null,
-    "endsGame": true
+    "endsGame": true,
+    "image": "character/perso non jouables/chef.png"
   }
 ]
