@@ -67,9 +67,7 @@ public class Game
     //     }
     //     this.questManager.quests.Add(questManager.generateQuest("Combat", this.prestige, 100));// 100 à modifier ou enlevé
     //     this.questManager.quests.Add(questManager.generateQuest("Recherche", this.prestige, 100));// 100 à modifier ou enlevé
-    // }
-
-    
+    // }  
 
     public void prestigeUp()
     {
@@ -122,75 +120,75 @@ public class Game
         
     }
 
-    public void playTurn()
-    {   
-        // complétion des quêtes après le tour
-        foreach(Quest quest in this.questManager.quests)
-        {
-            if (quest.inProgress)
-            {
-                this.claimReward(quest.giveReward());
-            }
-        }
+    // public void playTurn()
+    // {   
+    //     // complétion des quêtes après le tour
+    //     foreach(Quest quest in this.questManager.quests)
+    //     {
+    //         if (quest.inProgress)
+    //         {
+    //             this.claimReward(quest.giveReward());
+    //         }
+    //     }
 
 
-        this.turnInProgress = true;
-        while (this.turnInProgress)
-        {
-            Console.WriteLine($"Tour {this.turn} | gold : {this.gold} | nouriture : {this.food} | prestige : {this.prestige}");
-            Console.WriteLine("Recrutement : 1 | Quête : 2 | Tour suivant : 3");
-            string action = Console.ReadLine();
-            if (action == "1")
-            {
-                this.adventurerManager.refreshadventurersToHire(this.prestige);
-                Console.WriteLine("Quel personnage voulez-vous acheter (1, 2 ou 3) : ");
-                string choice = Console.ReadLine();
-                this.buyAdventurer(this.adventurerManager.adventurersToHire[int.Parse(choice)-1]);
-            }
-            else if (action == "2")
-            {
-                this.questManager.refreshQuests(this.prestige);
-                for (int i=0;i<=this.questManager.quests.Count-1;i++)
-                {
-                    Console.WriteLine($"Quête {i+1} : {this.questManager.quests[i].name}");
-                }
-                Console.WriteLine("Choisir la quête : ");
-                string questChoice = Console.ReadLine();
+    //     this.turnInProgress = true;
+    //     while (this.turnInProgress)
+    //     {
+    //         Console.WriteLine($"Tour {this.turn} | gold : {this.gold} | nouriture : {this.food} | prestige : {this.prestige}");
+    //         Console.WriteLine("Recrutement : 1 | Quête : 2 | Tour suivant : 3");
+    //         string action = Console.ReadLine();
+    //         if (action == "1")
+    //         {
+    //             this.adventurerManager.refreshadventurersToHire(this.prestige);
+    //             Console.WriteLine("Quel personnage voulez-vous acheter (1, 2 ou 3) : ");
+    //             string choice = Console.ReadLine();
+    //             this.buyAdventurer(this.adventurerManager.adventurersToHire[int.Parse(choice)-1]);
+    //         }
+    //         else if (action == "2")
+    //         {
+    //             this.questManager.refreshQuests(this.prestige);
+    //             for (int i=0;i<=this.questManager.quests.Count-1;i++)
+    //             {
+    //                 Console.WriteLine($"Quête {i+1} : {this.questManager.quests[i].name}");
+    //             }
+    //             Console.WriteLine("Choisir la quête : ");
+    //             string questChoice = Console.ReadLine();
 
-                Console.WriteLine("Ennemies : ");
-                foreach(Monster enemy in this.questManager.quests[int.Parse(questChoice)-1].enemies)
-                {
-                    enemy.Write();
-                }
+    //             Console.WriteLine("Ennemies : ");
+    //             foreach(Monster enemy in this.questManager.quests[int.Parse(questChoice)-1].enemies)
+    //             {
+    //                 enemy.Write();
+    //             }
 
-                Console.WriteLine("Aventuriers disponibles : ");
-                this.adventurerManager.generateAdventurerFromJson("adventurers");
-                foreach (Adventurer adventurer in this.adventurerManager.adventurers)
-                {
-                    adventurer.Write();
-                }
-                bool formingTeam = true;
-                while (formingTeam)
-                {
-                    this.questManager.quests[int.Parse(questChoice)-1].refreshWinRate();
-                    Console.WriteLine($"taux de réussite : {this.questManager.quests[int.Parse(questChoice)-1].winRate}\nChoisir l'aventurier 1 (ID) | A pour accepter la quête: ");
+    //             Console.WriteLine("Aventuriers disponibles : ");
+    //             this.adventurerManager.generateAdventurerFromJson("adventurers");
+    //             foreach (Adventurer adventurer in this.adventurerManager.adventurers)
+    //             {
+    //                 adventurer.Write();
+    //             }
+    //             bool formingTeam = true;
+    //             while (formingTeam)
+    //             {
+    //                 this.questManager.quests[int.Parse(questChoice)-1].refreshWinRate();
+    //                 Console.WriteLine($"taux de réussite : {this.questManager.quests[int.Parse(questChoice)-1].winRate}\nChoisir l'aventurier 1 (ID) | A pour accepter la quête: ");
                         
-                    string id = Console.ReadLine();
-                    if (id == "a" && this.questManager.quests[int.Parse(questChoice)-1].adventurers.Count > 0 )
-                    {
-                        this.questManager.quests[int.Parse(questChoice)-1].acceptQuest();
-                        formingTeam = false;
-                    }
-                    else
-                    {
-                        this.questManager.quests[int.Parse(questChoice)-1].addAdventurer(this.adventurerManager.searchAdventurerById(int.Parse(id)));
-                    }
-                }
-            }      
-            else {
-                Console.WriteLine("Tour suivant");
-                this.turnInProgress = false;
-            }
-        }
-    }
+    //                 string id = Console.ReadLine();
+    //                 if (id == "a" && this.questManager.quests[int.Parse(questChoice)-1].adventurers.Count > 0 )
+    //                 {
+    //                     this.questManager.quests[int.Parse(questChoice)-1].acceptQuest();
+    //                     formingTeam = false;
+    //                 }
+    //                 else
+    //                 {
+    //                     this.questManager.quests[int.Parse(questChoice)-1].addAdventurer(this.adventurerManager.searchAdventurerById(int.Parse(id)));
+    //                 }
+    //             }
+    //         }      
+    //         else {
+    //             Console.WriteLine("Tour suivant");
+    //             this.turnInProgress = false;
+    //         }
+    //     }
+    // }
 }

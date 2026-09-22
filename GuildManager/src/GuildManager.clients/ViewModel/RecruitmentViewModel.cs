@@ -13,16 +13,11 @@ public class RecruitmentViewModel : IScreenViewModel
     {
         // TODO: remplacer par l'appel réel à la fonction de ton coéquipier
         // Candidates = fonctionDeTirage.GetRandomCandidates(3);
-        AdventurerManager adventurerManager = new AdventurerManager();
-        adventurerManager.refreshadventurersToHire(game.prestige);
+        game.adventurerManager.refreshadventurersToHire(game.prestige);
         for(int i=0; i<3; i++)
         {
-            Candidates.Add(new AdventurerCandidate { Name = adventurerManager.adventurersToHire[i].name, PortraitPath = adventurerManager.adventurersToHire[i].image});
+            Candidates.Add(new AdventurerCandidate { Name = game.adventurerManager.adventurersToHire[i].name, PortraitPath = game.adventurerManager.adventurersToHire[i].image});
         }
-        // Placeholder temporaire en attendant :
-        // Candidates.Add(new AdventurerCandidate { Name = "???", PortraitPath = "/Assets/UI/placeholder_portrait.png" });
-        // Candidates.Add(new AdventurerCandidate { Name = "???", PortraitPath = "/Assets/UI/placeholder_portrait.png" });
-        // Candidates.Add(new AdventurerCandidate { Name = "???", PortraitPath = "/Assets/UI/placeholder_portrait.png" });
     }
 }
 
