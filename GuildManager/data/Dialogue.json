@@ -14,7 +14,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "tutorial_start",
@@ -27,7 +27,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "tutorial_victory",
@@ -41,7 +41,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "tutorial_defeat",
@@ -54,7 +54,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act1_intro",
@@ -70,7 +70,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act1_victory",
@@ -99,7 +99,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act1_defeat_01",
@@ -113,7 +113,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act1_defeat_02",
@@ -127,7 +127,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act1_timeout",
@@ -141,7 +141,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/messager.png"
+    "image": "character/perso non jouables/messager.png"
   },
   {
     "id": "act1_timeout_defeat",
@@ -154,7 +154,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_intro",
@@ -180,7 +180,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_esprits_intro",
@@ -193,7 +193,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/vieux.png"
+    "image": null
   },
   {
     "id": "act2_esprits_victory",
@@ -207,7 +207,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act2_esprits_victory_cristal",
@@ -223,7 +223,7 @@
     "choices": null,
     "endsGame": false,
     "condition": "flag_cristal_analyse == true",
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act2_esprits_defeat",
@@ -240,7 +240,7 @@
       "curse_random_character": true
     },
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_monstre_intro",
@@ -253,7 +253,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/vieux.png"
+    "image": null
   },
   {
     "id": "act2_monstre_victory",
@@ -267,7 +267,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act2_monstre_defeat",
@@ -284,7 +284,7 @@
       "poison_random_character": true
     },
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act2_macaron_event",
@@ -321,7 +321,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/Macaron1.png"
+    "image": "character/perso non jouables/Macaron1.png"
   },
   {
     "id": "act3_intro",
@@ -352,7 +352,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act3_disparitions_teaser",
@@ -367,7 +367,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act3_donjon_victory",
@@ -389,7 +389,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/tankNain2.png"
+    "image": null
   },
   {
     "id": "act3_donjon_defeat",
@@ -403,7 +403,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_intro",
@@ -430,7 +430,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_intro",
@@ -443,7 +443,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act4_alchimistes_victory",
@@ -457,7 +457,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act4_alchimistes_defeat",
@@ -471,7 +471,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_confinement_victory",
@@ -501,7 +501,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_revolte",
@@ -514,7 +514,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_alchimistes_confinement_defeat",
@@ -527,7 +527,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_intro",
@@ -540,7 +540,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act4_culte_victory",
@@ -554,7 +554,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/épéiste.png"
+    "image": null
   },
   {
     "id": "act4_culte_defeat",
@@ -567,7 +567,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_defense_victory",
@@ -597,7 +597,7 @@
       }
     ],
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_revolte",
@@ -610,7 +610,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act4_culte_defense_defeat",
@@ -623,7 +623,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "search_antagonist_intro",
@@ -636,7 +636,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "search_antagonist_timeout",
@@ -649,7 +649,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_macaron_intro",
@@ -663,7 +663,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/Macaron1.png"
+    "image": "character/perso non jouables/Macaron1.png"
   },
   {
     "id": "act5_macaron_victory",
@@ -677,7 +677,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_macaron_defeat",
@@ -691,7 +691,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/macaron3.png"
+    "image": "character/perso non jouables/macaron3.png"
   },
   {
     "id": "act5_macaron_final_victory",
@@ -705,7 +705,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_macaron_final_defeat",
@@ -733,7 +733,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_liche_victory",
@@ -746,7 +746,7 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act5_liche_defeat",
@@ -760,7 +760,7 @@
     ],
     "choices": null,
     "endsGame": false,
-    "image": "character/liche.png"
+    "image": "character/perso non jouables/liche.png"
   },
   {
     "id": "act5_liche_final_defeat",
@@ -788,6 +788,6 @@
     ],
     "choices": null,
     "endsGame": true,
-    "image": "character/chef.png"
+    "image": "character/perso non jouables/chef.png"
   }
 ]
