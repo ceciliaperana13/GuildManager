@@ -1,5 +1,5 @@
 {
-  "idCount": 919,
+  "idCount": 925,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -116,6 +116,19 @@
       "magicAttack": 18,
       "def": 8,
       "image": "assets/image/perso secondaires/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 922,
+      "name": "Faelorn",
+      "job": "mage",
+      "lvl": 2,
+      "health": 1,
+      "physicAttack": 11,
+      "magicAttack": 17,
+      "def": 11,
+      "image": "/Assets/character/adventurers/mage1.png",
       "debuff": [],
       "isHurted": false
     }

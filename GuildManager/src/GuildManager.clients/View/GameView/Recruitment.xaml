@@ -14,19 +14,40 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="180" Height="280" Margin="10"
-                                    Background="#3B2412" BorderThickness="2">
-                                <StackPanel>
-                                    <Image Source="{Binding PortraitPath}" Height="200" />
-                                    <TextBlock Text="{Binding Name}"  FontSize="16" 
-                                                    HorizontalAlignment="Center" Margin="0,8,0,0"/> 
-                                </StackPanel>
-                            </Border>                              
+                            <Button Click="OnCandidateClicked" Background="Transparent"
+                                    BorderThickness="0" Cursor="Hand" Padding="0">
+                                <Border Width="180" Height="280" Margin="10"
+                                        Background="#3B2412" BorderBrush="#D4AF37" BorderThickness="2">
+                                    <StackPanel>
+                                        <Image Source="{Binding PortraitPath}" Height="200" />
+                                        <TextBlock Text="{Binding Name}" FontSize="16"
+                                                   Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
+                                            <TextBlock Text="{Binding RecruitmentCost}" Foreground="#D4AF37"/>
+                                            <TextBlock Text=" pièces d'or" Foreground="#D4AF37"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </controls:ScrollReveal.ScrollContent>
         </controls:ScrollReveal>
+        <Border x:Name="PurchaseDialog" Visibility="Collapsed"
+                Background="#EE3B2412" BorderBrush="#D4AF37" BorderThickness="2"
+                Width="420" Padding="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="Recrutement" Foreground="#D4AF37" FontSize="24"
+                           FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="PurchaseText" Foreground="White" FontSize="16"
+                           TextAlignment="Center" TextWrapping="Wrap" Margin="0,18,0,22"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Acheter" Click="OnBuyClicked" Margin="6" Padding="18,8"/>
+                    <Button Content="Annuler" Click="OnCancelPurchaseClicked" Margin="6" Padding="18,8"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
         <controls:BackButton HorizontalAlignment="Left" VerticalAlignment="Top"
                       Width="60" Height="60" Margin="20"/>
     </Grid>
