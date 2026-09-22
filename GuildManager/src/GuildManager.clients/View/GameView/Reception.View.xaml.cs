@@ -13,13 +13,17 @@ public partial class ReceptionView : UserControl
         InitializeComponent();
     }
 
-    private void OnMyAdventurersClicked(object sender, RoutedEventArgs e, Game game)
+    private Game? Game => (DataContext as ReceptionViewModel)?.Game;
+
+    private void OnMyAdventurersClicked(object sender, RoutedEventArgs e)
     {
-        NavigationService.NavigateTo(new AdventurerRosterViewModel(game), game);
+        if (Game is null) return; // sécurité si DataContext pas encore prêt
+        NavigationService.NavigateTo(new AdventurerRosterViewModel(Game), Game);
     }
 
-    private void OnRecruitClicked(object sender, RoutedEventArgs e, Game game)
+    private void OnRecruitClicked(object sender, RoutedEventArgs e)
     {
-        NavigationService.NavigateTo(new RecruitmentViewModel(game));
+        if (Game is null) return;
+        NavigationService.NavigateTo(new RecruitmentViewModel(Game));
     }
 }

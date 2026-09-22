@@ -13,12 +13,10 @@ public class AdventurerRosterViewModel : IScreenViewModel
     {
         // TODO: remplacer par une vraie requête EF Core sur GuildManagerDbContext
         // (ClassName sera fourni par la logique de classes d'un autre membre de l'équipe)
+        game.adventurerManager.refreshAdventurers();
         foreach (Adventurer adventurer in game.adventurerManager.adventurers)
         {   
             Adventurers.Add(new AdventurerCard { Name = adventurer.name, Level = adventurer.lvl, Status = AdventurerStatus.Disponible, PortraitPath = adventurer.image });
         }
-        
-        // Adventurers.Add(new AdventurerCard { Name = "???", Level = 2, Status = AdventurerStatus.EnQuete, PortraitPath = "/Assets/UI/placeholder_portrait.png" });
-        // Adventurers.Add(new AdventurerCard { Name = "???", Level = 1, Status = AdventurerStatus.Blesse, PortraitPath = "/Assets/UI/placeholder_portrait.png" });
     }
 }

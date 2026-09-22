@@ -6,9 +6,8 @@ namespace GuildManager.Client.View;
 
 public partial class AdventurerRosterView : UserControl
 {
-    public AdventurerRosterView(Game game)
+    public AdventurerRosterView()
     {
         InitializeComponent();
-        DataContext = new AdventurerRosterViewModel(game);
     }
 }

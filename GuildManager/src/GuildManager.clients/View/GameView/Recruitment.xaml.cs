@@ -7,19 +7,15 @@ using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.View;
 
-
 public partial class RecruitmentView : UserControl
 {
-    public RecruitmentView(Game game)
+    public RecruitmentView()
     {
         InitializeComponent();
-        DataContext = new RecruitmentViewModel(game); // à modifier avec le préstige
     }
 
-     private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         Scroll.PlayOpenAnimation();
     }
-
-
 }
