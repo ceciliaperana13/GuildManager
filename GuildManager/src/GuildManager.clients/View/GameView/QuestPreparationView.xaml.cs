@@ -25,11 +25,11 @@ public partial class QuestPreparationView : UserControl
     {
         _activeSlot = slotIndex;
         // TODO: filtrer sur les aventuriers "disponibles" une fois ce concept ajouté côté Domain
-        Picker.SetAdventurers(new List<Adventurer>
+        Picker.SetAdventurers(new List<AdventurerCard>
        {
-            new Adventurer { Name = "Alice" },
-            new Adventurer { Name = "Bob" },
-            new Adventurer { Name = "Charlie" }
+            new AdventurerCard { Name = "Alice" },
+            new AdventurerCard { Name = "Bob" },
+            new AdventurerCard { Name = "Charlie" }
        });
         
        Picker.Visibility = Visibility.Visible;

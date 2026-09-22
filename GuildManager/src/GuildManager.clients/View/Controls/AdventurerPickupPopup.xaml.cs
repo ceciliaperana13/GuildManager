@@ -8,7 +8,7 @@ namespace GuildManager.Client.View.Controls;
 
 public partial class AdventurerPickerPopup : UserControl
 {
-    public event Action<Adventurer>? AdventurerPicked;
+    public event Action<AdventurerCard>? AdventurerPicked;
     public event Action? CancelRequested;
 
     public AdventurerPickerPopup()
@@ -16,14 +16,14 @@ public partial class AdventurerPickerPopup : UserControl
         InitializeComponent();
     }
 
-    public void SetAdventurers(IEnumerable<Adventurer> adventurers)
+    public void SetAdventurers(IEnumerable<AdventurerCard> adventurers)
     {
         AdventurerList.ItemsSource = adventurers;
     }
 
     private void OnAdventurerRowClicked(object sender, MouseButtonEventArgs e)
     {
-        if (((FrameworkElement)sender).Tag is Adventurer adventurer)
+        if (((FrameworkElement)sender).Tag is AdventurerCard adventurer)
             AdventurerPicked?.Invoke(adventurer);
     }
 
