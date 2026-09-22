@@ -1,10 +1,15 @@
 {
-    "playerName" : "",
-    "turn" : 0,
-    "mainProgress" : 0,
-    "gold" : 1000,
-    "food" : 1000,
-    "prestige" : 1,
-    "xp" : 0,
-    "quests" : []
+  "GuildId": 1,
+  "Gold": 0,
+  "Food": 0,
+  "CurrentTurn": 0,
+  "Members": [
+    {
+      "Username": "cecilia",
+      "JoinedAt": "2026-09-22T11:23:54.0827285Z"
+    }
+  ],
+  "Characters": [],
+  "StoryFlags": [],
+  "LastUpdated": "2026-09-22T11:23:54.0842642Z"
 }

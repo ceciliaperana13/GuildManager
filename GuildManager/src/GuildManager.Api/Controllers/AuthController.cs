@@ -13,12 +13,18 @@ public class AuthController : ControllerBase
 {
     private readonly GuildManagerDbContext _context;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IGuildMembershipService _membership;
     private readonly ILogger<AuthController> _logger;
 
-    public AuthController(GuildManagerDbContext context, IPasswordHasher passwordHasher, ILogger<AuthController> logger)
+    public AuthController(
+        GuildManagerDbContext context,
+        IPasswordHasher passwordHasher,
+        IGuildMembershipService membership,
+        ILogger<AuthController> logger)
     {
         _context = context;
         _passwordHasher = passwordHasher;
+        _membership = membership;
         _logger = logger;
     }
 
@@ -65,12 +71,16 @@ public class AuthController : ControllerBase
         }
         catch (DbUpdateException ex)
         {
-            // security 
+            // security
             _logger.LogWarning(ex, "Conflit lors de l'inscription de {Username}", username);
             return Conflict("Ce nom d'utilisateur ou cet email est déjà utilisé.");
         }
 
         _logger.LogInformation("Nouvel utilisateur inscrit : {Username}", username);
+
+        // Tout nouvel utilisateur est automatiquement considéré comme membre
+        // de la guilde coop partagée (data/saves.json).
+        await _membership.AddMemberIfNotExistsAsync(username);
 
         return Ok(new UserResponse(user.Id, user.Username, user.Email));
     }
@@ -95,6 +105,10 @@ public class AuthController : ControllerBase
         await _context.SaveChangesAsync();
 
         _logger.LogInformation("Connexion réussie : {Username}", username);
+
+        // Filet de sécurité : si un compte existant (créé avant cette fonctionnalité)
+        // n'est pas encore membre de la guilde coop, on le rattrape ici aussi.
+        await _membership.AddMemberIfNotExistsAsync(username);
 
         return Ok(new UserResponse(user.Id, user.Username, user.Email));
     }

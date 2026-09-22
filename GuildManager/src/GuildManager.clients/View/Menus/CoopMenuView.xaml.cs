@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Controls;
+using GuildManager.Api.Hubs;
+using GuildManager.Api.Models;
 using GuildManager.Api.Services;
 using GuildManager.Client.Services;
 using GuildManager.Client.ViewModel;
@@ -49,8 +51,21 @@ public partial class CoopMenuView : UserControl
             builder.Services.AddHostedService<PlayerStatusReporter>();
             builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
 
+            // Sauvegarde / coop / temps réel 
+            builder.Services.AddSignalR();
+
+            builder.Services.AddKeyedSingleton<ISaveFileStore>("solo",
+                (_, _) => new JsonSaveFileStore(System.IO.Path.Combine("data", "savesolo.json")));
+
+            builder.Services.AddKeyedSingleton<ISaveFileStore>("coop",
+                (_, _) => new JsonSaveFileStore(System.IO.Path.Combine("data", "saves.json")));
+
+            builder.Services.AddScoped<IGuildMembershipService, GuildMembershipService>();
+            // 
+
             var app = builder.Build();
             app.MapControllers();
+            app.MapHub<GuildHub>("/hubs/guild");
             app.Urls.Add("http://0.0.0.0:5080");
 
             using (var scope = app.Services.CreateScope())
