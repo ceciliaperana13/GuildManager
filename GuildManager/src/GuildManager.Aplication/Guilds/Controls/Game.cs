@@ -129,7 +129,7 @@ public class Game
         this.adventurerManager.refreshAdventurers();
         this.adventurerManager.refreshMainAdventurers();
         this.food -= this.adventurerManager.adventurersEat();
-        
+        Console.WriteLine($"Bouffe : {this.food}");
     }
 
     // public void playTurn()

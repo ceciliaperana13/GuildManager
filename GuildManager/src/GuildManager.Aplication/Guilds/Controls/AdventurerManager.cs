@@ -75,8 +75,8 @@ public class AdventurerManager
         root["idCount"] = idCount + 1;
 
         // Prices : 
-        int goldPrice = 100; // à modifier selon les stats du perso
-        int foodPrice = 20;
+        int goldPrice = 100 + 20*lvl; // à modifier selon les stats du perso
+        int foodPrice = 20 + 5*lvl;
 
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));
@@ -113,7 +113,10 @@ public class AdventurerManager
             ["def"] = adventurer.def,
             ["image"] = adventurer.image,
             ["debuff"] = JsonSerializer.SerializeToNode(adventurer.debuff),
-            ["isHurted"] = adventurer.isHurted
+            ["isHurted"] = adventurer.isHurted,
+            ["goldPrice"] = adventurer.goldPrice,
+            ["foodPrice"] = adventurer.foodPrice,
+
         };
 
         if (root["adventurers"] is not JsonArray adventurers)
@@ -192,6 +195,7 @@ public class AdventurerManager
         {
             totalFood += adventurer.foodPrice;
         }
+        Console.WriteLine($"Consomation ce tour : {totalFood}");
         return totalFood;
     }
 }
