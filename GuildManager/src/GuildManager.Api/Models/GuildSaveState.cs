@@ -6,8 +6,11 @@ public class GuildSaveState
     // Guild ID. 1 = default shared co-op guild
     public int GuildId { get; set; } = 1;
 
-    public int Gold { get; set; }
-    public int Food { get; set; }
+    // Valeurs de départ pour une nouvelle guilde (utilisées uniquement
+    // quand saves.json n'existe pas encore ou est absent/corrompu).
+    public int Gold { get; set; } = 500;
+    public int Food { get; set; } = 200;
+
     public int CurrentTurn { get; set; }
 
     // member

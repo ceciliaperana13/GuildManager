@@ -56,7 +56,30 @@ public partial class LoginMenuView : UserControl
 
             // Enregistrement + heartbeat en continu, tant que l'appli reste ouverte
             SessionKeepAlive.Start(AppSession.ApiBaseUrl, AppSession.Username);
-            Game game = new Game("test", 1, 0, 10000, 10000, 1, 0);
+
+            // Valeurs par défaut le temps de la synchro ; écrasées juste après
+            // par l'état réel de la guilde partagée côté serveur.
+            Game game = new Game("test", 1, 0, 0, 0, 1, 0);
+
+            StatusText.Text = "Synchronisation avec la guilde...";
+
+            try
+            {
+                var apiClient = new GuildApiClient();
+                var resources = await apiClient.GetResourcesAsync();
+                if (resources is not null)
+                    game.SyncResources(resources.Gold, resources.Food);
+
+                await GuildRealtimeService.StartAsync(AppSession.ApiBaseUrl);
+            }
+            catch (Exception syncEx)
+            {
+                // On n'empêche pas le joueur d'entrer dans le jeu si la synchro
+                // échoue, mais on le signale : ses ressources risquent d'être
+                // désynchronisées de la guilde tant que la connexion n'est pas rétablie.
+                StatusText.Text = $"Connecté, mais synchro guilde impossible : {syncEx.Message}";
+            }
+
             NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)

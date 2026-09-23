@@ -4,8 +4,8 @@ using GuildManager.Api.Services;
 using GuildManager.Aplication.Guilds.Controls;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;   
+using Microsoft.Extensions.Logging;    
 
 namespace GuildManager.Api.Controllers;
 
@@ -19,7 +19,7 @@ public class AdventurerController : ControllerBase
     private readonly ILogger<AdventurerController> _logger;
 
     public record HireRequest(int AdventurerId);
-    public record HireResponse(int Gold, int Food, object Adventurer);
+    public record HireResponse(int Gold, int Food, AdventurerCandidateDto Adventurer);
 
     public AdventurerController(
         [FromKeyedServices("coop")] ISaveFileStore coopStore,
@@ -33,22 +33,35 @@ public class AdventurerController : ControllerBase
         _logger = logger;
     }
 
+    // Liste des candidats actuellement proposés au recrutement pour la guilde coop.
+    // Régénérée automatiquement si elle est vide (ex: juste après le démarrage du serveur).
+    [HttpGet("to-hire")]
+    public async Task<IActionResult> GetToHire()
+    {
+        if (_adventurerManager.adventurersToHire.Count == 0)
+        {
+            var state = await _coopStore.LoadAsync();
+            _adventurerManager.refreshadventurersToHire(Math.Max(state.CurrentTurn > 0 ? 1 : 1, 1));
+            // NB: prestige n'est pas encore suivi côté GuildSaveState.
+            // En attendant, on génère avec prestige = 1 par défaut.
+        }
+
+        var dtos = _adventurerManager.adventurersToHire.Select(ToDto).ToList();
+        return Ok(dtos);
+    }
+
     [HttpPost("hire")]
     public async Task<IActionResult> Hire(HireRequest request)
     {
-        // 1. Récupérer l'aventurier proposé au recrutement
         var adventurer = _adventurerManager.adventurersToHire
             .FirstOrDefault(a => a.id == request.AdventurerId);
 
         if (adventurer is null)
-            return NotFound("Aventurier introuvable dans la liste de recrutement.");
+            return NotFound("Aventurier introuvable dans la liste de recrutement (elle a peut-être été rafraîchie entre-temps).");
 
         GuildSaveState state;
         try
         {
-            // 2. Débit atomique : Load + vérification + Save en une seule section critique.
-            //    Si deux joueurs recrutent en même temps, ils sont sérialisés ici,
-            //    pas de lost update possible.
             state = await _coopStore.UpdateAsync(s =>
             {
                 if (s.Gold < adventurer.goldPrice)
@@ -65,7 +78,6 @@ public class AdventurerController : ControllerBase
             return BadRequest(ex.Message);
         }
 
-        
         _adventurerManager.AddAdventurer(adventurer);
         _adventurerManager.adventurersToHire.Remove(adventurer);
 
@@ -73,13 +85,16 @@ public class AdventurerController : ControllerBase
             "Aventurier {Name} (id {Id}) recruté pour {Gold} or / {Food} nourriture",
             adventurer.name, adventurer.id, adventurer.goldPrice, adventurer.foodPrice);
 
-        // 4. Notifier tous les clients du groupe coop en temps réel
         await _hub.Clients.Group(GuildHub.GuildGroup(state.GuildId))
             .SendAsync("ResourcesUpdated", new { state.Gold, state.Food });
 
         await _hub.Clients.Group(GuildHub.GuildGroup(state.GuildId))
-            .SendAsync("AdventurerHired", adventurer);
+            .SendAsync("AdventurerHired", ToDto(adventurer));
 
-        return Ok(new HireResponse(state.Gold, state.Food, adventurer));
+        return Ok(new HireResponse(state.Gold, state.Food, ToDto(adventurer)));
     }
+
+    private static AdventurerCandidateDto ToDto(Adventurer a) => new(
+        a.id, a.name, a.job, a.lvl, a.health, a.def,
+        a.magicAttack, a.physicAttack, a.image, a.goldPrice, a.foodPrice);
 }

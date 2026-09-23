@@ -1,5 +1,5 @@
 {
-  "idCount": 1075,
+  "idCount": 1078,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -237,15 +237,28 @@
       "isHurted": false
     },
     {
-      "id": 1066,
-      "name": "Evania",
-      "job": "tank",
-      "lvl": 2,
-      "health": 21,
-      "physicAttack": 3,
-      "magicAttack": 0,
-      "def": 16,
-      "image": "/Assets/character/adventurers/tank2.png",
+      "id": 1063,
+      "name": "Morgane",
+      "job": "mage",
+      "lvl": 10,
+      "health": 84,
+      "physicAttack": 18,
+      "magicAttack": 78,
+      "def": 20,
+      "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1069,
+      "name": "Aldric",
+      "job": "mage",
+      "lvl": 6,
+      "health": 44,
+      "physicAttack": 11,
+      "magicAttack": 58,
+      "def": 7,
+      "image": "/Assets/character/adventurers/mage1.png",
       "debuff": [],
       "isHurted": false
     }

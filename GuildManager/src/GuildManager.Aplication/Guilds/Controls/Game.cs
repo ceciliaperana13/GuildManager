@@ -191,4 +191,9 @@ public class Game
     //         }
     //     }
     // }
+    public void SyncResources(int gold, int food)
+{
+    this.gold = gold;
+    this.food = food;
+}
 }
