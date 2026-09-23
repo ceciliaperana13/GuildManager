@@ -7,7 +7,6 @@ public class RecruitmentViewModel : IScreenViewModel
 {
     public string BackgroundPath => "/Assets/UI/table_selection.png";
     public Game Game { get; }
-    public Game Game { get; }
 
     public ObservableCollection<AdventurerCandidate> Candidates { get; } = new();
 
@@ -38,7 +37,6 @@ public class RecruitmentViewModel : IScreenViewModel
 
 public class AdventurerCandidate
 {
-    public Adventurer Adventurer { get; set; } = null!;
     public Adventurer Adventurer { get; set; } = null!;
     public string Name { get; set; } = "";
     public string ClassName { get; set; } = "";
