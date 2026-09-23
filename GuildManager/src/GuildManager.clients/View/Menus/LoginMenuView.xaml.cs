@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.Services;
 using GuildManager.Client.ViewModel;
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.View;
 
@@ -55,8 +56,8 @@ public partial class LoginMenuView : UserControl
 
             // Enregistrement + heartbeat en continu, tant que l'appli reste ouverte
             SessionKeepAlive.Start(AppSession.ApiBaseUrl, AppSession.Username);
-
-            NavigationService.NavigateTo(new GuildViewModel());
+            Game game = new Game("test", 1, 0, 10000, 10000, 1, 0);
+            NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)
         {
