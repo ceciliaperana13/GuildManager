@@ -1,5 +1,7 @@
 using System.ComponentModel;
+using System.Windows;
 using GuildManager.Aplication.Guilds.Controls;
+using GuildManager.Client.Services;
 
 namespace GuildManager.Client.ViewModel;
 
@@ -19,9 +21,24 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
 
     public void SetGame(Game game)
     {
+        // Si on avait déjà une souscription (revenue sur cet écran après
+        // une navigation), on se désinscrit d'abord pour éviter les doublons.
+        GuildRealtimeService.ResourcesUpdated -= OnResourcesUpdated;
+
         Game = game;
         OnPropertyChanged(nameof(Gold));
         OnPropertyChanged(nameof(Food));
+
+        GuildRealtimeService.ResourcesUpdated += OnResourcesUpdated;
+    }
+
+    private void OnResourcesUpdated(ResourcesResponse resources)
+    {
+        Game?.SyncResources(resources.Gold, resources.Food);
+
+        // L'event SignalR arrive sur un thread de fond ; il faut repasser
+        // sur le thread UI pour que le binding WPF se mette à jour.
+        Application.Current.Dispatcher.Invoke(RefreshResources);
     }
 
     public void RefreshResources()

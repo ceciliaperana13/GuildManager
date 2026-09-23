@@ -1,0 +1,19 @@
+{
+  "GuildId": 1,
+  "Gold": 400,
+  "Food": 180,
+  "CurrentTurn": 0,
+  "Members": [
+    {
+      "Username": "cecilia",
+      "JoinedAt": "2026-09-23T12:20:37.8317025Z"
+    },
+    {
+      "Username": "Henry",
+      "JoinedAt": "2026-09-23T12:22:56.2926261Z"
+    }
+  ],
+  "Characters": [],
+  "StoryFlags": [],
+  "LastUpdated": "2026-09-23T12:23:14.18278Z"
+}
