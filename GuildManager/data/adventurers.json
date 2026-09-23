@@ -1,5 +1,5 @@
 {
-  "idCount": 1051,
+  "idCount": 1060,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -207,6 +207,19 @@
       "magicAttack": 24,
       "def": 34,
       "image": "/Assets/character/adventurers/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1054,
+      "name": "Nymeria",
+      "job": "guerrier",
+      "lvl": 6,
+      "health": 47,
+      "physicAttack": 54,
+      "magicAttack": 8,
+      "def": 11,
+      "image": "/Assets/character/adventurers/guerrier2.png",
       "debuff": [],
       "isHurted": false
     }
