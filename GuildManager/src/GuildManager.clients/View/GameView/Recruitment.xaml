@@ -32,7 +32,7 @@
                                                    Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
                                         <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">
                                             <Run Text="{Binding ClassName}"/>
-                                            <Run Text=" lvl "/>
+                                            <Run Text="lvl"/>
                                             <Run Text="{Binding Level}"/>
                                         </TextBlock>
                                         <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">

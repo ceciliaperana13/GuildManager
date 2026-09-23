@@ -23,7 +23,7 @@ public class RecruitmentViewModel : IScreenViewModel
                 Adventurer = adventurer,
                 Name = adventurer.name,
                 ClassName = adventurer.job,
-                Lvl = adventurer.lvl,
+                Level = adventurer.lvl,
                 Health = adventurer.health,
                 Defense = adventurer.def,
                 MagicAttack = adventurer.magicAttack,
@@ -40,7 +40,7 @@ public class AdventurerCandidate
     public Adventurer Adventurer { get; set; } = null!;
     public string Name { get; set; } = "";
     public string ClassName { get; set; } = "";
-    public int Lvl { get; set; }
+    public int Level { get; set; }
     public int Health { get; set; }
     public int Defense { get; set; }
     public int PhysicAttack { get; set; }

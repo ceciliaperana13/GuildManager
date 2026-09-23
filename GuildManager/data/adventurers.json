@@ -1,5 +1,5 @@
 {
-  "idCount": 1144,
+  "idCount": 1156,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -76,6 +76,36 @@
       "isHurted": false,
       "goldPrice": 300,
       "foodPrice": 70
+    },
+    {
+      "id": 1144,
+      "name": "Eryndor",
+      "job": "guerrier",
+      "lvl": 10,
+      "health": 51,
+      "physicAttack": 78,
+      "magicAttack": 37,
+      "def": 34,
+      "image": "/Assets/character/adventurers/guerrier1.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 300,
+      "foodPrice": 70
+    },
+    {
+      "id": 1155,
+      "name": "Rhianna",
+      "job": "guerrier",
+      "lvl": 9,
+      "health": 46,
+      "physicAttack": 88,
+      "magicAttack": 37,
+      "def": 9,
+      "image": "/Assets/character/adventurers/guerrier2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
     }
   ]
 }
