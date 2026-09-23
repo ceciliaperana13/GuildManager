@@ -1,8 +1,8 @@
-
 using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
 using GuildManager.Client.View.Controls;
+using GuildManager.Client.Services;
 using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.View;
@@ -31,12 +31,23 @@ public partial class RecruitmentView : UserControl
         PurchaseDialog.Visibility = Visibility.Visible;
     }
 
-    private void OnBuyClicked(object sender, RoutedEventArgs e)
+    private async void OnBuyClicked(object sender, RoutedEventArgs e)
     {
         if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
             return;
 
-        viewModel.Game.buyAdventurer(_selectedCandidate.Adventurer);
+        var apiClient = new GuildApiClient();
+        var (success, resources, error) = await apiClient.HireAdventurerAsync(_selectedCandidate.Id);
+
+        if (!success)
+        {
+            PurchaseText.Text = error ?? "Achat impossible.";
+            return; // laisse la boîte de dialogue ouverte pour montrer l'erreur
+        }
+
+        viewModel.Game.SyncResources(resources!.Gold, resources.Food);
+        viewModel.Candidates.Remove(_selectedCandidate);
+
         ClosePurchaseDialog();
     }
 

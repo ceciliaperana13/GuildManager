@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using GuildManager.Api.Hubs;
 using GuildManager.Api.Models;
 using GuildManager.Api.Services;
+using GuildManager.Aplication.Guilds.Controls;
 using GuildManager.Client.Services;
 using GuildManager.Client.ViewModel;
 using GuildManager.Infrastructure.Configurations;
@@ -59,6 +60,10 @@ public partial class CoopMenuView : UserControl
 
             builder.Services.AddKeyedSingleton<ISaveFileStore>("coop",
                 (_, _) => new JsonSaveFileStore(System.IO.Path.Combine("data", "saves.json")));
+
+            // Instance serveur partagée : la liste des candidats au recrutement
+            // (adventurersToHire) doit être identique pour tous les joueurs coop.
+            builder.Services.AddSingleton<AdventurerManager>();
 
             builder.Services.AddScoped<IGuildMembershipService, GuildMembershipService>();
             // 

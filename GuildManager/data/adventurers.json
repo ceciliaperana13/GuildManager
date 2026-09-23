@@ -1,5 +1,5 @@
 {
-  "idCount": 1063,
+  "idCount": 1075,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -233,6 +233,32 @@
       "magicAttack": 22,
       "def": 0,
       "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1063,
+      "name": "Morgane",
+      "job": "mage",
+      "lvl": 10,
+      "health": 84,
+      "physicAttack": 18,
+      "magicAttack": 78,
+      "def": 20,
+      "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1069,
+      "name": "Aldric",
+      "job": "mage",
+      "lvl": 6,
+      "health": 44,
+      "physicAttack": 11,
+      "magicAttack": 58,
+      "def": 7,
+      "image": "/Assets/character/adventurers/mage1.png",
       "debuff": [],
       "isHurted": false
     }
