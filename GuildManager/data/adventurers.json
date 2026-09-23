@@ -1,5 +1,5 @@
 {
-  "idCount": 1063,
+  "idCount": 1075,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -233,6 +233,19 @@
       "magicAttack": 22,
       "def": 0,
       "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1066,
+      "name": "Evania",
+      "job": "tank",
+      "lvl": 2,
+      "health": 21,
+      "physicAttack": 3,
+      "magicAttack": 0,
+      "def": 16,
+      "image": "/Assets/character/adventurers/tank2.png",
       "debuff": [],
       "isHurted": false
     }
