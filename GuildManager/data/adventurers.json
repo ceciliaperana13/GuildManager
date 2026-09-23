@@ -3,8 +3,8 @@
   "mainAdventurers": [],
   "adventurers": [
     {
-      "id": 694,
-      "name": "Eldran",
+      "id": 1060,
+      "name": "Orvann",
       "job": "guerrier",
       "lvl": 1,
       "health": 12,
@@ -29,21 +29,23 @@
       "isHurted": false
     },
     {
-      "id": 700,
-      "name": "Isolde",
+      "id": 1073,
+      "name": "Thalyra",
       "job": "guerrier",
-      "lvl": 1,
-      "health": 6,
-      "physicAttack": 6,
+      "lvl": 9,
+      "health": 84,
+      "physicAttack": 69,
       "magicAttack": 6,
       "def": 2,
       "image": "/Assets/character/adventurers/guerrier2.png",
       "debuff": [],
-      "isHurted": false
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
     },
     {
-      "id": 703,
-      "name": "Eryndor",
+      "id": 1090,
+      "name": "Seraphine",
       "job": "mage",
       "lvl": 1,
       "health": 0,
@@ -52,12 +54,14 @@
       "def": 9,
       "image": "/Assets/character/adventurers/mage1.png",
       "debuff": [],
-      "isHurted": false
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
     },
     {
-      "id": 707,
-      "name": "Alaric",
-      "job": "mage",
+      "id": 1113,
+      "name": "Elaria",
+      "job": "tank",
       "lvl": 1,
       "health": 3,
       "physicAttack": 4,
@@ -65,7 +69,9 @@
       "def": 5,
       "image": "/Assets/character/adventurers/mage1.png",
       "debuff": [],
-      "isHurted": false
+      "isHurted": false,
+      "goldPrice": 120,
+      "foodPrice": 25
     },
     {
       "id": 710,
@@ -78,13 +84,15 @@
       "def": 6,
       "image": "/Assets/character/adventurers/guerrier1.png",
       "debuff": [],
-      "isHurted": false
+      "isHurted": false,
+      "goldPrice": 300,
+      "foodPrice": 70
     },
     {
-      "id": 717,
-      "name": "Elaria",
+      "id": 1144,
+      "name": "Eryndor",
       "job": "guerrier",
-      "lvl": 9,
+      "lvl": 10,
       "health": 51,
       "physicAttack": 65,
       "magicAttack": 16,
@@ -107,8 +115,8 @@
       "isHurted": false
     },
     {
-      "id": 724,
-      "name": "Valerian",
+      "id": 1155,
+      "name": "Rhianna",
       "job": "guerrier",
       "lvl": 6,
       "health": 49,
@@ -221,7 +229,9 @@
       "def": 11,
       "image": "/Assets/character/adventurers/guerrier2.png",
       "debuff": [],
-      "isHurted": false
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
     }
   ]
 }
