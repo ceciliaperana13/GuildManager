@@ -46,4 +46,5 @@ public partial class RecruitmentView : UserControl
         _selectedCandidate = null;
         PurchaseDialog.Visibility = Visibility.Collapsed;
     }
+
 }

@@ -5,12 +5,9 @@
     <Viewbox Stretch="Uniform">
         <Canvas Width="1867" Height="819">
             <Image Source="/Assets/Backgrounds/guilde_background.png" Width="1867" Height="819"/>
-
             <!--resource bar  -->
-            <controls:ResourceBar Gold="{Binding Gold}" Food="{Binding Food}"
-                       HorizontalAlignment="Center" VerticalAlignment="Top"
-                       Margin="0,20,0,0"/>
-
+            <controls:ResourceBar Gold="{Binding Gold}" Food="{Binding Food}" Prestige="{Binding Prestige}"
+                       Canvas.Left="20" Canvas.Top="10" Width="950" Height="422"/>
             <!-- Store : l'échoppe à gauche -->
             <controls:HoverHotspot Canvas.Left="10" Canvas.Top="180"
                                     Width="520" Height="460"
@@ -25,7 +22,6 @@
             <controls:HoverHotspot Canvas.Left="1420" Canvas.Top="375"
                                     Width="460" Height="260"
                                     Clicked="OnReceptionClicked"/>
-
             <!-- Flip : le bureau de flip à droite -->  
             <controls:FantasyMenuButton NormalImage="/Assets/UI/Coin_victory.png"
                             HoverImage="/Assets/UI/Coin_victory.png"

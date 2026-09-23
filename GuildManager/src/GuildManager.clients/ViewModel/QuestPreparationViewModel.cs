@@ -1,13 +1,15 @@
 using System.Collections.ObjectModel;
 using System.Linq;
+using GuildManager.Aplication.Guilds.Controls;
 using GuildManager.Client.Models;
 
 namespace GuildManager.Client.ViewModel;
 
 public class QuestPreparationViewModel : IScreenViewModel
 {
-    public string BackgroundPath => "/Assets/UI/quest_background.png";
+    public string BackgroundPath => "/Assets/UI/Quest_background.png";
     public QuestCard? SelectedQuest { get; }
+    public Game Game { get; }
 
     public ObservableCollection<AdventurerCard?> SelectedSlots { get; } = new() { null, null, null };
 
@@ -20,9 +22,33 @@ public class QuestPreparationViewModel : IScreenViewModel
 
     public event System.Action? PercentageChanged;
 
-    public QuestPreparationViewModel(QuestCard? quest = null)
+    public QuestPreparationViewModel(Game game, QuestCard? quest = null)
     {
+        Game = game;
         SelectedQuest = quest;
+    }
+
+    public IEnumerable<AdventurerCard> GetAvailableAdventurers()
+    {
+        if (Game.adventurerManager.adventurers.Count == 0)
+            Game.adventurerManager.refreshAdventurers();
+
+        var selectedNames = SelectedSlots
+            .Where(adventurer => adventurer is not null)
+            .Select(adventurer => adventurer!.Name)
+            .ToHashSet();
+
+        return Game.adventurerManager.adventurers
+            .Where(adventurer => !selectedNames.Contains(adventurer.name))
+            .Select(adventurer => new AdventurerCard
+            {
+                Name = adventurer.name,
+                ClassName = adventurer.job,
+                PortraitPath = adventurer.image,
+                Level = adventurer.lvl,
+                Status = AdventurerStatus.Disponible
+            })
+            .ToList();
     }
 
     public void AssignAdventurer(int slotIndex, AdventurerCard adventurer)
