@@ -28,10 +28,6 @@
                    Visibility="{Binding HasChoices, Converter={StaticResource InverseBoolToVis}}"
                    MouseLeftButtonDown="OnAdvanceClicked" Cursor="Hand"/>
         </Grid>
-        <FantasyMenuButton x:Name="FinishButton" Width="200" Height="60" Margin="0,0,0,40"
-                           VerticalAlignment="Bottom" HorizontalAlignment="Center"
-                           Visibility="{Binding IsDialogueFinished, Converter={StaticResource BoolToVis}}"
-                           Clicked="OnFinishClicked"/>
 
         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,210"
                     Visibility="{Binding HasChoices, Converter={StaticResource BoolToVis}}">
