@@ -12,11 +12,10 @@ public class AdventurerRosterViewModel : IScreenViewModel
     public AdventurerRosterViewModel(Game game)
     {
         // TODO: remplacer par une vraie requête EF Core sur GuildManagerDbContext
-        // (ClassName sera fourni par la logique de classes d'un autre membre de l'équipe)
         game.adventurerManager.refreshAdventurers();
         foreach (Adventurer adventurer in game.adventurerManager.adventurers)
         {   
-            Adventurers.Add(new AdventurerCard { Name = adventurer.name, Level = adventurer.lvl, Status = AdventurerStatus.Disponible, PortraitPath = adventurer.image });
+            Adventurers.Add(new AdventurerCard { Name = adventurer.name, Level = adventurer.lvl, ClassName = adventurer.job, Health = adventurer.health, PhysicAttack = adventurer.physicAttack, MagicAttack = adventurer.magicAttack, Defense = adventurer.def, Status = AdventurerStatus.Disponible, PortraitPath = adventurer.image });
         }
     }
 }

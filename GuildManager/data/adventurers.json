@@ -1,5 +1,5 @@
 {
-  "idCount": 1072,
+  "idCount": 1144,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -16,6 +16,66 @@
       "isHurted": false,
       "goldPrice": 100,
       "foodPrice": 20
+    },
+    {
+      "id": 1073,
+      "name": "Thalyra",
+      "job": "guerrier",
+      "lvl": 9,
+      "health": 84,
+      "physicAttack": 69,
+      "magicAttack": 6,
+      "def": 21,
+      "image": "/Assets/character/adventurers/guerrier2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
+    },
+    {
+      "id": 1090,
+      "name": "Seraphine",
+      "job": "mage",
+      "lvl": 9,
+      "health": 94,
+      "physicAttack": 4,
+      "magicAttack": 82,
+      "def": 0,
+      "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
+    },
+    {
+      "id": 1113,
+      "name": "Elaria",
+      "job": "tank",
+      "lvl": 1,
+      "health": 12,
+      "physicAttack": 0,
+      "magicAttack": 2,
+      "def": 6,
+      "image": "/Assets/character/adventurers/tank2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 120,
+      "foodPrice": 25
+    },
+    {
+      "id": 1117,
+      "name": "Isolde",
+      "job": "tank",
+      "lvl": 10,
+      "health": 53,
+      "physicAttack": 38,
+      "magicAttack": 20,
+      "def": 89,
+      "image": "/Assets/character/adventurers/tank2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 300,
+      "foodPrice": 70
     }
   ]
 }

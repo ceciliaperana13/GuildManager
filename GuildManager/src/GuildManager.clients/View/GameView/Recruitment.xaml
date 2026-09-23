@@ -24,15 +24,32 @@
                             </Border>                               -->
                             <Button Click="OnCandidateClicked" Background="Transparent"
                                     BorderThickness="0" Cursor="Hand" Padding="0">
-                                <Border Width="180" Height="280" Margin="10"
+                                <Border Width="180" Height="400" Margin="10"
                                         Background="#3B2412" BorderBrush="#D4AF37" BorderThickness="2">
                                     <StackPanel>
                                         <Image Source="{Binding PortraitPath}" Height="200" />
                                         <TextBlock Text="{Binding Name}" FontSize="16"
                                                    Foreground="White" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                                        <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="{Binding ClassName}"/>
+                                            <Run Text=" lvl "/>
+                                            <Run Text="{Binding Level}"/>
+                                        </TextBlock>
+                                        <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="PV : " Foreground= "#C62828"/>
+                                            <Run Text="{Binding Health}"/>
+                                            <Run Text="    DEF : " Foreground= "#78909C"/>
+                                            <Run Text="{Binding Defense}"/>
+                                        </TextBlock>
+                                        <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">
+                                            <Run Text="AP : " Foreground= "#D4AF37"/>
+                                            <Run Text="{Binding PhysicAttack}"/>
+                                            <Run Text="    AM : " Foreground= "#1976D2"/>
+                                            <Run Text="{Binding MagicAttack}"/>
+                                        </TextBlock>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
-                                            <TextBlock Text="{Binding RecruitmentCost}" Foreground="#D4AF37"/>
-                                            <TextBlock Text=" pièces d'or" Foreground="#D4AF37"/>
+                                            <TextBlock Text="{Binding RecruitmentCost}" Foreground="#D4AF37" FontWeight="Bold" FontSize="14"/>
+                                            <TextBlock Text=" pièces d'or" Foreground="#D4AF37" FontWeight="Bold" FontSize="14"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
