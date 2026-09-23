@@ -42,8 +42,13 @@ public class QuestPreparationViewModel : IScreenViewModel
             .Where(adventurer => !selectedNames.Contains(adventurer.name))
             .Select(adventurer => new AdventurerCard
             {
+                Adventurer = adventurer,
                 Name = adventurer.name,
                 ClassName = adventurer.job,
+                Health = adventurer.health,
+                Defense = adventurer.def,
+                MagicAttack = adventurer.magicAttack,
+                PhysicAttack = adventurer.physicAttack,
                 PortraitPath = adventurer.image,
                 Level = adventurer.lvl,
                 Status = AdventurerStatus.Disponible
@@ -54,6 +59,7 @@ public class QuestPreparationViewModel : IScreenViewModel
     public void AssignAdventurer(int slotIndex, AdventurerCard adventurer)
     {
         SelectedSlots[slotIndex] = adventurer;
+        Game.questManager.searchQuestByName(SelectedQuest.Title).addAdventurer(adventurer.Adventurer);
         RecalculateSuccessRate();
     }
 
@@ -64,6 +70,8 @@ public class QuestPreparationViewModel : IScreenViewModel
 
         // TODO: appel réel à la fonction de ton camarade
         // SuccessPercentage = QuestLogic.CalculerPourcentageVictoire(chosen, SelectedQuest);
-        SuccessPercentage = 50;
+        Quest quest = Game.questManager.searchQuestByName(SelectedQuest.Title);
+        quest.refreshWinRate();
+        SuccessPercentage = (int)quest.refreshWinRate();
     }
 }

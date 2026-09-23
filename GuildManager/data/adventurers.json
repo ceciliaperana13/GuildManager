@@ -1,5 +1,51 @@
 {
-  "idCount": 2167,
+  "idCount": 2344,
   "mainAdventurers": [],
-  "adventurers": []
+  "adventurers": [
+    {
+      "id": 2169,
+      "name": "Morgane",
+      "job": "mage",
+      "lvl": 9,
+      "health": 13,
+      "physicAttack": 12,
+      "magicAttack": 70,
+      "def": 85,
+      "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
+    },
+    {
+      "id": 2170,
+      "name": "Vaelith",
+      "job": "tank",
+      "lvl": 10,
+      "health": 118,
+      "physicAttack": 10,
+      "magicAttack": 4,
+      "def": 68,
+      "image": "/Assets/character/adventurers/tank2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 300,
+      "foodPrice": 70
+    },
+    {
+      "id": 2176,
+      "name": "Tharion",
+      "job": "guerrier",
+      "lvl": 9,
+      "health": 47,
+      "physicAttack": 79,
+      "magicAttack": 30,
+      "def": 24,
+      "image": "/Assets/character/adventurers/guerrier1.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
+    }
+  ]
 }
