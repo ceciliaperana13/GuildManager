@@ -29,8 +29,7 @@ public class ResourceController : ControllerBase
     }
 
 
-    /// Retire du gold ou de la nourriture du pot commun de la guilde coop.
-    /// Diffuse le nouvel état en temps réel via SignalR.
+    // Retire du gold ou de la nourriture du pot commun de la guilde coop.
     [HttpPost("transfer")]
     public async Task<IActionResult> Transfer(TransferResourcesRequest request)
     {
