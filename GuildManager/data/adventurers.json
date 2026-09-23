@@ -1,5 +1,5 @@
 {
-  "idCount": 1078,
+  "idCount": 1084,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -259,6 +259,19 @@
       "magicAttack": 58,
       "def": 7,
       "image": "/Assets/character/adventurers/mage1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1080,
+      "name": "Draven",
+      "job": "tank",
+      "lvl": 10,
+      "health": 50,
+      "physicAttack": 43,
+      "magicAttack": 19,
+      "def": 88,
+      "image": "/Assets/character/adventurers/tank1.png",
       "debuff": [],
       "isHurted": false
     }

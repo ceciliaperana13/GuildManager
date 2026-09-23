@@ -7,8 +7,21 @@ namespace GuildManager.Api.Hubs;
 /// et reçoit les events poussés par le serveur (ressources partagées, membres, etc.).
 public class GuildHub : Hub
 {
+    public override async Task OnConnectedAsync()
+    {
+        Console.WriteLine($"[GuildHub] Connexion établie : {Context.ConnectionId}");
+        await base.OnConnectedAsync();
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        Console.WriteLine($"[GuildHub] Déconnexion : {Context.ConnectionId} ({exception?.Message})");
+        await base.OnDisconnectedAsync(exception);
+    }
+
     public async Task JoinGuild(int guildId)
     {
+        Console.WriteLine($"[GuildHub] {Context.ConnectionId} rejoint le groupe guild-{guildId}");
         await Groups.AddToGroupAsync(Context.ConnectionId, GuildGroup(guildId));
     }
 
