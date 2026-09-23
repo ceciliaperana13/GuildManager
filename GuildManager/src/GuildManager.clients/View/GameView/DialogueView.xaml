@@ -12,19 +12,26 @@
         <Image Source="{Binding BackgroundPath}" Stretch="UniformToFill"/>
 
         <Grid VerticalAlignment="Bottom" Margin="40,0,40,40">
-            <Image Source="/Assets/UI/dialogue_box.png" Stretch="Fill" Height="160"/>
+                 <Image Source="/Assets/UI/dialogue_box.png" Stretch="Fill" Height="160"/>
+
+                 <Image Source="{Binding ImagePath}" Width="180" Height="220" Stretch="Uniform"
+                     HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,125"/>
 
             <TextBlock Text="{Binding Speaker}" FontWeight="Bold" FontSize="16" Foreground="#8A5A2A"
-                       Margin="60,10,180,0" VerticalAlignment="Top"/>
+                       Margin="25,10,180,0" VerticalAlignment="Top"/>
 
             <TextBlock Text="{Binding CurrentText}" Foreground="#3B2412" FontSize="18"
-                       Margin="60,40,180,20" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                       Margin="220,40,180,20" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
             <Image Source="/Assets/UI/arrow_next.png" Width="36" Height="36"
                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,30,20"
                    Visibility="{Binding HasChoices, Converter={StaticResource InverseBoolToVis}}"
                    MouseLeftButtonDown="OnAdvanceClicked" Cursor="Hand"/>
         </Grid>
+        <FantasyMenuButton x:Name="FinishButton" Width="200" Height="60" Margin="0,0,0,40"
+                           VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                           Visibility="{Binding IsDialogueFinished, Converter={StaticResource BoolToVis}}"
+                           Clicked="OnFinishClicked"/>
 
         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,210"
                     Visibility="{Binding HasChoices, Converter={StaticResource BoolToVis}}">

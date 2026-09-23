@@ -11,6 +11,7 @@ public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
 
     public string BackgroundPath { get; private set; }
 
+    public string ImagePath { get; private set; } = "";
     public string CurrentText => _entry.Lines[_lineIndex];
     public string Speaker => _entry.Speaker;
     public bool IsLastLine => _lineIndex == _entry.Lines.Count - 1;
@@ -24,6 +25,7 @@ public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
     {
         _entry = DialogueRepository.Get(dialogueId);
         BackgroundPath = backgroundPath;
+        UpdateImagePath();
     }
 
     public void Advance()
@@ -53,6 +55,7 @@ public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
         {
             _entry = DialogueRepository.Get(choice.NextDialogueId);
             _lineIndex = 0;
+            UpdateImagePath();
             Raise();
         }
         else if (choice.EndsGame == true)
@@ -63,6 +66,13 @@ public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
         {
             NavigationService.NavigateTo(new GuildViewModel());
         }
+    }
+
+    private void UpdateImagePath()
+    {
+        ImagePath = string.IsNullOrWhiteSpace(_entry.image)
+            ? ""
+            : "/Assets/" + _entry.image.TrimStart('/').Replace('\\', '/');
     }
 
     private void Raise() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));

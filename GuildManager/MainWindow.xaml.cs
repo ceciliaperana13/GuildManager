@@ -20,6 +20,6 @@ public partial class MainWindow : Window
         DataContext = mainWindowViewModel;
         DialogueRepository.Load();
         GuildManager.Client.Services.NavigationService.Initialize(mainWindowViewModel);
-        //NavigationService.NavigateTo(new DialogueViewModel("intro_01", "/Assets/UI/guilde_background.png"));
+        NavigationService.NavigateTo(new DialogueViewModel("intro_01", "/Assets/UI/guilde_background.png"));
     }
 }
