@@ -68,14 +68,13 @@ public class AdventurerManager
         }
         string image = $"/Assets/character/adventurers/{job + type}.png";
 
-        // def de l'id :
+        // id :
         string json = File.ReadAllText(DataFile);
         JsonObject root = JsonNode.Parse(json)!.AsObject();
         int idCount = root["idCount"]?.GetValue<int>() ?? 0;
-        // incrementation de l'id
         root["idCount"] = idCount + 1;
 
-        //def des prix
+        // Prices : 
         int goldPrice = 100; // à modifier selon les stats du perso
         int foodPrice = 20;
 
@@ -178,5 +177,21 @@ public class AdventurerManager
         }
         //return new Adventurer(0, "", "", 0, 0, 0, 0, 0, "", [], false, 0, 0);
         return null;
+    }
+
+    public int adventurersEat()
+    {
+        int totalFood = 0;
+        //random adventurers eat
+        foreach(Adventurer adventurer in this.adventurers)
+        {
+            totalFood += adventurer.foodPrice;
+        }
+        //main adventurers eat
+        foreach(Adventurer adventurer in this.mainAdventurers)
+        {
+            totalFood += adventurer.foodPrice;
+        }
+        return totalFood;
     }
 }

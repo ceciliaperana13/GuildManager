@@ -1,0 +1,25 @@
+<UserControl x:Class="GuildManager.Client.View.Controls.ResourceBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="Root">
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="1882" Height="836">
+            <Image Source="/Assets/UI/Barre_UID.png" Width="1882" Height="836"/>
+
+            <!-- Or -->
+            <Image Source="/Assets/UI/gold_icon.png" Width="120" Height="120" Canvas.Left="170" Canvas.Top="72"/>
+            <TextBlock Text="{Binding Gold, ElementName=Root}" FontSize="46" FontWeight="Bold"
+                       Foreground="#F2D98A" Canvas.Left="320" Canvas.Top="95"/>
+
+            <!-- Nourriture -->
+            <Image Source="/Assets/UI/icon_food.png" Width="120" Height="120" Canvas.Left="675" Canvas.Top="72"/>
+            <TextBlock Text="{Binding Food, ElementName=Root}" FontSize="46" FontWeight="Bold"
+                       Foreground="#F2D98A" Canvas.Left="825" Canvas.Top="95"/>
+
+            <!-- Prestige -->
+            <Image Source="/Assets/UI/prestige_icon.png" Width="120" Height="120" Canvas.Left="1305" Canvas.Top="72"/>
+            <TextBlock Text="{Binding Prestige, ElementName=Root}" FontSize="46" FontWeight="Bold"
+                       Foreground="#F2D98A" Canvas.Left="1450" Canvas.Top="95"/>
+        </Canvas>
+    </Viewbox>
+</UserControl>

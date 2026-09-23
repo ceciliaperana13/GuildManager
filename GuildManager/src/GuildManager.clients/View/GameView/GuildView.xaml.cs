@@ -5,12 +5,14 @@ using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
 using GuildManager.Client.Services;
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.View;
 
 public partial class GuildView : UserControl
 {
     private System.Timers.Timer? _refreshTimer;
+    private Game? Game => (DataContext as GuildViewModel)?.Game;
 
     public GuildView()
     {
@@ -45,14 +47,27 @@ public partial class GuildView : UserControl
 
     private void OnQuestBoardClicked(object sender, RoutedEventArgs e)
     {
-        NavigationService.NavigateTo(new QuestListViewModel());
+        if (Game is null) return;
+        NavigationService.NavigateTo(new QuestListViewModel(Game));
     }
 
     private void OnReceptionClicked(object sender, RoutedEventArgs e)
     {
         NavigationService.NavigateTo(new ReceptionViewModel());
     }
+
     private void OnStoreClicked(object sender, RoutedEventArgs e)
     {
     }
+
+    private void OnFlipClicked(object sender, RoutedEventArgs e)
+{
+    if (Game is null) return;
+
+    Game.passTurn();
+    (DataContext as GuildViewModel)?.RefreshResources();
+
+    GuildCoinFlip.Visibility = Visibility.Visible;
+    GuildCoinFlip.PlayFlip(Random.Shared.Next(2) == 1);
+}
 }

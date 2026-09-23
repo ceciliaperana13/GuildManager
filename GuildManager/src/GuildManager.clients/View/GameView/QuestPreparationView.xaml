@@ -15,7 +15,7 @@
                         </Button.Template>
                         <Grid Width="140" Height="140">
                             <Image Source="/Assets/UI/portrait_slot.png" Stretch="Uniform"/>
-                            <Image x:Name="Portrait0" Stretch="Uniform" Width="90" Height="90"
+                            <Image x:Name="Portrait0" Source="{Binding SelectedSlots[0].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
@@ -23,7 +23,7 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Assets/UI/equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
+                        <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                     </Button>
                 </StackPanel>
 
@@ -34,7 +34,7 @@
                         </Button.Template>
                         <Grid Width="140" Height="140">
                             <Image Source="/Assets/UI/portrait_slot.png" Stretch="Uniform"/>
-                            <Image x:Name="Portrait1" Stretch="Uniform" Width="90" Height="90"
+                            <Image x:Name="Portrait1" Source="{Binding SelectedSlots[1].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
@@ -42,7 +42,7 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Assets/UI/equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
+                        <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                     </Button>
                 </StackPanel>
 
@@ -53,7 +53,7 @@
                         </Button.Template>
                         <Grid Width="140" Height="140">
                             <Image Source="/Assets/UI/portrait_slot.png" Stretch="Uniform"/>
-                            <Image x:Name="Portrait2" Stretch="Uniform" Width="90" Height="90"
+                            <Image x:Name="Portrait2" Source="{Binding SelectedSlots[2].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
@@ -61,27 +61,29 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Assets/UI/equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
+                        <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                     </Button>
                 </StackPanel>
 
             </StackPanel>
 
             <!-- Jauge de % de victoire -->
-            <Grid Width="600" Height="90" Margin="0,30,0,0">
-                <Image Source="/Assets/UI/victory_bar.png" Stretch="Fill"/>
-                <Border x:Name="FillBar" Background="#66FFD700" HorizontalAlignment="Left"
-                        Width="0" Height="50" Margin="70,0,70,0" CornerRadius="4"/>
-                <TextBlock x:Name="PercentageText" Text="--%" FontSize="22" FontWeight="Bold"
-                           Foreground="#3B2412" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Grid Canvas.Left="162" Canvas.Top="720" Width="700" Height="233">
+                    <Image Source="/Assets/UI/victory_bar.png" Stretch="Fill"/>
+                    <Border x:Name="FillBar" Background="#66FFD700" HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Width="0" Height="40" Margin="90,0,90,0" CornerRadius="4"/>
+                    <TextBlock x:Name="PercentageText" Text="--%" FontSize="24" FontWeight="Bold"
+                                Foreground="#3B2412" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
 
-            <controls:FantasyMenuButton NormalImage="/Assets/UI/bouton_lancer_quete.png"
-                                         HoverImage="/Assets/UI/bouton_lancer_quete_hover.png"
+            <controls:FantasyMenuButton NormalImage="/Assets/UI/bouton_jouer.png"
+                                         HoverImage="/Assets/UI/bouton_jouer_hover.png"
                                          Clicked="OnLaunchQuestClicked"
-                                         Width="260" Height="70" Margin="0,24,0,0"/>
+                                         Canvas.Left="362" Canvas.Top="1000" Width="300" Height="80"/>
         </StackPanel>
 
         <controls:BackButton HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Height="60" Margin="20"/>
+         <controls:AdventurerPickerPopup x:Name="Picker" Visibility="Collapsed"
+                                         AdventurerPicked="OnAdventurerPicked" CancelRequested="OnPickerCancelled"/>
     </Grid>
 </UserControl>

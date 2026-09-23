@@ -9,6 +9,6 @@
                 <ContentPresenter/>
             </ControlTemplate>
         </Button.Template>
-        <Image Name="ButtonImage" Source="/Assets/UI/icon_retour.png" Stretch="Uniform"/>
+        <Image Name="ButtonImage" Source="/Assets/UI/Icon_retour.png" Stretch="Uniform"/>
     </Button>
 </UserControl>
