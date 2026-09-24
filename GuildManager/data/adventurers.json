@@ -1,5 +1,5 @@
 {
-  "idCount": 1084,
+  "idCount": 1093,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -272,6 +272,45 @@
       "magicAttack": 19,
       "def": 88,
       "image": "/Assets/character/adventurers/tank1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1086,
+      "name": "Evania",
+      "job": "guerrier",
+      "lvl": 6,
+      "health": 48,
+      "physicAttack": 48,
+      "magicAttack": 13,
+      "def": 11,
+      "image": "/Assets/character/adventurers/guerrier2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1084,
+      "name": "Faelorn",
+      "job": "tank",
+      "lvl": 7,
+      "health": 25,
+      "physicAttack": 40,
+      "magicAttack": 5,
+      "def": 70,
+      "image": "/Assets/character/adventurers/tank1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1087,
+      "name": "Arthus",
+      "job": "guerrier",
+      "lvl": 2,
+      "health": 6,
+      "physicAttack": 14,
+      "magicAttack": 9,
+      "def": 11,
+      "image": "/Assets/character/adventurers/guerrier1.png",
       "debuff": [],
       "isHurted": false
     }
