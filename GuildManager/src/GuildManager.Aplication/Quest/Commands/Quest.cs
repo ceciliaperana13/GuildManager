@@ -65,6 +65,19 @@ public class Quest
     {
         if (this.type == "Recherche")
         {
+            if (this.adventurers.Count == 0)
+            {
+                this.winRate = 0;
+                return this.winRate;
+            }
+
+            double averageLevel = this.adventurers.Average(a => a.lvl);
+            double delta = averageLevel - this.lvl;
+
+            double bonusNum = 30.0 * Math.Log2(this.adventurers.Count + 1);
+            double bonusEffectif = delta + bonusNum;
+
+            this.winRate = 1.0 / (1.0 + Math.Pow(10, -bonusEffectif / 100.0)) * 100.0;
             return this.winRate;
         }
         else

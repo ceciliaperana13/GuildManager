@@ -123,6 +123,6 @@
     },
     "remainingTime": 1,
     "inProgress": false,
-    "Winrate" : 50
+    "winRate" : 50
   }
 ]

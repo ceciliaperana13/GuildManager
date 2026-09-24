@@ -138,9 +138,10 @@ public class QuestManager
 
     public Quest searchQuestByName(string name)
     {
-        foreach(Quest quest in this.quests)
+        foreach (Quest quest in this.quests)
         {
-            return quest;
+            if (quest.name == name)
+                return quest;
         }
         return null;
     }
