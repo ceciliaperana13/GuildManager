@@ -122,6 +122,7 @@
       "items": []
     },
     "remainingTime": 1,
-    "inProgress": false
+    "inProgress": false,
+    "Winrate" : 50
   }
 ]

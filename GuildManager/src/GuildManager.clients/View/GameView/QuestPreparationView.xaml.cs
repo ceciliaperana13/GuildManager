@@ -2,6 +2,8 @@ using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
 using GuildManager.Client.Models;
+using GuildManager.Client.Services;
+using GuildManager.Aplication.Guilds.Controls;
 
 namespace GuildManager.Client.View;
 
@@ -41,7 +43,7 @@ public partial class QuestPreparationView : UserControl
         Picker.Visibility = Visibility.Collapsed;
     }
 
-        private void OpenPicker(int slotIndex)
+    private void OpenPicker(int slotIndex)
     {
         _activeSlot = slotIndex;
                 if (ViewModel is null) return;
@@ -52,7 +54,7 @@ public partial class QuestPreparationView : UserControl
 
     
 
-     private void OnPickerCancelled() => Picker.Visibility = Visibility.Collapsed;
+    private void OnPickerCancelled() => Picker.Visibility = Visibility.Collapsed;
 
     private void UpdatePercentageDisplay()
     {
@@ -80,6 +82,21 @@ public partial class QuestPreparationView : UserControl
 
     private void OnLaunchQuestClicked(object sender, RoutedEventArgs e)
     {
-        // TODO: lancer la quête avec les aventuriers/équipement choisis
+        if (ViewModel.AcceptQuest())
+            NavigationService.GoBack();
+        else
+        {
+            OpenTextPopup("Choisissez au moins un aventurier avnat de lancer la quête.");
+        }
     }
+
+
+
+    private void OpenTextPopup(string message)
+    {
+        textPopup.SetText(message);
+        textPopup.Visibility = Visibility.Visible;
+    }
+
+    private void OnTextPopupCancelled() => textPopup.Visibility = Visibility.Collapsed;
 }
