@@ -16,18 +16,21 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
 
     public int Gold => Game?.gold ?? 0;
     public int Food => Game?.food ?? 0;
+    public int Prestige => Game?.prestige ?? 0;
 
     public void SetGame(Game game)
     {
         Game = game;
         OnPropertyChanged(nameof(Gold));
         OnPropertyChanged(nameof(Food));
+        OnPropertyChanged(nameof(Prestige));
     }
 
     public void RefreshResources()
     {
         OnPropertyChanged(nameof(Gold));
         OnPropertyChanged(nameof(Food));
+        OnPropertyChanged(nameof(Prestige));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

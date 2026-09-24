@@ -1,5 +1,5 @@
 {
-  "idCount": 2383,
+  "idCount": 2470,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -18,21 +18,6 @@
       "foodPrice": 65
     },
     {
-      "id": 2170,
-      "name": "Vaelith",
-      "job": "tank",
-      "lvl": 10,
-      "health": 118,
-      "physicAttack": 10,
-      "magicAttack": 4,
-      "def": 68,
-      "image": "/Assets/character/adventurers/tank2.png",
-      "debuff": [],
-      "isHurted": false,
-      "goldPrice": 300,
-      "foodPrice": 70
-    },
-    {
       "id": 2176,
       "name": "Tharion",
       "job": "guerrier",
@@ -46,6 +31,36 @@
       "isHurted": false,
       "goldPrice": 280,
       "foodPrice": 65
+    },
+    {
+      "id": 2400,
+      "name": "Draven",
+      "job": "tank",
+      "lvl": 17,
+      "health": 42,
+      "physicAttack": 129,
+      "magicAttack": 12,
+      "def": 157,
+      "image": "/Assets/character/adventurers/tank1.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 440,
+      "foodPrice": 105
+    },
+    {
+      "id": 2411,
+      "name": "Liora",
+      "job": "guerrier",
+      "lvl": 28,
+      "health": 64,
+      "physicAttack": 251,
+      "magicAttack": 41,
+      "def": 204,
+      "image": "/Assets/character/adventurers/guerrier2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 660,
+      "foodPrice": 160
     }
   ]
 }
