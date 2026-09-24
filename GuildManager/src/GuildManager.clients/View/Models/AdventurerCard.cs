@@ -14,6 +14,10 @@ public class AdventurerCard
     public string ClassName { get; set; } = "";
     public string PortraitPath { get; set; } = "";
     public int Level { get; set; }
+    public int Health { get; set; }
+    public int PhysicAttack { get; set; }
+    public int MagicAttack { get; set; }
+    public int Defense { get; set; }
     public AdventurerStatus Status { get; set; }
 
     public string StatusLabel => Status switch

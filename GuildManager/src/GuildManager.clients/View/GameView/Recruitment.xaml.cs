@@ -10,7 +10,6 @@ namespace GuildManager.Client.View;
 public partial class RecruitmentView : UserControl
 {
     private AdventurerCandidate? _selectedCandidate;
-
     public RecruitmentView()
     {
         InitializeComponent();
@@ -58,4 +57,5 @@ public partial class RecruitmentView : UserControl
         _selectedCandidate = null;
         PurchaseDialog.Visibility = Visibility.Collapsed;
     }
+
 }
