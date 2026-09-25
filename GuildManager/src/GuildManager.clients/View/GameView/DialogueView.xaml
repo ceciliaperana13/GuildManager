@@ -6,29 +6,42 @@
     <UserControl.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
         <conv:InverseBoolToVisibilityConverter x:Key="InverseBoolToVis"/>
+        <conv:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid>
+        <!-- 1. Le fond -->
         <Image Source="{Binding BackgroundPath}" Stretch="UniformToFill"/>
 
-        <Grid VerticalAlignment="Bottom" Margin="40,0,40,40">
-                 <Image Source="/Assets/UI/dialogue_box.png" Stretch="Fill" Height="160"/>
+        <!-- 2. L'illustration du personnage qui parle -->
+        <Image Source="{Binding CharacterImagePath}" Stretch="Uniform"
+               HorizontalAlignment="Left" VerticalAlignment="Bottom"
+               Height="320" Margin="40,0,0,180"
+               Visibility="{Binding CharacterImagePath, Converter={StaticResource NullToVisibilityConverter}}"/>
 
-                 <Image Source="{Binding ImagePath}" Width="180" Height="220" Stretch="Uniform"
-                     HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,0,0,125"/>
+        <!-- 3. La boîte de dialogue -->
+        <StackPanel VerticalAlignment="Bottom" Margin="40,0,40,40">
 
-            <TextBlock Text="{Binding Speaker}" FontWeight="Bold" FontSize="16" Foreground="#8A5A2A"
-                       Margin="25,10,180,0" VerticalAlignment="Top"/>
+            <Border Background="#2E2318" BorderBrush="#C9A24B" BorderThickness="2" CornerRadius="4"
+                    Padding="14,4" HorizontalAlignment="Left" Margin="60,0,0,8">
+                <TextBlock Text="{Binding Speaker}" FontWeight="Bold" FontSize="15" Foreground="#F2D98A"/>
+            </Border>
 
-            <TextBlock Text="{Binding CurrentText}" Foreground="#3B2412" FontSize="18"
-                       Margin="220,40,180,20" TextWrapping="Wrap" VerticalAlignment="Center"/>
+            <Grid>
+                <Image Source="/Assets/UI/dialogue_box.png" Stretch="Fill" Height="160"/>
 
-            <Image Source="/Assets/UI/arrow_next.png" Width="36" Height="36"
-                   HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,30,20"
-                   Visibility="{Binding HasChoices, Converter={StaticResource InverseBoolToVis}}"
-                   MouseLeftButtonDown="OnAdvanceClicked" Cursor="Hand"/>
-        </Grid>
+                <TextBlock Text="{Binding CurrentText}" Foreground="#3B2412" FontSize="18"
+                           Margin="60,20,110,20" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
+                <Image Source="/Assets/UI/arrow_next.png" Width="48" Height="48"
+                       HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,25,0"
+                       Visibility="{Binding HasChoices, Converter={StaticResource InverseBoolToVis}}"
+                       MouseLeftButtonDown="OnAdvanceClicked" Cursor="Hand"/>
+            </Grid>
+
+        </StackPanel>
+
+        <!-- 4. Les boutons de choix -->
         <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,210"
                     Visibility="{Binding HasChoices, Converter={StaticResource BoolToVis}}">
             <ItemsControl ItemsSource="{Binding CurrentChoices}">
@@ -40,5 +53,6 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </StackPanel>
+
     </Grid>
 </UserControl>

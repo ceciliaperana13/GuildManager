@@ -1,17 +1,22 @@
 using System.ComponentModel;
+using GuildManager.Aplication.Guilds.Controls;
 using GuildManager.Client.Models;
 using GuildManager.Client.Services;
 
 namespace GuildManager.Client.ViewModel;
 
-public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
+public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyPropertyChanged
 {
     private DialogueEntry _entry;
     private int _lineIndex;
+    private Game _game = null!;
 
     public string BackgroundPath { get; private set; }
-
-    public string ImagePath { get; private set; } = "";
+    public Game Game
+    {
+        get => _game;
+        private set { _game = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Game))); }
+    }
     public string CurrentText => _entry.Lines[_lineIndex];
     public string Speaker => _entry.Speaker;
     public bool IsLastLine => _lineIndex == _entry.Lines.Count - 1;
@@ -21,11 +26,18 @@ public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    public string? CharacterImagePath =>
+        _entry.Image != null ? "/Assets/" + _entry.Image.Replace('\\', '/') : null;
+
     public DialogueViewModel(string dialogueId, string backgroundPath)
     {
         _entry = DialogueRepository.Get(dialogueId);
         BackgroundPath = backgroundPath;
-        UpdateImagePath();
+    }
+
+    public void SetGame(Game game)
+    {
+        Game = game;
     }
 
     public void Advance()
@@ -39,11 +51,11 @@ public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
         }
         else if (_entry.EndsGame)
         {
-            // TODO: écran de fin de partie (Win/Game over)
+            ReturnToGameMenu();
         }
         else
         {
-            NavigationService.NavigateTo(new GuildViewModel());
+            ReturnToGameMenu();
         }
     }
 
@@ -55,25 +67,20 @@ public class DialogueViewModel : IScreenViewModel, INotifyPropertyChanged
         {
             _entry = DialogueRepository.Get(choice.NextDialogueId);
             _lineIndex = 0;
-            UpdateImagePath();
             Raise();
         }
         else if (choice.EndsGame == true)
         {
-            // TODO: écran de fin de partie
+            ReturnToGameMenu();
         }
         else
         {
-            NavigationService.NavigateTo(new GuildViewModel());
+            ReturnToGameMenu();
         }
     }
 
-    private void UpdateImagePath()
-    {
-        ImagePath = string.IsNullOrWhiteSpace(_entry.image)
-            ? ""
-            : "/Assets/" + _entry.image.TrimStart('/').Replace('\\', '/');
-    }
+    private void ReturnToGameMenu() => NavigationService.NavigateTo(new GuildViewModel(), Game);
+
 
     private void Raise() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
 }

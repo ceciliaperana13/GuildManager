@@ -9,7 +9,7 @@ public class DialogueEntry
     public int Act { get; set; }
     public string Trigger { get; set; } = "";
     public string Speaker { get; set; } = "";
-    public string image {get; set; } = "";
+    public string? Image {get; set; } = "";
     public string? CharacterId { get; set; }
     public List<string> Lines { get; set; } = new();
     public List<DialogueChoice>? Choices { get; set; }
