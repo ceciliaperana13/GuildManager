@@ -259,10 +259,6 @@ public class AdventurerManager
         editAdventurerData(id, new Dictionary<string, JsonNode?> { [attribute] = newValue });
     }
 
-    /// <summary>
-    /// Version batch : modifie plusieurs attributs d'un même aventurier en une seule
-    /// lecture/écriture du fichier JSON (au lieu d'un aller-retour disque par attribut).
-    /// </summary>
     public void editAdventurerData(int id, Dictionary<string, JsonNode?> updates)
     {
         string json = File.ReadAllText(DataFile);
