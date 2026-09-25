@@ -18,7 +18,7 @@ public class HealthController : ControllerBase
     [HttpGet]
     public IActionResult Ping() => Ok(new { status = "api_ok" });
 
-    // GET /api/health/db  -> teste la connexion réelle à PostgreSQL
+    // GET /api/health/db  test
     [HttpGet("db")]
     public async Task<IActionResult> CheckDatabase()
     {

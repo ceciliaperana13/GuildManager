@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "idCount": 2530,
+=======
+  "idCount": 1087,
+>>>>>>> authcoop-dev
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -220,15 +224,81 @@
     },
     {
       "id": 1054,
-      "name": "Nymeria",
+      "name": "Aldric",
+      "job": "tank",
+      "lvl": 6,
+      "health": 48,
+      "physicAttack": 6,
+      "magicAttack": 26,
+      "def": 40,
+      "image": "/Assets/character/adventurers/tank1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1060,
+      "name": "Evania",
+      "job": "mage",
+      "lvl": 3,
+      "health": 32,
+      "physicAttack": 6,
+      "magicAttack": 22,
+      "def": 0,
+      "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1063,
+      "name": "Morgane",
+      "job": "mage",
+      "lvl": 10,
+      "health": 84,
+      "physicAttack": 18,
+      "magicAttack": 78,
+      "def": 20,
+      "image": "/Assets/character/adventurers/mage2.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1069,
+      "name": "Aldric",
+      "job": "mage",
+      "lvl": 6,
+      "health": 44,
+      "physicAttack": 11,
+      "magicAttack": 58,
+      "def": 7,
+      "image": "/Assets/character/adventurers/mage1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1080,
+      "name": "Draven",
+      "job": "tank",
+      "lvl": 10,
+      "health": 50,
+      "physicAttack": 43,
+      "magicAttack": 19,
+      "def": 88,
+      "image": "/Assets/character/adventurers/tank1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1086,
+      "name": "Evania",
       "job": "guerrier",
       "lvl": 6,
-      "health": 47,
-      "physicAttack": 54,
-      "magicAttack": 8,
+      "health": 48,
+      "physicAttack": 48,
+      "magicAttack": 13,
       "def": 11,
       "image": "/Assets/character/adventurers/guerrier2.png",
       "debuff": [],
+<<<<<<< HEAD
       "isHurted": false,
       "goldPrice": 660,
       "foodPrice": 160
@@ -262,6 +332,35 @@
       "isHurted": false,
       "goldPrice": 140,
       "foodPrice": 30
+=======
+      "isHurted": false
+    },
+    {
+      "id": 1084,
+      "name": "Faelorn",
+      "job": "tank",
+      "lvl": 7,
+      "health": 25,
+      "physicAttack": 40,
+      "magicAttack": 5,
+      "def": 70,
+      "image": "/Assets/character/adventurers/tank1.png",
+      "debuff": [],
+      "isHurted": false
+    },
+    {
+      "id": 1087,
+      "name": "Arthus",
+      "job": "guerrier",
+      "lvl": 2,
+      "health": 6,
+      "physicAttack": 14,
+      "magicAttack": 9,
+      "def": 11,
+      "image": "/Assets/character/adventurers/guerrier1.png",
+      "debuff": [],
+      "isHurted": false
+>>>>>>> authcoop-dev
     }
   ]
 }
