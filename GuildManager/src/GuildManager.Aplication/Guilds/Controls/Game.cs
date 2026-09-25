@@ -15,6 +15,7 @@ public class Game
     public List<Item> inventory = new List<Item>();
     public AdventurerManager adventurerManager = new AdventurerManager();
     public QuestManager questManager = new QuestManager();
+    public ItemManager itemManager = new ItemManager();
     bool isBought;
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
@@ -60,6 +61,23 @@ public class Game
         else
         {
             Console.WriteLine("Vous avez déjà recruter un aventurier ce tour-ci");
+            return false;
+        }
+        
+    }
+
+    public bool buyItem(Item item)
+    {
+        if (this.gold >= item.goldPrice)
+        {
+            itemManager.addItem(item);
+            this.gold -= item.goldPrice;
+            Console.WriteLine(item.name + " acheté.");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("Pas assez d'or pour acheter " + item.name);
             return false;
         }
         
@@ -125,10 +143,7 @@ public class Game
             }
         }
         this.AdventurersRageQuit();
-        this.questManager.refreshQuests(this.prestige);
-        this.adventurerManager.refreshadventurersToHire(this.prestige);
-        this.adventurerManager.refreshAdventurers();
-        this.adventurerManager.refreshMainAdventurers();
+        this.refreshAll();
         this.food -= this.adventurerManager.adventurersEat();
         Console.WriteLine($"Bouffe : {this.food}");
     }
@@ -155,6 +170,16 @@ public class Game
         }
 
         return adventurersQuit;
+    }
+
+    public void refreshAll()
+    {
+        this.questManager.refreshQuests(this.prestige);
+        this.adventurerManager.refreshadventurersToHire(this.prestige);
+        this.adventurerManager.refreshAdventurers();
+        this.adventurerManager.refreshMainAdventurers();
+        this.itemManager.refreshShop(this.prestige);
+        this.itemManager.refreshInventory();
     }
 
     // public void playTurn()
