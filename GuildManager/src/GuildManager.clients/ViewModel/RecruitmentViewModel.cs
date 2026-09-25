@@ -12,18 +12,32 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
 
     public ObservableCollection<AdventurerCandidate> Candidates { get; } = new();
 
+    public string StatusText => IsLoading
+        ? "Chargement des aventuriers..."
+        : LoadError ?? (Candidates.Count == 0 ? "Aucun aventurier disponible." : "");
+
     private bool _isLoading;
     public bool IsLoading
     {
         get => _isLoading;
-        private set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
+        private set
+        {
+            _isLoading = value;
+            OnPropertyChanged(nameof(IsLoading));
+            OnPropertyChanged(nameof(StatusText));
+        }
     }
 
     private string? _loadError;
     public string? LoadError
     {
         get => _loadError;
-        private set { _loadError = value; OnPropertyChanged(nameof(LoadError)); }
+        private set
+        {
+            _loadError = value;
+            OnPropertyChanged(nameof(LoadError));
+            OnPropertyChanged(nameof(StatusText));
+        }
     }
 
     public RecruitmentViewModel(Game game)
@@ -50,10 +64,18 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
                 {
                     Id = dto.Id,
                     Name = dto.Name,
+                    ClassName = dto.Job,
+                    Level = dto.Lvl,
+                    Health = dto.Health,
+                    Defense = dto.Def,
+                    PhysicAttack = dto.PhysicAttack,
+                    MagicAttack = dto.MagicAttack,
                     PortraitPath = dto.Image,
                     RecruitmentCost = dto.GoldPrice
                 });
             }
+
+            OnPropertyChanged(nameof(StatusText));
         }
         catch (System.Exception ex)
         {

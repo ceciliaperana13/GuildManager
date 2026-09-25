@@ -4,6 +4,10 @@
              xmlns:controls="clr-namespace:GuildManager.Client.View.Controls"
              Loaded="OnLoaded">
     <Grid>
+        <TextBlock Text="{Binding StatusText}" Foreground="White" FontSize="18"
+                   TextWrapping="Wrap" TextAlignment="Center" MaxWidth="500"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+               IsHitTestVisible="False" Panel.ZIndex="2" />
         <controls:ScrollReveal x:Name="Scroll">
             <controls:ScrollReveal.ScrollContent>
                 <ItemsControl ItemsSource="{Binding Candidates}" >

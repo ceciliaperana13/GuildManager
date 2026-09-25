@@ -21,11 +21,11 @@
     <StackPanel Orientation ="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Image Source="/Assets/UI/Scroll_right.png" Height="420" Stretch="Uniform"/>
 
-        <Border x:Name="ContenueParchemin" Width="0" Height="380"
+        <Border x:Name="ContenueParchemin" Width="700" Height="380"
                 Background="#F2E3c6" ClipToBounds="True">
             <ContentPresenter x:Name="ContenueInterieur"
                               Content="{Binding ScrollContent, ElementName=Root}"
-                              Opacity="0" Margin="30"/>
+                              Opacity="1" Margin="30"/>
         </Border>
         <Image Source="/Assets/UI/Scroll_left.png" Height="420" Stretch="Uniform"/> 
     </StackPanel>
