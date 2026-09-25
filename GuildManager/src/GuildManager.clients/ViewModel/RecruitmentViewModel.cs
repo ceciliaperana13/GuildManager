@@ -46,7 +46,6 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
         _ = LoadCandidatesAsync();
     }
 
-    
     private async System.Threading.Tasks.Task LoadCandidatesAsync()
     {
         IsLoading = true;
@@ -54,9 +53,6 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
 
         try
         {
-            var apiClient = new GuildApiClient();
-            var dtos = await apiClient.GetAdventurersToHireAsync();
-
             Candidates.Clear();
             foreach (var dto in dtos)
             {
@@ -64,12 +60,6 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
                 {
                     Id = dto.Id,
                     Name = dto.Name,
-                    ClassName = dto.Job,
-                    Level = dto.Lvl,
-                    Health = dto.Health,
-                    Defense = dto.Def,
-                    PhysicAttack = dto.PhysicAttack,
-                    MagicAttack = dto.MagicAttack,
                     PortraitPath = dto.Image,
                     RecruitmentCost = dto.GoldPrice
                 });
@@ -90,18 +80,4 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged(string name) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-}
-
-public class AdventurerCandidate
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = "";
-    public string ClassName { get; set; } = "";
-    public int Level { get; set; }
-    public int Health { get; set; }
-    public int Defense { get; set; }
-    public int PhysicAttack { get; set; }
-    public int MagicAttack { get; set; }
-    public string PortraitPath { get; set; } = "";
-    public int RecruitmentCost { get; set; }
 }
