@@ -16,7 +16,6 @@
                         <Grid Width="140" Height="140">
                             <Image Source="/Assets/UI/portrait_slot.png" Stretch="Uniform"/>
                             <Image x:Name="Portrait0" Source="{Binding SelectedSlots[0].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
-                            <Image x:Name="Portrait0" Source="{Binding SelectedSlots[0].PortraitPath}" Stretch="Uniform" Width="90" Height="90"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </Button>
@@ -24,7 +23,6 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                         <Image Source="/Assets/UI/Equipement_icon.png" Width="80" Height="80" Stretch="Uniform"/>
                     </Button>
                 </StackPanel>
@@ -87,8 +85,6 @@
         <controls:BackButton HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Height="60" Margin="20"/>
          <controls:AdventurerPickerPopup x:Name="Picker" Visibility="Collapsed"
                                          AdventurerPicked="OnAdventurerPicked" CancelRequested="OnPickerCancelled"/>
-        <controls:AdventurerPickerPopup x:Name="Picker" Visibility="Collapsed"
-                                        AdventurerPicked="OnAdventurerPicked" CancelRequested="OnPickerCancelled"/>
         <controls:TextPopup x:Name="textPopup" Visibility="Collapsed"
                                         CancelRequested="OnTextPopupCancelled"/>
     </Grid>

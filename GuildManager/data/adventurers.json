@@ -1,5 +1,5 @@
 {
-  "idCount": 2470,
+  "idCount": 2530,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -232,6 +232,36 @@
       "isHurted": false,
       "goldPrice": 660,
       "foodPrice": 160
+    },
+    {
+      "id": 2472,
+      "name": "Edrik",
+      "job": "mage",
+      "lvl": 9,
+      "health": 16,
+      "physicAttack": 75,
+      "magicAttack": 75,
+      "def": 14,
+      "image": "/Assets/character/adventurers/mage1.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 280,
+      "foodPrice": 65
+    },
+    {
+      "id": 2479,
+      "name": "Lysandra",
+      "job": "tank",
+      "lvl": 2,
+      "health": 18,
+      "physicAttack": 6,
+      "magicAttack": 3,
+      "def": 13,
+      "image": "/Assets/character/adventurers/tank2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 140,
+      "foodPrice": 30
     }
   ]
 }

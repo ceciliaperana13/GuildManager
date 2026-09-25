@@ -38,6 +38,8 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
     public void SetGame(Game game)
     {
         Game = game;
+        if (_entry.Trigger == "manual")
+            Game.MarkDialogueAsShown(_entry.Id);
     }
 
     public void Advance()
@@ -61,12 +63,14 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
 
     public void ChooseOption(DialogueChoice choice)
     {
-        // TODO: appliquer choice.Effects via la logique de jeu 
+        Game.ApplyDialogueEffects(choice.Effects);
 
         if (choice.NextDialogueId != null)
         {
             _entry = DialogueRepository.Get(choice.NextDialogueId);
             _lineIndex = 0;
+            if (_entry.Trigger == "manual")
+                Game.MarkDialogueAsShown(_entry.Id);
             Raise();
         }
         else if (choice.EndsGame == true)

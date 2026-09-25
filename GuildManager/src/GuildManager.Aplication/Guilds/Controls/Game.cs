@@ -12,6 +12,9 @@ public class Game
     public int food {get; private set;}
     public int prestige {get; private set;}
     public int xp {get; private set;}
+    public Dictionary<string, bool> storyFlags { get; } = new();
+    public HashSet<string> ShownDialogueIds { get; } = new();
+    public bool? LastQuestSucceeded { get; private set; }
     public List<Item> inventory = new List<Item>();
     public AdventurerManager adventurerManager = new AdventurerManager();
     public QuestManager questManager = new QuestManager();
@@ -102,6 +105,47 @@ public class Game
         this.prestigeUp();
     }
 
+    public void ApplyDialogueEffects(Dictionary<string, object>? effects)
+    {
+        if (effects is null) return;
+
+        foreach (var effect in effects)
+        {
+            if (effect.Value is JsonElement jsonValue && jsonValue.ValueKind == JsonValueKind.Number
+                && jsonValue.TryGetInt32(out int amount))
+            {
+                switch (effect.Key)
+                {
+                    case "gold": gold += amount; break;
+                    case "food": food += amount; break;
+                    case "prestige": prestige += amount; break;
+                    case "xp": xp += amount; break;
+                }
+
+                continue;
+            }
+
+            if (effect.Value is JsonElement jsonFlag && jsonFlag.ValueKind == JsonValueKind.True)
+            {
+                storyFlags[effect.Key] = true;
+
+                if (effect.Key.StartsWith("recruit_", StringComparison.Ordinal))
+                {
+                    var adventurer = adventurerManager.generateCharacter(prestige);
+                    adventurerManager.AddAdventurer(adventurer);
+                }
+            }
+        }
+    }
+
+    public bool HasStoryFlag(string condition)
+    {
+        var flag = condition.Replace("== true", "", StringComparison.OrdinalIgnoreCase).Trim();
+        return storyFlags.TryGetValue(flag, out bool value) && value;
+    }
+
+    public void MarkDialogueAsShown(string dialogueId) => ShownDialogueIds.Add(dialogueId);
+
     public bool Win()
     {
         if (this.prestige == 10) // ajouter la condition d'histoire terminée
@@ -116,12 +160,15 @@ public class Game
     {
         this.turn++;
         this.isBought = false;
+        LastQuestSucceeded = null;
         // complétion des quêtes après le tour
         foreach(Quest quest in this.questManager.quests)
         {
             if (quest.inProgress)
             {
                 this.claimReward(quest.giveReward());
+                LastQuestSucceeded = quest.LastCompletionSucceeded;
+                quest.markCompleted();
             }
         }
         this.AdventurersRageQuit();

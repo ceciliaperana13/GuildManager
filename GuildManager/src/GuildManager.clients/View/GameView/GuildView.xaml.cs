@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
+using GuildManager.Client.Models;
 using GuildManager.Client.Services;
 using GuildManager.Aplication.Guilds.Controls;
 
@@ -66,6 +67,26 @@ public partial class GuildView : UserControl
 
     Game.passTurn();
     (DataContext as GuildViewModel)?.RefreshResources();
+
+    DialogueEntry? dialogue = null;
+    if (Game.turn % 5 == 0)
+    {
+        dialogue = DialogueRepository.GetByTrigger(
+            "manual", Game.mainProgress, Game.HasStoryFlag, Game.ShownDialogueIds);
+    }
+
+    if (dialogue is null)
+    {
+        var trigger = Game.LastQuestSucceeded is not null ? "questResult" : "turnStart";
+        dialogue = DialogueRepository.GetByTrigger(trigger, Game.mainProgress, Game.HasStoryFlag);
+    }
+    if (dialogue is not null)
+    {
+        NavigationService.NavigateTo(
+            new DialogueViewModel(dialogue.Id, "/Assets/UI/guilde_background.png"),
+            Game);
+        return;
+    }
 
     GuildCoinFlip.Visibility = Visibility.Visible;
     GuildCoinFlip.PlayFlip(Random.Shared.Next(2) == 1);

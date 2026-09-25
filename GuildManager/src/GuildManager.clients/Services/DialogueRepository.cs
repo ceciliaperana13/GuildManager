@@ -21,9 +21,16 @@ public static class DialogueRepository
 
     public static DialogueEntry Get(string id) => _entries[id];
 
-    public static DialogueEntry? GetByTrigger(string trigger, int act, System.Func<string, bool>? conditionEvaluator = null)
+    public static DialogueEntry? GetByTrigger(
+        string trigger,
+        int act,
+        System.Func<string, bool>? conditionEvaluator = null,
+        ISet<string>? excludedIds = null)
     {
-        // TODO: logique de sélection réelle (act courant, condition à évaluer)
-        return _entries.Values.FirstOrDefault(e => e.Trigger == trigger && e.Act == act);
+        return _entries.Values.FirstOrDefault(entry =>
+            entry.Trigger == trigger
+            && entry.Act == act
+            && (excludedIds is null || !excludedIds.Contains(entry.Id))
+            && (entry.Condition is null || conditionEvaluator?.Invoke(entry.Condition) == true));
     }
 }
