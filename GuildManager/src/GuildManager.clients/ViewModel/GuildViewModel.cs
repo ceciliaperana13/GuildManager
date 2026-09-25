@@ -18,6 +18,7 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
 
     public int Gold => Game?.gold ?? 0;
     public int Food => Game?.food ?? 0;
+    public int Prestige => Game?.prestige ?? 0;
 
     public void SetGame(Game game)
     {
@@ -28,23 +29,23 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
         Game = game;
         OnPropertyChanged(nameof(Gold));
         OnPropertyChanged(nameof(Food));
+        OnPropertyChanged(nameof(Prestige));
 
+        // On se réabonne pour être notifié des futurs changements de ressources.
         GuildRealtimeService.ResourcesUpdated += OnResourcesUpdated;
     }
 
     private void OnResourcesUpdated(ResourcesResponse resources)
     {
-        Game?.SyncResources(resources.Gold, resources.Food);
-
-        // L'event SignalR arrive sur un thread de fond ; il faut repasser
-        // sur le thread UI pour que le binding WPF se mette à jour.
-        Application.Current.Dispatcher.Invoke(RefreshResources);
+        Game.SyncResources(resources.Gold, resources.Food);
+        RefreshResources();
     }
 
     public void RefreshResources()
     {
         OnPropertyChanged(nameof(Gold));
         OnPropertyChanged(nameof(Food));
+        OnPropertyChanged(nameof(Prestige));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

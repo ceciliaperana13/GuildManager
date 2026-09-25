@@ -124,12 +124,37 @@ public class Game
                 this.claimReward(quest.giveReward());
             }
         }
+        this.AdventurersRageQuit();
         this.questManager.refreshQuests(this.prestige);
         this.adventurerManager.refreshadventurersToHire(this.prestige);
         this.adventurerManager.refreshAdventurers();
         this.adventurerManager.refreshMainAdventurers();
         this.food -= this.adventurerManager.adventurersEat();
         Console.WriteLine($"Bouffe : {this.food}");
+    }
+
+    public List<Adventurer> AdventurersRageQuit()
+    {
+        List<Adventurer> adventurersQuit = new List<Adventurer>();
+        if (this.food <= 0)
+        {
+            Random random = new Random();
+            foreach(Adventurer adventurer in this.adventurerManager.adventurers)
+            {
+                double value = random.NextDouble()*100;
+                double chance = 50 - (30*(adventurer.lvl-1)/99);
+                if (value < chance)
+                    adventurersQuit.Add(adventurer);
+                    
+            }
+        }
+        foreach(Adventurer adventurer in adventurersQuit)
+        {
+            this.adventurerManager.removeAdventurer(adventurer);
+            Console.WriteLine($"{adventurer.name} a quitter la guilde");
+        }
+
+        return adventurersQuit;
     }
 
     // public void playTurn()
