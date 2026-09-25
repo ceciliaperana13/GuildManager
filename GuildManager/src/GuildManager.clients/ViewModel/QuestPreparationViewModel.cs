@@ -42,8 +42,13 @@ public class QuestPreparationViewModel : IScreenViewModel
             .Where(adventurer => !selectedNames.Contains(adventurer.name))
             .Select(adventurer => new AdventurerCard
             {
+                Adventurer = adventurer,
                 Name = adventurer.name,
                 ClassName = adventurer.job,
+                Health = adventurer.health,
+                Defense = adventurer.def,
+                MagicAttack = adventurer.magicAttack,
+                PhysicAttack = adventurer.physicAttack,
                 PortraitPath = adventurer.image,
                 Level = adventurer.lvl,
                 Status = AdventurerStatus.Disponible

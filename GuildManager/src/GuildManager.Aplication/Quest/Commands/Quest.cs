@@ -18,6 +18,8 @@ public class Quest
     public Reward rewards { get; private set; }
     public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
+    [JsonIgnore]
+    public bool? LastCompletionSucceeded { get; private set; }
 
     
     // public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress)
@@ -131,6 +133,8 @@ public class Quest
         return false;
     }
 
+    public void markCompleted() => this.inProgress = false;
+
     public bool completeQuest()
     {
         Random random = new Random();
@@ -147,7 +151,8 @@ public class Quest
 
     public Reward giveReward()
     {
-        if (this.completeQuest())
+        LastCompletionSucceeded = this.completeQuest();
+        if (LastCompletionSucceeded == true)
         {
             //Console.WriteLine($"récompenses : {this.rewards.gold}");
             return this.rewards;

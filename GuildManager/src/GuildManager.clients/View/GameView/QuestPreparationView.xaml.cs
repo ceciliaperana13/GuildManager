@@ -54,7 +54,7 @@ public partial class QuestPreparationView : UserControl
 
     
 
-     private void OnPickerCancelled() => Picker.Visibility = Visibility.Collapsed;
+    private void OnPickerCancelled() => Picker.Visibility = Visibility.Collapsed;
 
     private void UpdatePercentageDisplay()
     {

@@ -83,8 +83,8 @@
         </StackPanel>
 
         <controls:BackButton HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Height="60" Margin="20"/>
-        <controls:AdventurerPickerPopup x:Name="Picker" Visibility="Collapsed"
-                                        AdventurerPicked="OnAdventurerPicked" CancelRequested="OnPickerCancelled"/>
+         <controls:AdventurerPickerPopup x:Name="Picker" Visibility="Collapsed"
+                                         AdventurerPicked="OnAdventurerPicked" CancelRequested="OnPickerCancelled"/>
         <controls:TextPopup x:Name="textPopup" Visibility="Collapsed"
                                         CancelRequested="OnTextPopupCancelled"/>
     </Grid>
