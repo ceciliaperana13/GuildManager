@@ -19,8 +19,23 @@
                                 <Image Source="{Binding PortraitPath}" Height="120"/>
                                 <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16"
                                            HorizontalAlignment="Center" Foreground="#3B2412" Margin="0,6,0,0"/>
-                                <TextBlock Text="{Binding ClassName}" FontSize="12"
-                                           HorizontalAlignment="Center" Foreground="#5C4A32"/>
+                                <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">
+                                    <Run Text="{Binding ClassName}"/>
+                                    <Run Text=" lvl "/>
+                                    <Run Text="{Binding Level}"/>
+                                </TextBlock>
+                                <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">
+                                    <Run Text="PV : " Foreground= "#C62828"/>
+                                    <Run Text="{Binding Health}"/>
+                                    <Run Text="    DEF : " Foreground= "#78909C"/>
+                                    <Run Text="{Binding Defense}"/>
+                                </TextBlock>
+                                <TextBlock  FontSize="12" Foreground="#5C4A32" HorizontalAlignment="Center" FontWeight="Bold">
+                                    <Run Text="AP : " Foreground= "#D4AF37"/>
+                                    <Run Text="{Binding PhysicAttack}"/>
+                                    <Run Text="    AM : " Foreground= "#1976D2"/>
+                                    <Run Text="{Binding MagicAttack}"/>
+                                </TextBlock>
                                 <Border Background="{Binding StatusColor}" CornerRadius="4"
                                         Margin="0,6,0,0" Padding="4,2">
                                     <TextBlock Text="{Binding StatusLabel}" FontSize="11"
