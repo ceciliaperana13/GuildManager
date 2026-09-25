@@ -56,7 +56,16 @@ public partial class LoginMenuView : UserControl
 
             // Enregistrement + heartbeat en continu, tant que l'appli reste ouverte
             SessionKeepAlive.Start(AppSession.ApiBaseUrl, AppSession.Username);
-            Game game = new Game("test", 1, 0, 10000, 10000, 1, 0);
+
+            // Récupération de l'état réel des ressources partagées (pot commun coop)
+            // au lieu de valeurs de test codées en dur.
+            var apiClient = new GuildApiClient();
+            var resources = await apiClient.GetResourcesAsync();
+
+            int gold = resources?.Gold ?? 0;
+            int food = resources?.Food ?? 0;
+
+            Game game = new Game(result.Username, 1, 0, gold, food, 1, 0);
             NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)
