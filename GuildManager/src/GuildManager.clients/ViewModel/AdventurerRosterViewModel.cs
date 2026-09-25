@@ -15,7 +15,7 @@ public class AdventurerRosterViewModel : IScreenViewModel
         game.adventurerManager.refreshAdventurers();
         foreach (Adventurer adventurer in game.adventurerManager.adventurers)
         {   
-            Adventurers.Add(new AdventurerCard { Name = adventurer.name, Level = adventurer.lvl, ClassName = adventurer.job, Health = adventurer.health, PhysicAttack = adventurer.physicAttack, MagicAttack = adventurer.magicAttack, Defense = adventurer.def, Status = AdventurerStatus.Disponible, PortraitPath = adventurer.image });
+            Adventurers.Add(new AdventurerCard { Adventurer = adventurer, Name = adventurer.name, Level = adventurer.lvl, ClassName = adventurer.job, Health = adventurer.health, PhysicAttack = adventurer.physicAttack, MagicAttack = adventurer.magicAttack, Defense = adventurer.def, Status = AdventurerStatus.Disponible, PortraitPath = adventurer.image });
         }
     }
 }

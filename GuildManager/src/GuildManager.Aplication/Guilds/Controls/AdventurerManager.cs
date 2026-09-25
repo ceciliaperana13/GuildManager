@@ -170,6 +170,31 @@ public class AdventurerManager
         this.addAdventurerToJson(adventurer);        
     }
 
+    public void removeAdventurer(Adventurer adventurer)
+    {
+        // remove on list
+        this.adventurers.RemoveAll(a => a.id == adventurer.id);
+
+        // remove on json
+        string json = File.ReadAllText(DataFile);
+        JsonObject root = JsonNode.Parse(json)!.AsObject();
+
+        if (root["adventurers"] is JsonArray adventurersArray)
+        {
+            for (int i = adventurersArray.Count - 1; i >= 0; i--)
+            {
+                if (adventurersArray[i]?["id"]?.GetValue<int>() == adventurer.id)
+                {
+                    adventurersArray.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        File.WriteAllText(DataFile, root.ToJsonString(options));
+    }
+
     public Adventurer searchAdventurerById(int id)
     {
         refreshAdventurers();

@@ -1,3 +1,5 @@
+using GuildManager.Aplication.Guilds.Controls;
+
 namespace GuildManager.Client.Models;
 
 public enum AdventurerStatus
@@ -10,6 +12,7 @@ public enum AdventurerStatus
 
 public class AdventurerCard
 {
+    public Adventurer Adventurer { get; set; } = null!;
     public string Name { get; set; } = "";
     public string ClassName { get; set; } = "";
     public string PortraitPath { get; set; } = "";
