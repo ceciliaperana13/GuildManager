@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -14,26 +15,25 @@ public class Quest
     public List<Monster> enemies { get; private set; }
     public List<Adventurer> adventurers { get; private set; }
     public double winRate { get; private set; }
-    //public (int gold, int food, int prestige, List<Item> items) rewards { get; private set; } // faire une struct ?
     public Reward rewards { get; private set; }
     public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
 
+    
+    // public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress)
+    // {
+    //     this.name = name;
+    //     this.type = type;
+    //     this.lvl = lvl;
+    //     this.description = description;
+    //     this.enemies = enemies;
+    //     this.adventurers = adventurers;
+    //     this.rewards = rewards;
+    //     this.remainingTime = remainingTime;
+    //     this.inProgress = inProgress;
+    //     this.winRate = refreshWinRate();
+    // }
     [JsonConstructor]
-    public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress)
-    {
-        this.name = name;
-        this.type = type;
-        this.lvl = lvl;
-        this.description = description;
-        this.enemies = enemies;
-        this.adventurers = adventurers;
-        this.rewards = rewards;
-        this.remainingTime = remainingTime;
-        this.inProgress = inProgress;
-        this.winRate = refreshWinRate();
-    }
-
     public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress, double winRate)
     {
         this.name = name;
@@ -46,6 +46,7 @@ public class Quest
         this.remainingTime = remainingTime;
         this.inProgress = inProgress;
         this.winRate = winRate;
+        this.refreshWinRate();
     }
 
     void refreshCharacterPower()
@@ -64,6 +65,19 @@ public class Quest
     {
         if (this.type == "Recherche")
         {
+            if (this.adventurers.Count == 0)
+            {
+                this.winRate = 0;
+                return this.winRate;
+            }
+
+            double averageLevel = this.adventurers.Average(a => a.lvl);
+            double delta = averageLevel - this.lvl;
+
+            double bonusNum = 30.0 * Math.Log2(this.adventurers.Count + 1);
+            double bonusEffectif = delta + bonusNum;
+
+            this.winRate = 1.0 / (1.0 + Math.Pow(10, -bonusEffectif / 100.0)) * 100.0;
             return this.winRate;
         }
         else
@@ -108,9 +122,10 @@ public class Quest
 
     public bool acceptQuest()
     {
-        if (this.adventurers.Count >= 0)
+        if (this.adventurers.Count > 0)
         {
             this.inProgress = true;
+            Console.WriteLine($"Quête acceptée : {this.name}");
             return true;
         }
         return false;

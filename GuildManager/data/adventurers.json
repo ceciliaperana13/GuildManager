@@ -1,5 +1,5 @@
 {
-  "idCount": 1063,
+  "idCount": 2470,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -59,8 +59,8 @@
       "foodPrice": 65
     },
     {
-      "id": 1113,
-      "name": "Elaria",
+      "id": 2400,
+      "name": "Draven",
       "job": "tank",
       "lvl": 1,
       "health": 3,
@@ -70,8 +70,8 @@
       "image": "/Assets/character/adventurers/mage1.png",
       "debuff": [],
       "isHurted": false,
-      "goldPrice": 120,
-      "foodPrice": 25
+      "goldPrice": 440,
+      "foodPrice": 105
     },
     {
       "id": 710,
@@ -230,8 +230,8 @@
       "image": "/Assets/character/adventurers/guerrier2.png",
       "debuff": [],
       "isHurted": false,
-      "goldPrice": 280,
-      "foodPrice": 65
+      "goldPrice": 660,
+      "foodPrice": 160
     }
   ]
 }

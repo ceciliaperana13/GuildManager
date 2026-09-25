@@ -135,4 +135,14 @@ public class QuestManager
             this.quests.Add(generateQuest(type, random.Next((prestige-1)*10+1, prestige*10-1), 100));
         }
     }
+
+    public Quest searchQuestByName(string name)
+    {
+        foreach (Quest quest in this.quests)
+        {
+            if (quest.name == name)
+                return quest;
+        }
+        return null;
+    }
 }
