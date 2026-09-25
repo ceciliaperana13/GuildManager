@@ -84,6 +84,7 @@ public partial class CoopMenuView : UserControl
 
             AppSession.ApiBaseUrl = "http://localhost:5080";
             AppSession.IsHost = true;
+            AppSession.IsCoop = true;
 
             ShowHostReady();
         }
@@ -150,6 +151,7 @@ public partial class CoopMenuView : UserControl
 
         AppSession.ApiBaseUrl = remoteUrl;
         AppSession.IsHost = false;
+        AppSession.IsCoop = true;
         AppSession.UserId = 0;
         AppSession.Username = string.Empty;
 

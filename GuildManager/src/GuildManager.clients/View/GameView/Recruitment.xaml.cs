@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
@@ -35,18 +36,41 @@ public partial class RecruitmentView : UserControl
         if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
             return;
 
-        var apiClient = new GuildApiClient();
-        var (success, resources, error) = await apiClient.HireAdventurerAsync(_selectedCandidate.Id);
-
-        if (!success)
+        if (AppSession.IsCoop)
         {
-            PurchaseText.Text = error ?? "Achat impossible.";
-            return; // laisse la boîte de dialogue ouverte pour montrer l'erreur
+            // Mode coop : l'achat passe par l'API, qui gère le pot commun partagé.
+            var apiClient = new GuildApiClient();
+            var (success, resources, error) = await apiClient.HireAdventurerAsync(_selectedCandidate.Id);
+
+            if (!success)
+            {
+                PurchaseText.Text = error ?? "Achat impossible.";
+                return; // laisse la boîte de dialogue ouverte pour montrer l'erreur
+            }
+
+            viewModel.Game.SyncResources(resources!.Gold, resources.Food);
+        }
+        else
+        {
+            // Mode solo : l'achat se fait directement en local sur l'instance de Game.
+            var adventurer = viewModel.Game.adventurerManager.adventurersToHire
+                .FirstOrDefault(a => a.id == _selectedCandidate.Id);
+
+            if (adventurer is null)
+            {
+                PurchaseText.Text = "Cet aventurier n'est plus disponible.";
+                return;
+            }
+
+            bool bought = viewModel.Game.buyAdventurer(adventurer);
+            if (!bought)
+            {
+                PurchaseText.Text = "Pas assez d'or, ou recrutement déjà effectué ce tour-ci.";
+                return;
+            }
         }
 
-        viewModel.Game.SyncResources(resources!.Gold, resources.Food);
         viewModel.Candidates.Remove(_selectedCandidate);
-
         ClosePurchaseDialog();
     }
 

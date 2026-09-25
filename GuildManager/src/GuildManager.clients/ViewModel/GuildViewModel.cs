@@ -30,6 +30,15 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
         OnPropertyChanged(nameof(Gold));
         OnPropertyChanged(nameof(Food));
         OnPropertyChanged(nameof(Prestige));
+
+        // On se réabonne pour être notifié des futurs changements de ressources.
+        GuildRealtimeService.ResourcesUpdated += OnResourcesUpdated;
+    }
+
+    private void OnResourcesUpdated(ResourcesResponse resources)
+    {
+        Game.SyncResources(resources.Gold, resources.Food);
+        RefreshResources();
     }
 
     public void RefreshResources()
