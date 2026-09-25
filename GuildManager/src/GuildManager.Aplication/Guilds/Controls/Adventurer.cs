@@ -8,6 +8,7 @@ public class Adventurer : Character
     public bool isHurted {get; private set;}
     public int goldPrice {get; private set;}
     public int foodPrice {get; private set;}
+    public List<Item> items {get; private set;}
 
     public Adventurer(int id, string name, string job, int lvl, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted, int goldPrice, int foodPrice) : base(name, lvl, health, def, magicAttack, physicAttack, image)
     {
