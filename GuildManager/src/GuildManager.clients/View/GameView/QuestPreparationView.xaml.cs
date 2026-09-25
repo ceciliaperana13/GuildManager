@@ -90,6 +90,8 @@ public partial class QuestPreparationView : UserControl
         }
     }
 
+
+
     private void OpenTextPopup(string message)
     {
         textPopup.SetText(message);
