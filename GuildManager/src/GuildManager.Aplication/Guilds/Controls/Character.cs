@@ -2,7 +2,7 @@ namespace GuildManager.Aplication.Guilds.Controls;
 public class Character
 {
     public string name {get ; private set;}
-    public int lvl {get ; private set;}
+    public int lvl {get ; protected set;}
     public int health {get ; private set;}
     public int def {get ; private set;}
     public int magicAttack {get ; private set;}

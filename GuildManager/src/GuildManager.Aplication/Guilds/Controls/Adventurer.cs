@@ -9,8 +9,9 @@ public class Adventurer : Character
     public int goldPrice {get; private set;}
     public int foodPrice {get; private set;}
     public List<Item> items {get; private set;}
+    public int xp {get; set;}
 
-    public Adventurer(int id, string name, string job, int lvl, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted, int goldPrice, int foodPrice) : base(name, lvl, health, def, magicAttack, physicAttack, image)
+    public Adventurer(int id, string name, string job, int lvl, int xp, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted, int goldPrice, int foodPrice) : base(name, lvl, health, def, magicAttack, physicAttack, image)
     {
         this.id = id;
         this.job = job;
@@ -18,6 +19,7 @@ public class Adventurer : Character
         this.isHurted = isHurted;
         this.goldPrice = goldPrice;
         this.foodPrice = foodPrice;
+        this.xp = xp;
         refreshPower();
     }
 
@@ -34,5 +36,15 @@ public class Adventurer : Character
     public void Write()
     {
         Console.WriteLine($"ID : {this.id}\nNom : {this.name}\nClasse : {this.job}\nNiveau : {this.lvl}\nSanté : {this.health}\nMagie : {this.magicAttack}\nPhysique : {this.physicAttack}\ndéfense : {this.def}\nImage : {this.image}\nPrix : {this.goldPrice}\nConsommation : {this.foodPrice}");
+    }
+
+    public void levelUp()
+    {
+        if (this.xp >= this.lvl*10)
+        {
+            this.lvl++;
+            this.xp -= this.lvl*10;
+            Console.WriteLine($"{this.name} est passé niveau {this.lvl}");
+        }
     }
 }

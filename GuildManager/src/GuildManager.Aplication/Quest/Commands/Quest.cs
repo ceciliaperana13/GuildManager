@@ -18,6 +18,7 @@ public class Quest
     public Reward rewards { get; private set; }
     public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
+    public bool giveXp { get; set; }
 
     
     // public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress)
@@ -46,6 +47,7 @@ public class Quest
         this.remainingTime = remainingTime;
         this.inProgress = inProgress;
         this.winRate = winRate;
+        this.giveXp = false;
         this.refreshWinRate();
     }
 
@@ -149,10 +151,32 @@ public class Quest
     {
         if (this.completeQuest())
         {
+            int adventurersXp = this.rewards.prestige / 2;
             //Console.WriteLine($"récompenses : {this.rewards.gold}");
+            if (this.giveXp)
+            {
+                adventurersXp = this.rewards.prestige;
+                this.rewards.prestige = 0;
+            } 
+            else
+                this.rewards.prestige /= 2;
+
+            shareXp(adventurersXp);
             return this.rewards;
         }
         else 
             return new Reward(0, 0, 0, []);  
     }
+
+    public void shareXp(int xp)
+    {
+        int personalXp = xp / this.adventurers.Count();
+        foreach(Adventurer adventurer in this.adventurers)
+        {
+            adventurer.xp += personalXp;
+            Console.WriteLine($"{adventurer.name} à reçut {personalXp} xp");
+            adventurer.levelUp();
+        }
+    } 
+
 }
