@@ -19,6 +19,8 @@ public class Quest
     public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
     public bool giveXp { get; set; }
+    public int LastXpShared { get; private set; }
+    public bool LastResultWon { get; private set; }
 
     
     // public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress)
@@ -139,66 +141,70 @@ public class Quest
     }
 
     public bool completeQuest(int turn)
-{
-    this.inProgress = false;
-
-    Random random = new Random();
-    double num = random.NextDouble() * 100;
-
-    if (num <= this.winRate) // victoire
     {
-        foreach (Adventurer adventurer in this.adventurers)
+        this.inProgress = false;
+        Random random = new Random();
+        double num = random.NextDouble() * 100;
+
+        if (num <= this.winRate) // victoire
         {
-            adventurer.isInQuest = false;
-            if (this.winRate <= 60 && this.type == "Combat" && random.Next(100) > 50)
-                adventurer.adventurerHurt(turn);
-        }
-        Console.WriteLine($"Quête : {this.name} réussie");
-        return true; 
-    }
-    else // défaite
-    {
-        foreach (Adventurer adventurer in this.adventurers)
-        {
-            adventurer.isInQuest = false;
-            if (this.type == "Combat")
+            this.LastResultWon = true;
+            foreach (Adventurer adventurer in this.adventurers)
             {
-                if (random.Next(100) < 25)
+                adventurer.isInQuest = false;
+                if (this.winRate <= 60 && this.type == "Combat" && random.Next(100) > 50)
                     adventurer.adventurerHurt(turn);
-                else if (random.Next(100) < 75)
-                {
-                    adventurer.isDead = true;
-                    Console.Write($"{adventurer.name} est mort au combat {adventurer.isDead}");
-                }
-                else Console.WriteLine($"{adventurer.name} a fuit");    
             }
+            return true; 
         }
-        Console.WriteLine($"Quête : {this.name} échouée");
-        return false; 
+        else // défaite
+        {
+            this.LastResultWon = false;
+            foreach (Adventurer adventurer in this.adventurers)
+            {
+                adventurer.isInQuest = false;
+                if (this.type == "Combat")
+                {
+                    if (random.Next(100) < 25)
+                        adventurer.adventurerHurt(turn);
+                    else if (random.Next(100) < 75 && adventurer.id > 7) // 7 premiers id reservé aux perso spéciaux
+                    {   
+                        adventurer.isDead = true;
+                        Console.Write($"{adventurer.name} est mort au combat {adventurer.isDead}");
+                    }
+                    else Console.WriteLine($"{adventurer.name} a fuit");    
+                }
+            }
+            Console.WriteLine($"Quête : {this.name} échouée");
+            return false; 
+        }
     }
-}
 
     public Reward giveReward(int turn)
     {
         if (this.completeQuest(turn))
         {
             int adventurersXp = this.rewards.prestige / 2;
-            //Console.WriteLine($"récompenses : {this.rewards.gold}");
+
             if (this.giveXp)
             {
-                Console.WriteLine("Tout l'xp à été atribué aux aventuriers");
                 adventurersXp = this.rewards.prestige;
                 this.rewards.prestige = 0;
             } 
             else
                 this.rewards.prestige /= 2;
 
+            this.LastXpShared = adventurersXp;
             shareXp(adventurersXp);
             return this.rewards;
         }
-        else 
-            return new Reward(0, 0, 0, []);  
+        else
+        {
+            this.LastXpShared = 0;
+            return new Reward(0, 0, 0, []);
+        }
     }
+
 
     public void shareXp(int xp)
     {

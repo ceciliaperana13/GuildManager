@@ -170,7 +170,11 @@ public class AdventurerManager
         foreach (Adventurer adventurer in this.adventurers.ToList())
         {
             if (adventurer.isDead)
+            {
                 removeAdventurer(adventurer);
+                continue;
+            }
+                
             else if (adventurer.isHurted && turn >= adventurer.hurtTurn + 3)
             {
                 Console.WriteLine($"{adventurer.name} soigné");

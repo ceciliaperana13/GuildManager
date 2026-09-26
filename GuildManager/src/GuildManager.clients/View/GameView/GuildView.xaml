@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:GuildManager.Client.View.Controls">
     <Viewbox Stretch="Uniform">
-        <Canvas Width="1867" Height="819">
+        <Canvas x:Name="RootCanvas" Width="1867" Height="819">
             <Image Source="/Assets/Backgrounds/guilde_background.png" Width="1867" Height="819"/>
             <!--resource bar  -->
             <controls:ResourceBar Gold="{Binding Gold}" Food="{Binding Food}" Prestige="{Binding Prestige}"

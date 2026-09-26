@@ -1,6 +1,7 @@
 using System.CodeDom;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using GuildManager.Client.Models;
 
 namespace GuildManager.Aplication.Guilds.Controls;
 public class Game
@@ -19,6 +20,7 @@ public class Game
     bool isBought;
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
+    public List<QuestSummaryData> LastQuestSummaries { get; private set; } = new();
 
 
     public Game(string playerName, int turn, int mainProgress, int gold, int food, int prestige, int xp)
@@ -136,19 +138,49 @@ public class Game
     {
         this.turn++;
         this.isBought = false;
-        // complétion des quêtes après le tour
-        foreach(Quest quest in this.questManager.quests)
+
+        var summaries = new List<QuestSummaryData>();
+
+        foreach (Quest quest in this.questManager.quests)
         {
             if (quest.inProgress)
             {
-                this.claimReward(this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn));
+                List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
+
+                Reward reward = this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn);
+                this.claimReward(reward);
+
+                var adventurerCards = participants.Select(a => new AdventurerCard
+                {
+                    Adventurer = a,
+                    Name = a.name,
+                    ClassName = a.job,
+                    Health = a.health,
+                    Defense = a.def,
+                    MagicAttack = a.magicAttack,
+                    PhysicAttack = a.physicAttack,
+                    PortraitPath = a.image,
+                    Level = a.lvl,
+                    Status = a.isDead ? AdventurerStatus.Mort
+                        : a.isHurted ? AdventurerStatus.Blesse
+                        : AdventurerStatus.Disponible
+                }).ToList();
+
+                int xpPerAdventurer = adventurerCards.Count > 0
+                    ? quest.LastXpShared / adventurerCards.Count
+                    : 0;
+
+                summaries.Add(new QuestSummaryData(quest.name, quest.LastResultWon, adventurerCards, xpPerAdventurer, reward));
             }
         }
+
+        this.LastQuestSummaries = summaries;
+
         this.AdventurersRageQuit();
         this.refreshAll();
         this.food -= this.adventurerManager.adventurersEat();
         Console.WriteLine($"Bouffe : {this.food}");
-    }
+    }   
 
     public List<Adventurer> AdventurersRageQuit()
     {
