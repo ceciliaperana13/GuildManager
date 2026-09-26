@@ -61,34 +61,55 @@ public partial class GuildView : UserControl
     {
     }
 
-    private void OnFlipClicked(object sender, RoutedEventArgs e)
-{
-    if (Game is null) return;
-
-    Game.passTurn();
-    (DataContext as GuildViewModel)?.RefreshResources();
-
-    DialogueEntry? dialogue = null;
-    if (Game.turn % 5 == 0)
+    private async void OnFlipClicked(object sender, RoutedEventArgs e)
     {
-        dialogue = DialogueRepository.GetByTrigger(
-            "manual", Game.mainProgress, Game.HasStoryFlag, Game.ShownDialogueIds);
-    }
+        if (Game is null) return;
 
-    if (dialogue is null)
-    {
-        var trigger = Game.LastQuestSucceeded is not null ? "questResult" : "turnStart";
-        dialogue = DialogueRepository.GetByTrigger(trigger, Game.mainProgress, Game.HasStoryFlag);
-    }
-    if (dialogue is not null)
-    {
-        NavigationService.NavigateTo(
-            new DialogueViewModel(dialogue.Id, "/Assets/UI/guilde_background.png"),
-            Game);
-        return;
-    }
+        int goldBefore = Game.gold;
+        int foodBefore = Game.food;
 
-    GuildCoinFlip.Visibility = Visibility.Visible;
-    GuildCoinFlip.PlayFlip(Random.Shared.Next(2) == 1);
-}
+        Game.passTurn();
+
+        // En coop, l'or/la nourriture gagnés ou consommés pendant ce tour doivent
+        // être répercutés sur le pot commun partagé (saves.json côté serveur),
+        // pour que tous les joueurs voient le même solde à jour.
+        if (Game.IsCoop)
+        {
+            int goldDelta = Game.gold - goldBefore;
+            int foodDelta = Game.food - foodBefore;
+
+            if (goldDelta != 0 || foodDelta != 0)
+            {
+                var apiClient = new GuildApiClient();
+                var (success, resources, _) = await apiClient.AdjustResourcesAsync(goldDelta, foodDelta);
+                if (success)
+                    Game.SyncResources(resources!.Gold, resources.Food);
+            }
+        }
+
+        (DataContext as GuildViewModel)?.RefreshResources();
+
+        DialogueEntry? dialogue = null;
+        if (Game.turn % 5 == 0)
+        {
+            dialogue = DialogueRepository.GetByTrigger(
+                "manual", Game.mainProgress, Game.HasStoryFlag, Game.ShownDialogueIds);
+        }
+
+        if (dialogue is null)
+        {
+            var trigger = Game.LastQuestSucceeded is not null ? "questResult" : "turnStart";
+            dialogue = DialogueRepository.GetByTrigger(trigger, Game.mainProgress, Game.HasStoryFlag);
+        }
+        if (dialogue is not null)
+        {
+            NavigationService.NavigateTo(
+                new DialogueViewModel(dialogue.Id, "/Assets/UI/guilde_background.png"),
+                Game);
+            return;
+        }
+
+        GuildCoinFlip.Visibility = Visibility.Visible;
+        GuildCoinFlip.PlayFlip(Random.Shared.Next(2) == 1);
+    }
 }

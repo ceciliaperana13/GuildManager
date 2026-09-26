@@ -16,6 +16,7 @@ public class ResourceController : ControllerBase
     private readonly ILogger<ResourceController> _logger;
 
     public record TransferResourcesRequest(string ResourceType, int Amount);
+    public record AdjustResourcesRequest(int GoldDelta, int FoodDelta);
     public record ResourcesResponse(int Gold, int Food);
 
     public ResourceController(
@@ -61,6 +62,30 @@ public class ResourceController : ControllerBase
         _logger.LogInformation(
             "Ressources partagées : {Amount} {Type} retirés du pot commun",
             request.Amount, request.ResourceType);
+
+        await _hub.Clients.Group(GuildHub.GuildGroup(state.GuildId))
+            .SendAsync("ResourcesUpdated", new ResourcesResponse(state.Gold, state.Food));
+
+        return Ok(new ResourcesResponse(state.Gold, state.Food));
+    }
+
+    // Ajuste le pot commun d'un delta signé (positif = gain, négatif = perte),
+    // utilisé après un passage de tour local (récompenses de quête, nourriture
+    // consommée par les aventuriers) pour que gains et pertes restent
+    // synchronisés et persistés pour tous les joueurs de la guilde coop.
+    [HttpPost("adjust")]
+    public async Task<IActionResult> Adjust(AdjustResourcesRequest request)
+    {
+        var state = await _coopStore.LoadAsync();
+
+        state.Gold = Math.Max(0, state.Gold + request.GoldDelta);
+        state.Food = Math.Max(0, state.Food + request.FoodDelta);
+
+        await _coopStore.SaveAsync(state);
+
+        _logger.LogInformation(
+            "Ajustement partagé : {GoldDelta} or / {FoodDelta} nourriture (nouveau solde : {Gold} or, {Food} nourriture)",
+            request.GoldDelta, request.FoodDelta, state.Gold, state.Food);
 
         await _hub.Clients.Group(GuildHub.GuildGroup(state.GuildId))
             .SendAsync("ResourcesUpdated", new ResourcesResponse(state.Gold, state.Food));
