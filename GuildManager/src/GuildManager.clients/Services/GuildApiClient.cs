@@ -19,7 +19,10 @@ public record AdventurerCandidateDto(
     int PhysicAttack,
     string Image,
     int GoldPrice,
-    int FoodPrice);
+    int FoodPrice,
+    bool IsHurted,
+    bool IsInQuest,
+    bool IsDead);
 
 public class GuildApiClient
 {
@@ -30,8 +33,16 @@ public class GuildApiClient
         _client = new HttpClient { BaseAddress = new Uri(AppSession.ApiBaseUrl) };
     }
 
+    // Candidats au recrutement (pas encore dans la guilde).
     public async Task<List<AdventurerCandidateDto>> GetAdventurersToHireAsync()
         => await _client.GetFromJsonAsync<List<AdventurerCandidateDto>>("api/guild/adventurers/to-hire")
+           ?? new List<AdventurerCandidateDto>();
+
+    // Roster complet des aventuriers déjà recrutés par la guilde coop.
+    // C'est cette liste qu'il faut utiliser pour la sélection des participants
+    // à une quête en mode coop (AdventurerController.GetRoster côté API).
+    public async Task<List<AdventurerCandidateDto>> GetAdventurersRosterAsync()
+        => await _client.GetFromJsonAsync<List<AdventurerCandidateDto>>("api/guild/adventurers")
            ?? new List<AdventurerCandidateDto>();
 
     public async Task<(bool Success, ResourcesResponse? Resources, string? Error)> HireAdventurerAsync(int adventurerId)

@@ -4,8 +4,8 @@ using GuildManager.Api.Services;
 using GuildManager.Aplication.Guilds.Controls;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;   
-using Microsoft.Extensions.Logging;    
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace GuildManager.Api.Controllers;
 
@@ -31,6 +31,16 @@ public class AdventurerController : ControllerBase
         _hub = hub;
         _adventurerManager = adventurerManager;
         _logger = logger;
+    }
+
+    // Roster complet des aventuriers déjà recrutés par la guilde (par opposition
+    // aux candidats au recrutement de /to-hire). C'est cette liste que le client
+    // doit utiliser pour la sélection des participants à une quête en coop.
+    [HttpGet]
+    public IActionResult GetRoster()
+    {
+        var dtos = _adventurerManager.adventurers.Select(ToDto).ToList();
+        return Ok(dtos);
     }
 
     // Liste des candidats actuellement proposés au recrutement pour la guilde coop.
