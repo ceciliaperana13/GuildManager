@@ -1,19 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace GuildManager.Aplication.Guilds.Controls;
 
+// AdventurerManager est désormais un conteneur PUREMENT EN MÉMOIRE.
+// Il ne lit et n'écrit plus aucun fichier lui-même.
+//
+// La persistance est gérée ailleurs, à deux endroits différents selon le mode :
+//   - Solo : GameSaveDto.FromGame(game) / .ToGame(), écrit par SaveSoloService
+//            dans data/savesolo.json (une liste de sauvegardes complètes).
+//   - Coop : GuildSaveState, écrit par JsonSaveFileStore (data/saves.json) côté API.
+//
+// Avant ce refactor, AdventurerManager essayait AUSSI de lire/écrire un fichier
+// JSON directement (DataFile), avec un format incompatible avec celui utilisé
+// par SaveSoloService (un objet {"adventurers": [...]} contre une liste de saves
+// complètes) — c'est ce qui causait le crash "input does not contain any JSON tokens".
 public class AdventurerManager
 {
     public List<Adventurer> mainAdventurers;
     public List<Adventurer> adventurers;
     public List<Adventurer> adventurersToHire;
 
-    // Compteur d'id propre à la save courante (remplace idCount du json global)
+    // Compteur d'id propre à la save courante (remplace l'ancien idCount du json global)
     public int IdCounter { get; set; }
 
     public AdventurerManager()
@@ -74,18 +83,15 @@ public class AdventurerManager
 
         string image = $"/Assets/character/adventurers/{job + type}.png";
 
-        // id local à la save, plus de lecture/écriture fichier ici
+        // id local à la save, purement en mémoire
         IdCounter++;
         int newId = IdCounter;
 
-        // Prices : 
-        int goldPrice = 100 + 20*lvl; // à modifier selon les stats du perso
-        int foodPrice = 10 + 2*lvl;
+        // Prices :
+        int goldPrice = 100 + 20 * lvl; // à modifier selon les stats du perso
+        int foodPrice = 10 + 2 * lvl;
 
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(DataFile, root.ToJsonString(options));
-
-        return new Adventurer(idCount, generateRandomName(type), job, lvl, 0, health, defense, magic, physic, image, [], false, 0, false, false, goldPrice, foodPrice);
+        return new Adventurer(newId, generateRandomName(type), job, lvl, 0, health, defense, magic, physic, image, [], false, 0, false, false, goldPrice, foodPrice);
     }
 
     public string generateRandomName(int type)
@@ -99,56 +105,6 @@ public class AdventurerManager
         return names[type - 1][random.Next(names[type - 1].Length)];
     }
 
-    public void addAdventurerToJson(Adventurer adventurer)
-    {
-        string json = File.ReadAllText(DataFile);
-        JsonObject root = JsonNode.Parse(json)!.AsObject();
-
-
-        var newAdventurer = new JsonObject
-        {
-            ["id"] = adventurer.id,
-            ["name"] = adventurer.name,
-            ["job"] = adventurer.job,
-            ["lvl"] = adventurer.lvl,
-            ["xp"] = adventurer.xp,
-            ["health"] = adventurer.health,
-            ["physicAttack"] = adventurer.physicAttack,
-            ["magicAttack"] = adventurer.magicAttack,
-            ["def"] = adventurer.def,
-            ["image"] = adventurer.image,
-            ["debuff"] = JsonSerializer.SerializeToNode(adventurer.debuff),
-            ["isHurted"] = adventurer.isHurted,
-            ["hurtTurn"] = adventurer.hurtTurn,
-            ["isDead"] = adventurer.isDead,
-            ["isInQuest"] = adventurer.isInQuest,
-            ["goldPrice"] = adventurer.goldPrice,
-            ["foodPrice"] = adventurer.foodPrice,
-
-        };
-
-        if (root["adventurers"] is not JsonArray adventurers)
-        {
-            adventurers = new JsonArray();
-            root["adventurers"] = adventurers;
-        }
-
-        adventurers.Add(newAdventurer);
-
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(DataFile, root.ToJsonString(options));
-    }
-
-    public List<Adventurer> generateAdventurerFromJson(string type)
-    {
-        string json = File.ReadAllText("data/adventurers.json");
-        using JsonDocument doc = JsonDocument.Parse(json);
-        JsonElement adventurersJson = doc.RootElement.GetProperty(type);
-        List<Adventurer> adventurers = JsonSerializer.Deserialize<List<Adventurer>>(adventurersJson.GetRawText()) ?? new List<Adventurer>();
-
-        return adventurers;
-    }
-
     public void refreshadventurersToHire(int prestige)
     {
         this.adventurersToHire.Clear();
@@ -157,14 +113,25 @@ public class AdventurerManager
         {
             Adventurer adventurer = this.generateCharacter(prestige);
             this.adventurersToHire.Add(adventurer);
-            //adventurer.Write();
-            //Console.WriteLine("\n");
         }
     }
 
+    // Ancien comportement : rechargeait `adventurers` depuis un fichier JSON à
+    // CHAQUE tour, ce qui aurait écrasé la progression du joueur. La liste
+    // `adventurers` est maintenant l'état de jeu vivant, restauré une fois au
+    // chargement de la save (GameSaveDto.ToGame()) puis mis à jour uniquement
+    // par le recrutement / les quêtes. Ne fait donc plus rien ici.
     public void refreshAdventurers()
     {
-        this.adventurers = generateAdventurerFromJson("adventurers");
+        // no-op volontaire — voir commentaire ci-dessus
+    }
+
+    // Idem pour mainAdventurers. Si tu veux un roster de départ prédéfini pour
+    // une NOUVELLE partie (pas à chaque tour), ajoute-le explicitement dans le
+    // constructeur de Game ou dans SaveSoloService.CreateNewSave, pas ici.
+    public void refreshMainAdventurers()
+    {
+        // no-op volontaire — voir commentaire ci-dessus
     }
 
     public void refreshAdventurersStatus(int turn)
@@ -178,18 +145,10 @@ public class AdventurerManager
                 Console.WriteLine($"{adventurer.name} soigné");
                 adventurer.AdventurerHeal();
             }
-            editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
-            {
-                ["isHurted"] = adventurer.isHurted,
-                ["hurtTurn"] = adventurer.hurtTurn,
-                ["isInQuest"] = adventurer.isInQuest
-            });
+            // Plus besoin de re-synchroniser sur disque ici : adventurer est une
+            // référence, AdventurerHeal() a déjà modifié l'objet en mémoire.
+            // La sauvegarde complète est écrite par SaveSoloService/JsonSaveFileStore.
         }
-    }
-
-    public void refreshMainAdventurers()
-    {
-        this.mainAdventurers = generateAdventurerFromJson("mainAdventurers");
     }
 
     public void AddAdventurer(Adventurer adventurer)
@@ -228,68 +187,21 @@ public class AdventurerManager
     public void AdventurersLevelUp()
     {
         List<Adventurer> adventurersList = this.adventurers.Concat(this.mainAdventurers).ToList();
-        foreach(Adventurer adventurer in adventurersList)
+        foreach (Adventurer adventurer in adventurersList)
         {
             adventurer.levelUp();
-            editAdventurerData(adventurer.id, "lvl", adventurer.lvl);
+            // levelUp() mute directement l'objet en mémoire ; plus de sync disque ici.
         }
     }
 
     public void SaveAdventurersAfterQuest(IEnumerable<Adventurer> participants)
     {
-        foreach (Adventurer adventurer in participants)
-        {
-            editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
-            {
-                ["xp"] = adventurer.xp,
-                ["lvl"] = adventurer.lvl,
-                ["health"] = adventurer.health,
-                ["physicAttack"] = adventurer.physicAttack,
-                ["magicAttack"] = adventurer.magicAttack,
-                ["def"] = adventurer.def,
-                ["isHurted"] = adventurer.isHurted,
-                ["hurtTurn"] = adventurer.hurtTurn,
-                ["isDead"] = adventurer.isDead,
-                ["isInQuest"] = adventurer.isInQuest
-            });
-        }
+        // Les Adventurer sont des références : leurs stats (xp, lvl, health, ...)
+        // ont déjà été mises à jour en mémoire par QuestManager pendant la quête.
+        // Cette méthode ne fait donc plus rien : elle est gardée pour compatibilité
+        // avec les appelants existants, au cas où une logique de validation /
+        // notification serait ajoutée ici plus tard.
+        // La persistance sur disque de l'état complet est déclenchée par
+        // SaveSoloService.UpdateSave(saveId, game) (solo) ou par l'API coop.
     }
-
-    public void editAdventurerData(int id, string attribute, JsonNode? newValue)
-    {
-        editAdventurerData(id, new Dictionary<string, JsonNode?> { [attribute] = newValue });
-    }
-
-    public void editAdventurerData(int id, Dictionary<string, JsonNode?> updates)
-    {
-        string json = File.ReadAllText(DataFile);
-        JsonObject root = JsonNode.Parse(json)!.AsObject();
-        JsonArray adventurers = root["adventurers"]!.AsArray();
-
-        JsonObject? target = adventurers
-            .Select(a => a!.AsObject())
-            .FirstOrDefault(a => a["id"]?.GetValue<int>() == id);
-
-        if (target is null)
-            throw new InvalidOperationException($"Aventurier '{id}' introuvable.");
-
-        foreach (var kvp in updates)
-            target[kvp.Key] = kvp.Value;
-
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(DataFile, root.ToJsonString(options));
-    }
-
-    // public void SaveAdventurerStats(Adventurer adventurer)
-    // {
-    //     editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
-    //     {
-    //         ["lvl"] = adventurer.lvl,
-    //         ["xp"] = adventurer.xp,
-    //         ["health"] = adventurer.health,
-    //         ["physicAttack"] = adventurer.physicAttack,
-    //         ["magicAttack"] = adventurer.magicAttack,
-    //         ["def"] = adventurer.def
-    //     });
-    // }
 }
