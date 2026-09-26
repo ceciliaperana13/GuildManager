@@ -17,7 +17,7 @@ public partial class PlayMenuView : UserControl
     public PlayMenuView()
     {
         InitializeComponent();
-    
+
     }
 
     private async void OnSoloClicked(object sender, RoutedEventArgs e)
@@ -49,7 +49,13 @@ public partial class PlayMenuView : UserControl
             StatusText.Text = "Connexion à la base locale : OK";
 
             Game game = new Game("test", 1, 0, 10000, 10000, 1, 0);
-            NavigationService.NavigateTo(new DialogueViewModel("intro_01", "/Assets/UI/guilde_background.png"),game);
+
+            var saveSoloService = new SaveSoloService();
+            var newSave = saveSoloService.CreateNewSave(game);
+            NavigationService.CurrentSaveId = newSave.SaveId;
+            Console.WriteLine($"Nouvelle save solo créée : {newSave.SaveId}");
+
+            NavigationService.NavigateTo(new DialogueViewModel("intro_01", "/Assets/UI/guilde_background.png"), game);
             //NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)
@@ -59,13 +65,7 @@ public partial class PlayMenuView : UserControl
         finally
         {
             SoloButton.IsEnabled = true;
-            
-        }
-    }
 
-    private void OnCoopClicked(object sender, RoutedEventArgs e)
-    {
-        // navigation vers l'écran Coop (adresse du salon)
-        NavigationService.NavigateTo(new CoopMenuViewModel());
+        }
     }
 }

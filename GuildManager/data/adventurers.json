@@ -1,5 +1,5 @@
 {
-  "idCount": 2500,
+  "idCount": 2506,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -262,6 +262,21 @@
       "isHurted": false,
       "goldPrice": 140,
       "foodPrice": 30
+    },
+    {
+      "id": 2500,
+      "name": "Eldran",
+      "job": "tank",
+      "lvl": 1,
+      "health": 4,
+      "physicAttack": 7,
+      "magicAttack": 1,
+      "def": 8,
+      "image": "/Assets/character/adventurers/tank1.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 120,
+      "foodPrice": 25
     }
   ]
 }

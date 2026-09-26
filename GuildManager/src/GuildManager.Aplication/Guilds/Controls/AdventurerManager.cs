@@ -1,44 +1,45 @@
 using System;
-using System.IO;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using System.Collections.Generic;
 
 namespace GuildManager.Aplication.Guilds.Controls;
+
 public class AdventurerManager
 {
-    private const string DataFile = "data/adventurers.json";
     public List<Adventurer> mainAdventurers;
     public List<Adventurer> adventurers;
     public List<Adventurer> adventurersToHire;
+
+    // Compteur d'id propre à la save courante (remplace idCount du json global)
+    public int IdCounter { get; set; }
 
     public AdventurerManager()
     {
         this.adventurers = new List<Adventurer>();
         this.adventurersToHire = new List<Adventurer>();
         this.mainAdventurers = new List<Adventurer>();
+        this.IdCounter = 0;
     }
 
     public Adventurer generateCharacter(int prestige)
     {
-        // choix de la classe aléatoire :
         string[] jobs = ["mage", "guerrier", "tank"];
         Random random = new Random();
         int index = random.Next(jobs.Length);
         string job = jobs[index];
 
-        // génération des stats :
         int lvl = random.Next((prestige - 1) * 10 + 1, prestige * 10 + 1);
-        int stats = 4 * lvl * 5; // à modifier selon l'équilibrage
+        int stats = 4 * lvl * 5;
         int health = 0;
         int magic = 0;
         int physic = 0;
         int defense = 0;
         int type = random.Next(1, 3);
+
         if (job == "mage")
         {
-            magic = random.Next(stats/3, stats/2);
+            magic = random.Next(stats / 3, stats / 2);
             stats -= magic;
-            health = random.Next(lvl/2, stats);
+            health = random.Next(lvl / 2, stats);
             stats -= health;
             defense = random.Next(0, stats);
             stats -= defense;
@@ -47,9 +48,9 @@ public class AdventurerManager
 
         if (job == "guerrier")
         {
-            physic = random.Next(stats/3, stats/2);
+            physic = random.Next(stats / 3, stats / 2);
             stats -= physic;
-            health = random.Next(lvl/2, stats);
+            health = random.Next(lvl / 2, stats);
             stats -= health;
             defense = random.Next(0, stats);
             stats -= defense;
@@ -58,7 +59,7 @@ public class AdventurerManager
 
         if (job == "tank")
         {
-            defense = random.Next(stats/3, stats/2 + 1);
+            defense = random.Next(stats / 3, stats / 2 + 1);
             stats -= defense;
             health = random.Next(lvl, stats + 1);
             stats -= health;
@@ -66,22 +67,17 @@ public class AdventurerManager
             stats -= physic;
             magic = stats;
         }
+
         string image = $"/Assets/character/adventurers/{job + type}.png";
 
-        // id :
-        string json = File.ReadAllText(DataFile);
-        JsonObject root = JsonNode.Parse(json)!.AsObject();
-        int idCount = root["idCount"]?.GetValue<int>() ?? 0;
-        root["idCount"] = idCount + 1;
+        // id local à la save, plus de lecture/écriture fichier ici
+        IdCounter++;
+        int newId = IdCounter;
 
-        // Prices : 
-        int goldPrice = 100 + 20*lvl; // à modifier selon les stats du perso
-        int foodPrice = 20 + 5*lvl;
+        int goldPrice = 100 + 20 * lvl;
+        int foodPrice = 20 + 5 * lvl;
 
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(DataFile, root.ToJsonString(options));
-
-        return new Adventurer(idCount, generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false, goldPrice, foodPrice);
+        return new Adventurer(newId, generateRandomName(type), job, lvl, health, defense, magic, physic, image, [], false, goldPrice, foodPrice);
     }
 
     public string generateRandomName(int type)
@@ -95,57 +91,11 @@ public class AdventurerManager
         return names[type - 1][random.Next(names[type - 1].Length)];
     }
 
-    public void addAdventurerToJson(Adventurer adventurer)
-    {
-        string json = File.ReadAllText(DataFile);
-        JsonObject root = JsonNode.Parse(json)!.AsObject();
-
-
-        var newAdventurer = new JsonObject
-        {
-            ["id"] = adventurer.id,
-            ["name"] = adventurer.name,
-            ["job"] = adventurer.job,
-            ["lvl"] = adventurer.lvl,
-            ["health"] = adventurer.health,
-            ["physicAttack"] = adventurer.physicAttack,
-            ["magicAttack"] = adventurer.magicAttack,
-            ["def"] = adventurer.def,
-            ["image"] = adventurer.image,
-            ["debuff"] = JsonSerializer.SerializeToNode(adventurer.debuff),
-            ["isHurted"] = adventurer.isHurted,
-            ["goldPrice"] = adventurer.goldPrice,
-            ["foodPrice"] = adventurer.foodPrice,
-
-        };
-
-        if (root["adventurers"] is not JsonArray adventurers)
-        {
-            adventurers = new JsonArray();
-            root["adventurers"] = adventurers;
-        }
-
-        adventurers.Add(newAdventurer);
-
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(DataFile, root.ToJsonString(options));
-    }
-
-    public List<Adventurer> generateAdventurerFromJson(string type)
-    {
-        string json = File.ReadAllText("data/adventurers.json");
-        using JsonDocument doc = JsonDocument.Parse(json);
-        JsonElement adventurersJson = doc.RootElement.GetProperty(type);
-        List<Adventurer> adventurers = JsonSerializer.Deserialize<List<Adventurer>>(adventurersJson.GetRawText()) ?? new List<Adventurer>();
-
-        return adventurers;
-    }
-
     public void refreshadventurersToHire(int prestige)
     {
         this.adventurersToHire.Clear();
         Console.WriteLine("Personnage à acheter : ");
-        for(int i = 0; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
             Adventurer adventurer = this.generateCharacter(prestige);
             this.adventurersToHire.Add(adventurer);
@@ -154,72 +104,40 @@ public class AdventurerManager
         }
     }
 
-    public void refreshAdventurers()
-    {
-        this.adventurers = generateAdventurerFromJson("adventurers");
-    }
-
-    public void refreshMainAdventurers()
-    {
-        this.mainAdventurers = generateAdventurerFromJson("mainAdventurers");
-    }
+    // Devenues no-op : la liste vit en mémoire, plus besoin de la relire d'un fichier.
+    // Conservées pour ne pas casser les appelants existants (Game.refreshAll, etc.)
+    public void refreshAdventurers() { }
+    public void refreshMainAdventurers() { }
 
     public void AddAdventurer(Adventurer adventurer)
     {
         this.adventurers.Add(adventurer);
-        this.addAdventurerToJson(adventurer);        
     }
 
     public void removeAdventurer(Adventurer adventurer)
     {
-        // remove on list
         this.adventurers.RemoveAll(a => a.id == adventurer.id);
-
-        // remove on json
-        string json = File.ReadAllText(DataFile);
-        JsonObject root = JsonNode.Parse(json)!.AsObject();
-
-        if (root["adventurers"] is JsonArray adventurersArray)
-        {
-            for (int i = adventurersArray.Count - 1; i >= 0; i--)
-            {
-                if (adventurersArray[i]?["id"]?.GetValue<int>() == adventurer.id)
-                {
-                    adventurersArray.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(DataFile, root.ToJsonString(options));
     }
 
-    public Adventurer searchAdventurerById(int id)
+    public Adventurer? searchAdventurerById(int id)
     {
-        refreshAdventurers();
-        foreach(Adventurer adventurer in this.adventurers)
+        foreach (Adventurer adventurer in this.adventurers)
         {
             if (adventurer.id == id)
                 return adventurer;
         }
-        //return new Adventurer(0, "", "", 0, 0, 0, 0, 0, "", [], false, 0, 0);
         return null;
     }
 
     public int adventurersEat()
     {
         int totalFood = 0;
-        //random adventurers eat
-        foreach(Adventurer adventurer in this.adventurers)
-        {
+        foreach (Adventurer adventurer in this.adventurers)
             totalFood += adventurer.foodPrice;
-        }
-        //main adventurers eat
-        foreach(Adventurer adventurer in this.mainAdventurers)
-        {
+
+        foreach (Adventurer adventurer in this.mainAdventurers)
             totalFood += adventurer.foodPrice;
-        }
+
         Console.WriteLine($"Consomation ce tour : {totalFood}");
         return totalFood;
     }
