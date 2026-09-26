@@ -4,18 +4,7 @@ using System.Linq;
 
 namespace GuildManager.Aplication.Guilds.Controls;
 
-// AdventurerManager est désormais un conteneur PUREMENT EN MÉMOIRE.
-// Il ne lit et n'écrit plus aucun fichier lui-même.
-//
-// La persistance est gérée ailleurs, à deux endroits différents selon le mode :
-//   - Solo : GameSaveDto.FromGame(game) / .ToGame(), écrit par SaveSoloService
-//            dans data/savesolo.json (une liste de sauvegardes complètes).
-//   - Coop : GuildSaveState, écrit par JsonSaveFileStore (data/saves.json) côté API.
-//
-// Avant ce refactor, AdventurerManager essayait AUSSI de lire/écrire un fichier
-// JSON directement (DataFile), avec un format incompatible avec celui utilisé
-// par SaveSoloService (un objet {"adventurers": [...]} contre une liste de saves
-// complètes) — c'est ce qui causait le crash "input does not contain any JSON tokens".
+
 public class AdventurerManager
 {
     public List<Adventurer> mainAdventurers;
@@ -116,42 +105,31 @@ public class AdventurerManager
         }
     }
 
-    // Ancien comportement : rechargeait `adventurers` depuis un fichier JSON à
-    // CHAQUE tour, ce qui aurait écrasé la progression du joueur. La liste
-    // `adventurers` est maintenant l'état de jeu vivant, restauré une fois au
-    // chargement de la save (GameSaveDto.ToGame()) puis mis à jour uniquement
-    // par le recrutement / les quêtes. Ne fait donc plus rien ici.
+    
     public void refreshAdventurers()
     {
-        // no-op volontaire — voir commentaire ci-dessus
+        
     }
 
-    // Idem pour mainAdventurers. Si tu veux un roster de départ prédéfini pour
-    // une NOUVELLE partie (pas à chaque tour), ajoute-le explicitement dans le
-    // constructeur de Game ou dans SaveSoloService.CreateNewSave, pas ici.
+    
     public void refreshMainAdventurers()
     {
-        // no-op volontaire — voir commentaire ci-dessus
+        
     }
 
     public void refreshAdventurersStatus(int turn)
+{
+    foreach (Adventurer adventurer in this.adventurers.ToList())
     {
-        foreach (Adventurer adventurer in this.adventurers.ToList())
+        if (adventurer.isDead)
+            removeAdventurer(adventurer);
+        else if (adventurer.isHurted && turn >= adventurer.hurtTurn + 3)
         {
-            if (adventurer.isDead)
-                removeAdventurer(adventurer);
-            else if (adventurer.isHurted && turn >= adventurer.hurtTurn + 3)
-            {
-                Console.WriteLine($"{adventurer.name} soigné");
-                adventurer.AdventurerHeal();
-            }
-            editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
-            {
-                ["isHurted"] = adventurer.isHurted,
-                ["hurtTurn"] = adventurer.hurtTurn
-                //["isInQuest"] = adventurer.isInQuest
-            });
+            Console.WriteLine($"{adventurer.name} soigné");
+            adventurer.AdventurerHeal();
         }
+        
+    }
     }
 
     public void AddAdventurer(Adventurer adventurer)
@@ -199,12 +177,6 @@ public class AdventurerManager
 
     public void SaveAdventurersAfterQuest(IEnumerable<Adventurer> participants)
     {
-        // Les Adventurer sont des références : leurs stats (xp, lvl, health, ...)
-        // ont déjà été mises à jour en mémoire par QuestManager pendant la quête.
-        // Cette méthode ne fait donc plus rien : elle est gardée pour compatibilité
-        // avec les appelants existants, au cas où une logique de validation /
-        // notification serait ajoutée ici plus tard.
-        // La persistance sur disque de l'état complet est déclenchée par
-        // SaveSoloService.UpdateSave(saveId, game) (solo) ou par l'API coop.
+        
     }
 }
