@@ -123,41 +123,44 @@ public class Quest
     }
 
     public bool completeQuest(int turn)
-    {
-        Random random = new Random();
-        double num = random.NextDouble() * 100;
+{
+    this.inProgress = false;
 
-        if (num <= this.winRate) // victoire
+    Random random = new Random();
+    double num = random.NextDouble() * 100;
+
+    if (num <= this.winRate) // victoire
+    {
+        foreach (Adventurer adventurer in this.adventurers)
         {
-            foreach (Adventurer adventurer in this.adventurers)
-            {
-                adventurer.isInQuest = false;
-                if (this.winRate <= 60 && this.type == "Combat" && random.Next(100) > 50)
-                    adventurer.adventurerHurt(turn);
-            }
-            return true;
+            adventurer.isInQuest = false;
+            if (this.winRate <= 60 && this.type == "Combat" && random.Next(100) > 50)
+                adventurer.adventurerHurt(turn);
         }
-        else // défaite
-        {
-            foreach (Adventurer adventurer in this.adventurers)
-            {
-                adventurer.isInQuest = false;
-                if (this.type == "Combat")
-                {
-                    if (random.Next(100) < 25)
-                        adventurer.adventurerHurt(turn);
-                    else if (random.Next(100) < 75)
-                    {
-                        adventurer.isDead = true;
-                        Console.Write($"{adventurer.name} est mort au combat {adventurer.isDead}");
-                    }
-                    else Console.WriteLine($"{adventurer.name} a fuit");
-                }
-            }
-            Console.WriteLine($"Quête : {this.name} échouée");
-            return false;
-        }
+        Console.WriteLine($"Quête : {this.name} réussie");
+        return true; 
     }
+    else // défaite
+    {
+        foreach (Adventurer adventurer in this.adventurers)
+        {
+            adventurer.isInQuest = false;
+            if (this.type == "Combat")
+            {
+                if (random.Next(100) < 25)
+                    adventurer.adventurerHurt(turn);
+                else if (random.Next(100) < 75)
+                {
+                    adventurer.isDead = true;
+                    Console.Write($"{adventurer.name} est mort au combat {adventurer.isDead}");
+                }
+                else Console.WriteLine($"{adventurer.name} a fuit");    
+            }
+        }
+        Console.WriteLine($"Quête : {this.name} échouée");
+        return false; 
+    }
+}
 
     public Reward giveReward(int turn)
     {

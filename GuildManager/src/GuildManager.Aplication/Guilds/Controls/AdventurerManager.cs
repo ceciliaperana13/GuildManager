@@ -145,9 +145,12 @@ public class AdventurerManager
                 Console.WriteLine($"{adventurer.name} soigné");
                 adventurer.AdventurerHeal();
             }
-            // Plus besoin de re-synchroniser sur disque ici : adventurer est une
-            // référence, AdventurerHeal() a déjà modifié l'objet en mémoire.
-            // La sauvegarde complète est écrite par SaveSoloService/JsonSaveFileStore.
+            editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
+            {
+                ["isHurted"] = adventurer.isHurted,
+                ["hurtTurn"] = adventurer.hurtTurn
+                //["isInQuest"] = adventurer.isInQuest
+            });
         }
     }
 
