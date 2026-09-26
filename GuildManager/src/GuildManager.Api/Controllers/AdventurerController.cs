@@ -105,6 +105,8 @@ public class AdventurerController : ControllerBase
     }
 
     private static AdventurerCandidateDto ToDto(Adventurer a) => new(
-        a.id, a.name, a.job, a.lvl, a.health, a.def,
-        a.magicAttack, a.physicAttack, a.image, a.goldPrice, a.foodPrice);
+        a.id, a.name, a.job, a.lvl, a.xp, a.health, a.def,
+        a.magicAttack, a.physicAttack, a.image, a.debuff,
+        a.isHurted, a.hurtTurn, a.isDead, a.isInQuest,
+        a.goldPrice, a.foodPrice);
 }

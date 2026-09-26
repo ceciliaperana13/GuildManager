@@ -30,9 +30,9 @@ public partial class QuestPreparationView : UserControl
         }
     }
 
-    private void OnSlot0Click(object sender, RoutedEventArgs e) => OpenPicker(0);
-    private void OnSlot1Click(object sender, RoutedEventArgs e) => OpenPicker(1);
-    private void OnSlot2Click(object sender, RoutedEventArgs e) => OpenPicker(2);
+    private async void OnSlot0Click(object sender, RoutedEventArgs e) => await OpenPicker(0);
+    private async void OnSlot1Click(object sender, RoutedEventArgs e) => await OpenPicker(1);
+    private async void OnSlot2Click(object sender, RoutedEventArgs e) => await OpenPicker(2);
 
     private void OnAdventurerPicked(AdventurerCard adventurer)
     {
@@ -43,16 +43,23 @@ public partial class QuestPreparationView : UserControl
         Picker.Visibility = Visibility.Collapsed;
     }
 
-    private void OpenPicker(int slotIndex)
+    private async System.Threading.Tasks.Task OpenPicker(int slotIndex)
     {
         _activeSlot = slotIndex;
-                if (ViewModel is null) return;
+        if (ViewModel is null) return;
 
-                Picker.SetAdventurers(ViewModel.GetAvailableAdventurers());
-                Picker.Visibility = Visibility.Visible;
+        // En coop, on recharge le roster depuis l'API avant d'afficher le picker,
+        // pour être sûr de voir les aventuriers achetés récemment (par soi ou un
+        // coéquipier), sans dépendre d'un événement temps réel.
+        if (ViewModel.Game.IsCoop)
+        {
+            var apiClient = new GuildApiClient();
+            await ViewModel.Game.SyncCoopRosterAsync(apiClient);
+        }
+
+        Picker.SetAdventurers(ViewModel.GetAvailableAdventurers());
+        Picker.Visibility = Visibility.Visible;
     }
-
-    
 
     private void OnPickerCancelled() => Picker.Visibility = Visibility.Collapsed;
 
@@ -70,12 +77,6 @@ public partial class QuestPreparationView : UserControl
         }
     }
 
-    private void OpenPickerFor(int slotIndex)
-    {
-        // TODO: afficher la popup de sélection filtrée sur les aventuriers Disponible
-        // au choix de l'utilisateur : _viewModel.AssignAdventurer(slotIndex, adventurerChoisi);
-    }
-
     private void OnEquipment0Click(object sender, RoutedEventArgs e) { /* TODO */ }
     private void OnEquipment1Click(object sender, RoutedEventArgs e) { /* TODO */ }
     private void OnEquipment2Click(object sender, RoutedEventArgs e) { /* TODO */ }
@@ -89,8 +90,6 @@ public partial class QuestPreparationView : UserControl
             OpenTextPopup("Choisissez au moins un aventurier avnat de lancer la quête.");
         }
     }
-
-
 
     private void OpenTextPopup(string message)
     {

@@ -9,11 +9,15 @@ public static class GuildRealtimeService
     private static HubConnection? _connection;
 
     public static event Action<ResourcesResponse>? ResourcesUpdated;
+    public static event Action<AdventurerCandidateDto>? AdventurerHired;
 
     public static async Task StartAsync(string apiBaseUrl, int guildId = 1)
     {
         if (_connection is not null)
+        {
+            System.Windows.MessageBox.Show($"StartAsync ignoré : connexion déjà existante, état = {_connection.State}");
             return; // déjà démarré
+        }
 
         _connection = new HubConnectionBuilder()
             .WithUrl($"{apiBaseUrl}/hubs/guild")
@@ -25,8 +29,23 @@ public static class GuildRealtimeService
             ResourcesUpdated?.Invoke(resources);
         });
 
-        await _connection.StartAsync();
-        await _connection.InvokeAsync("JoinGuild", guildId);
+        _connection.On<AdventurerCandidateDto>("AdventurerHired", adventurer =>
+        {
+            AdventurerHired?.Invoke(adventurer);
+        });
+
+        try
+        {
+            await _connection.StartAsync();
+            System.Windows.MessageBox.Show($"SignalR connecté, état = {_connection.State}");
+
+            await _connection.InvokeAsync("JoinGuild", guildId);
+            System.Windows.MessageBox.Show($"JoinGuild({guildId}) envoyé");
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show($"Échec connexion SignalR : {ex.Message}");
+        }
     }
 
     public static async Task StopAsync()

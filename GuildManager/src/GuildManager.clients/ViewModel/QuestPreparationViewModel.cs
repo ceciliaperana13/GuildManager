@@ -32,7 +32,14 @@ public class QuestPreparationViewModel : IScreenViewModel
 
     public IEnumerable<AdventurerCard> GetAvailableAdventurers()
     {
-        if (Game.adventurerManager.adventurers.Count == 0)
+        // --- DEBUG TEMPORAIRE : à retirer une fois le bug identifié ---
+        System.Windows.MessageBox.Show(
+            $"IsCoop={Game.IsCoop} | Total aventuriers={Game.adventurerManager.adventurers.Count}");
+        // --- FIN DEBUG ---
+
+        // En coop, la liste est alimentée par InitCoopAsync + l'événement AdventurerHired.
+        // La rafraîchir localement (logique solo) écraserait/ignorerait le roster partagé.
+        if (Game.adventurerManager.adventurers.Count == 0 && !Game.IsCoop)
             Game.adventurerManager.refreshAdventurers();
 
         var selectedIds = SelectedSlots
@@ -40,7 +47,7 @@ public class QuestPreparationViewModel : IScreenViewModel
             .Select(adventurer => adventurer!.Adventurer.id)
             .ToHashSet();
 
-        return Game.adventurerManager.adventurers
+        var result = Game.adventurerManager.adventurers
             .Where(adventurer => !selectedIds.Contains(adventurer.id) && !adventurer.isHurted && !adventurer.isInQuest)
             .Select(adventurer => new AdventurerCard
             {
@@ -56,6 +63,12 @@ public class QuestPreparationViewModel : IScreenViewModel
                 Status = AdventurerStatus.Disponible
             })
             .ToList();
+
+        // --- DEBUG TEMPORAIRE : à retirer une fois le bug identifié ---
+        System.Windows.MessageBox.Show($"Cartes générées pour le picker : {result.Count}");
+        // --- FIN DEBUG ---
+
+        return result;
     }
 
     public void AssignAdventurer(int slotIndex, AdventurerCard adventurer)
@@ -70,8 +83,6 @@ public class QuestPreparationViewModel : IScreenViewModel
         var chosen = SelectedSlots.Where(a => a != null).ToList();
         if (chosen.Count == 0) { SuccessPercentage = null; return; }
 
-        
-        // SuccessPercentage = QuestLogic.CalculerPourcentageVictoire(chosen, SelectedQuest);
         Quest quest = Game.questManager.searchQuestByName(SelectedQuest.Title);
         quest.refreshWinRate();
         SuccessPercentage = (int)quest.refreshWinRate();
@@ -83,11 +94,11 @@ public class QuestPreparationViewModel : IScreenViewModel
     }
 
     public bool GiveXp
-{
-    get => Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp;
-    set
     {
-        Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp = value;
+        get => Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp;
+        set
+        {
+            Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp = value;
+        }
     }
-}
 }

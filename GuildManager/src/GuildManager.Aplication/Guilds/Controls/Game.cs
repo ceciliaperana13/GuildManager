@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.CodeDom;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
+using GuildManager.Client.Services;
 
 namespace GuildManager.Aplication.Guilds.Controls;
 public class Game
@@ -21,8 +26,8 @@ public class Game
     public ItemManager itemManager = new ItemManager();
     bool isBought;
     bool turnInProgress;
-    bool isCoop; // à utiliser pour le mode coop ?
 
+    public bool IsCoop { get; private set; }
 
     public Game(string playerName, int turn, int mainProgress, int gold, int food, int prestige, int xp)
     {
@@ -33,10 +38,58 @@ public class Game
         this.food = food;
         this.prestige = prestige;
         this.xp = xp;
-        //this.adventurers = characterGenerator.generateAdventurerFromJson("adventurers");
-        //this.adventurersToBuy = new List<Adventurer>();
         this.turnInProgress = true;
     }
+
+    // À appeler une fois après le login, si AppSession.IsCoop est vrai (cf. LoginMenuView).
+    // Charge le roster déjà recruté par la guilde coop et s'abonne aux futurs achats
+    // faits par n'importe quel joueur (soi-même inclus) via SignalR.
+    public async Task InitCoopAsync(GuildApiClient apiClient)
+    {
+        IsCoop = true;
+
+        List<AdventurerCandidateDto> roster = await apiClient.GetAdventurersRosterAsync();
+        foreach (AdventurerCandidateDto dto in roster)
+        {
+            if (adventurerManager.adventurers.Any(a => a.id == dto.Id))
+                continue;
+            adventurerManager.AddAdventurer(MapToAdventurer(dto));
+        }
+
+        // Évite les abonnements en double si InitCoopAsync est rappelé (ex: reconnexion).
+        GuildRealtimeService.AdventurerHired -= OnAdventurerHired;
+        GuildRealtimeService.AdventurerHired += OnAdventurerHired;
+    }
+
+    // Recharge le roster depuis l'API à la demande (ex: avant d'ouvrir le picker
+    // de sélection de quête), sans dépendre de SignalR. Complète InitCoopAsync
+    // pour garantir que les achats récents sont bien pris en compte localement.
+    public async Task SyncCoopRosterAsync(GuildApiClient apiClient)
+    {
+        if (!IsCoop) return;
+
+        List<AdventurerCandidateDto> roster = await apiClient.GetAdventurersRosterAsync();
+        foreach (AdventurerCandidateDto dto in roster)
+        {
+            if (adventurerManager.adventurers.Any(a => a.id == dto.Id))
+                continue;
+            adventurerManager.AddAdventurer(MapToAdventurer(dto));
+        }
+    }
+
+    private void OnAdventurerHired(AdventurerCandidateDto dto)
+    {
+        if (adventurerManager.adventurers.Any(a => a.id == dto.Id))
+            return; // déjà présent
+
+        adventurerManager.AddAdventurer(MapToAdventurer(dto));
+    }
+
+    private static Adventurer MapToAdventurer(AdventurerCandidateDto dto) => new Adventurer(
+        dto.Id, dto.Name, dto.Job, dto.Lvl, dto.Xp, dto.Health, dto.Def,
+        dto.MagicAttack, dto.PhysicAttack, dto.Image, dto.Debuff,
+        dto.IsHurted, dto.HurtTurn, dto.IsDead, dto.IsInQuest,
+        dto.GoldPrice, dto.FoodPrice);
 
     public void refreshSpecialadventurers()
     {
@@ -86,21 +139,6 @@ public class Game
         
     }
 
-    // public void refreshQuest()
-    // {
-    //     foreach(Quest quest in this.questManager.quests)
-    //     {
-    //         if (quest.remainingTime <= 0 && !quest.inProgress)
-    //         {
-    //             this.questManager.quests.Remove(quest);
-    //         }
-    //         else
-    //             quest.remainingTime--;
-    //     }
-    //     this.questManager.quests.Add(questManager.generateQuest("Combat", this.prestige, 100));// 100 à modifier ou enlevé
-    //     this.questManager.quests.Add(questManager.generateQuest("Recherche", this.prestige, 100));// 100 à modifier ou enlevé
-    // }  
-
     public void prestigeUp()
     {
         if (this.xp >= 100 * prestige)
@@ -117,11 +155,7 @@ public class Game
         this.food += reward.food;
 
         this.xp += reward.prestige/2;
-        
-        // foreach (Item item in reward.Item4)
-        // {
-        //     this.inventory.Add(item);
-        // }
+
         this.prestigeUp();
     }
 
@@ -168,7 +202,7 @@ public class Game
 
     public bool Win()
     {
-        if (this.prestige == 10) // ajouter la condition d'histoire terminée
+        if (this.prestige == 10)
         {
             Console.WriteLine("Partie Gagnée !");
             return true;
@@ -181,7 +215,6 @@ public class Game
         this.turn++;
         this.isBought = false;
         LastQuestSucceeded = null;
-        // complétion des quêtes après le tour
         foreach(Quest quest in this.questManager.quests)
         {
             if (quest.inProgress)
@@ -230,80 +263,9 @@ public class Game
         this.itemManager.refreshInventory();
     }
 
-    // public void playTurn()
-    // {   
-    //     // complétion des quêtes après le tour
-    //     foreach(Quest quest in this.questManager.quests)
-    //     {
-    //         if (quest.inProgress)
-    //         {
-    //             this.claimReward(quest.giveReward());
-    //         }
-    //     }
-
-
-    //     this.turnInProgress = true;
-    //     while (this.turnInProgress)
-    //     {
-    //         Console.WriteLine($"Tour {this.turn} | gold : {this.gold} | nouriture : {this.food} | prestige : {this.prestige}");
-    //         Console.WriteLine("Recrutement : 1 | Quête : 2 | Tour suivant : 3");
-    //         string action = Console.ReadLine();
-    //         if (action == "1")
-    //         {
-    //             this.adventurerManager.refreshadventurersToHire(this.prestige);
-    //             Console.WriteLine("Quel personnage voulez-vous acheter (1, 2 ou 3) : ");
-    //             string choice = Console.ReadLine();
-    //             this.buyAdventurer(this.adventurerManager.adventurersToHire[int.Parse(choice)-1]);
-    //         }
-    //         else if (action == "2")
-    //         {
-    //             this.questManager.refreshQuests(this.prestige);
-    //             for (int i=0;i<=this.questManager.quests.Count-1;i++)
-    //             {
-    //                 Console.WriteLine($"Quête {i+1} : {this.questManager.quests[i].name}");
-    //             }
-    //             Console.WriteLine("Choisir la quête : ");
-    //             string questChoice = Console.ReadLine();
-
-    //             Console.WriteLine("Ennemies : ");
-    //             foreach(Monster enemy in this.questManager.quests[int.Parse(questChoice)-1].enemies)
-    //             {
-    //                 enemy.Write();
-    //             }
-
-    //             Console.WriteLine("Aventuriers disponibles : ");
-    //             this.adventurerManager.generateAdventurerFromJson("adventurers");
-    //             foreach (Adventurer adventurer in this.adventurerManager.adventurers)
-    //             {
-    //                 adventurer.Write();
-    //             }
-    //             bool formingTeam = true;
-    //             while (formingTeam)
-    //             {
-    //                 this.questManager.quests[int.Parse(questChoice)-1].refreshWinRate();
-    //                 Console.WriteLine($"taux de réussite : {this.questManager.quests[int.Parse(questChoice)-1].winRate}\nChoisir l'aventurier 1 (ID) | A pour accepter la quête: ");
-                        
-    //                 string id = Console.ReadLine();
-    //                 if (id == "a" && this.questManager.quests[int.Parse(questChoice)-1].adventurers.Count > 0 )
-    //                 {
-    //                     this.questManager.quests[int.Parse(questChoice)-1].acceptQuest();
-    //                     formingTeam = false;
-    //                 }
-    //                 else
-    //                 {
-    //                     this.questManager.quests[int.Parse(questChoice)-1].addAdventurer(this.adventurerManager.searchAdventurerById(int.Parse(id)));
-    //                 }
-    //             }
-    //         }      
-    //         else {
-    //             Console.WriteLine("Tour suivant");
-    //             this.turnInProgress = false;
-    //         }
-    //     }
-    // }
     public void SyncResources(int gold, int food)
-{
-    this.gold = gold;
-    this.food = food;
-}
+    {
+        this.gold = gold;
+        this.food = food;
+    }
 }

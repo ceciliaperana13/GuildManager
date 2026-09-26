@@ -66,6 +66,14 @@ public partial class LoginMenuView : UserControl
             int food = resources?.Food ?? 0;
 
             Game game = new Game(result.Username, 1, 0, gold, food, 1, 0);
+
+            MessageBox.Show($"IsCoop = {AppSession.IsCoop}");
+if (AppSession.IsCoop)
+{
+    await game.InitCoopAsync(apiClient);
+    MessageBox.Show($"Roster chargé, {game.adventurerManager.adventurers.Count} aventurier(s)");
+}
+
             NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)
