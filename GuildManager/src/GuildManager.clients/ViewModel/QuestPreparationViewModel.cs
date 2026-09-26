@@ -10,6 +10,8 @@ public class QuestPreparationViewModel : IScreenViewModel
     public string BackgroundPath => "/Assets/UI/Quest_background.png";
     public QuestCard? SelectedQuest { get; }
     public Game Game { get; }
+    public IEnumerable<Monster> Enemies =>
+    Game.questManager.searchQuestByName(SelectedQuest.Title).enemies;
 
     public ObservableCollection<AdventurerCard?> SelectedSlots { get; } = new() { null, null, null };
 
@@ -33,13 +35,13 @@ public class QuestPreparationViewModel : IScreenViewModel
         if (Game.adventurerManager.adventurers.Count == 0)
             Game.adventurerManager.refreshAdventurers();
 
-        var selectedNames = SelectedSlots
+        var selectedIds = SelectedSlots
             .Where(adventurer => adventurer is not null)
-            .Select(adventurer => adventurer!.Name)
+            .Select(adventurer => adventurer!.Adventurer.id)
             .ToHashSet();
 
         return Game.adventurerManager.adventurers
-            .Where(adventurer => !selectedNames.Contains(adventurer.name))
+            .Where(adventurer => !selectedIds.Contains(adventurer.id) && !adventurer.isHurted && !adventurer.isInQuest)
             .Select(adventurer => new AdventurerCard
             {
                 Adventurer = adventurer,
@@ -77,6 +79,15 @@ public class QuestPreparationViewModel : IScreenViewModel
 
     public bool AcceptQuest()
     {
-        return Game.questManager.searchQuestByName(SelectedQuest.Title).acceptQuest();
+        return Game.questManager.searchQuestByName(SelectedQuest.Title).acceptQuest(Game.adventurerManager);
     }
+
+    public bool GiveXp
+{
+    get => Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp;
+    set
+    {
+        Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp = value;
+    }
+}
 }

@@ -115,7 +115,9 @@ public class Game
         Console.WriteLine($"Vous avez gagné {reward.gold} gold, {reward.food} food et {reward.prestige} xp");
         this.gold += reward.gold;
         this.food += reward.food;
-        this.xp += reward.prestige;
+
+        this.xp += reward.prestige/2;
+        
         // foreach (Item item in reward.Item4)
         // {
         //     this.inventory.Add(item);
@@ -184,9 +186,7 @@ public class Game
         {
             if (quest.inProgress)
             {
-                this.claimReward(quest.giveReward());
-                LastQuestSucceeded = quest.LastCompletionSucceeded;
-                quest.markCompleted();
+                this.claimReward(this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn));
             }
         }
         this.AdventurersRageQuit();
@@ -222,6 +222,7 @@ public class Game
     public void refreshAll()
     {
         this.questManager.refreshQuests(this.prestige);
+        this.adventurerManager.refreshAdventurersStatus(this.turn);
         this.adventurerManager.refreshadventurersToHire(this.prestige);
         this.adventurerManager.refreshAdventurers();
         this.adventurerManager.refreshMainAdventurers();

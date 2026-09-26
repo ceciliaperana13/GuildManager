@@ -12,7 +12,7 @@
         "def": 0,
         "magicAttack": 0,
         "physicAttack": 3,
-        "image": "assets/image.png"
+        "image": "/Assets/character/monstre/slime.png"
       },
       {
         "name": "Slime",
@@ -21,7 +21,7 @@
         "physicAttack": 4,
         "magicAttack": 0,
         "def": 0,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/slime.png"
       }
     ],
     "adventurers": [
@@ -49,7 +49,25 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/bandit.png"
+      },
+      {
+        "name": "Bandit",
+        "lvl": 6,
+        "health": 40,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "/Assets/character/monstre/bandit.png"
+      },
+      {
+        "name": "Bandit",
+        "lvl": 6,
+        "health": 40,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "/Assets/character/monstre/bandit.png"
       }
     ],
     "adventurers": [],
@@ -75,7 +93,7 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/goblin.png"
       },
       {
         "name": "Gobelin",
@@ -84,7 +102,7 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/goblin.png"
       },
       {
         "name": "Gobelin",
@@ -93,7 +111,7 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/goblin.png"
       }
     ],
     "adventurers": [
@@ -111,7 +129,7 @@
     "name": "Récolte d'herbes médicinales",
     "type": "Recherche",
     "lvl": 8,
-    "description": "La guilde des apothicaire a besoin de divers herbes pour la fabrication de potionsde soin",
+    "description": "La guilde des apothicaire a besoin de divers herbes pour la fabrication de potions de soin",
     "enemies": [
     ],
     "adventurers": [],
@@ -124,5 +142,41 @@
     "remainingTime": 1,
     "inProgress": false,
     "winRate" : 50
+  },{
+    "name": "Horde d'orc",
+    "type": "Combat",
+    "lvl": 5,
+    "description": "Un groupe d'orc c'est installé autours de la grande route et attaque les voyageurs.",
+    "enemies": [
+      {
+        "name": "Orc",
+        "lvl": 20,
+        "health": 300,
+        "def": 150,
+        "magicAttack": 0,
+        "physicAttack": 600,
+        "image": "/Assets/character/monstre/orc.png"
+      },
+      {
+        "name": "Orc",
+        "lvl": 20,
+        "health": 300,
+        "physicAttack": 600,
+        "magicAttack": 0,
+        "def": 150,
+        "image": "/Assets/character/monstre/orc.png"
+      }
+    ],
+    "adventurers": [
+      
+    ],
+    "rewards": {
+      "gold": 150,
+      "food": 20,
+      "prestige": 200,
+      "items": []
+    },
+    "remainingTime": 1,
+    "inProgress": false
   }
 ]
