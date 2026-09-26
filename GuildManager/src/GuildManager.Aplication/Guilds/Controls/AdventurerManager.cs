@@ -179,8 +179,8 @@ public class AdventurerManager
             editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
             {
                 ["isHurted"] = adventurer.isHurted,
-                ["hurtTurn"] = adventurer.hurtTurn,
-                ["isInQuest"] = adventurer.isInQuest
+                ["hurtTurn"] = adventurer.hurtTurn
+                //["isInQuest"] = adventurer.isInQuest
             });
         }
     }
