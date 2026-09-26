@@ -1,6 +1,6 @@
 {
   "GuildId": 1,
-  "Gold": 780,
+  "Gold": 520,
   "Food": 646,
   "CurrentTurn": 0,
   "Members": [
@@ -11,5 +11,5 @@
   ],
   "Characters": [],
   "StoryFlags": [],
-  "LastUpdated": "2026-09-26T23:33:27.3841523Z"
+  "LastUpdated": "2026-09-26T23:40:11.6077367Z"
 }

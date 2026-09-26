@@ -1,1 +1,45 @@
-[]
+[
+  
+  {
+    "SaveId": "a9c72afc-c710-4ebd-84b4-2204621e7d3d",
+    "PlayerName": "test",
+    "CreatedAt": "2026-09-26T23:45:33.0552098Z",
+    "LastPlayedAt": "2026-09-26T23:45:51.1005043Z",
+    "Turn": 2,
+    "MainProgress": 0,
+    "Gold": 9780,
+    "Food": 9978,
+    "Prestige": 1,
+    "Xp": 0,
+    "StoryFlags": {},
+    "ShownDialogueIds": [
+      "intro_01"
+    ],
+    "Adventurers": [
+      {
+        "id": 3,
+        "job": "guerrier",
+        "debuff": [],
+        "isHurted": false,
+        "isDead": false,
+        "hurtTurn": 0,
+        "isInQuest": false,
+        "goldPrice": 220,
+        "foodPrice": 22,
+        "items": null,
+        "xp": 0,
+        "name": "Galdren",
+        "lvl": 6,
+        "health": 6,
+        "def": 10,
+        "magicAttack": 46,
+        "physicAttack": 58,
+        "power": 128,
+        "image": "/Assets/character/adventurers/guerrier1.png"
+      }
+    ],
+    "MainAdventurers": [],
+    "AdventurerIdCounter": 6
+  }
+  
+]

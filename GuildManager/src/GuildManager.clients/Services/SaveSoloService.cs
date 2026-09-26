@@ -17,7 +17,10 @@ public class SaveSoloService
 
     public SaveSoloService(string? filePath = null)
     {
-        _filePath = filePath ?? Path.Combine(AppContext.BaseDirectory, "data", "savesolo.json");
+        // Même logique de chemin que le store coop (Path.Combine("data", "saves.json")
+        // dans CoopMenuView) : relatif au répertoire de travail courant, pas au
+        // dossier de compilation, pour que les deux saves vivent au même endroit.
+        _filePath = filePath ?? Path.Combine("data", "savesolo.json");
     }
 
     public List<GameSaveDto> LoadAll()

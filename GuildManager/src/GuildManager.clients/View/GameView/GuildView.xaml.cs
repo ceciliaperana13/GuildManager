@@ -86,6 +86,12 @@ public partial class GuildView : UserControl
                     Game.SyncResources(resources!.Gold, resources.Food);
             }
         }
+        else if (NavigationService.CurrentSaveId is Guid saveId)
+        {
+            // Solo : la progression (or, nourriture, aventuriers, xp, quêtes...)
+            // est persistée localement dans savesolo.json après chaque tour.
+            new SaveSoloService().UpdateSave(saveId, Game);
+        }
 
         (DataContext as GuildViewModel)?.RefreshResources();
 
