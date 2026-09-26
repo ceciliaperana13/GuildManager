@@ -18,6 +18,8 @@ public class AdventurerRosterViewModel : IScreenViewModel
         {   
             if (adventurer.isHurted)
                 status = AdventurerStatus.Blesse;
+            else if (adventurer.isInQuest)
+                status = AdventurerStatus.EnQuete;
             else status = AdventurerStatus.Disponible;
             Adventurers.Add(new AdventurerCard { Adventurer = adventurer, Name = adventurer.name, Level = adventurer.lvl, ClassName = adventurer.job, Health = adventurer.health, PhysicAttack = adventurer.physicAttack, MagicAttack = adventurer.magicAttack, Defense = adventurer.def, Status = status, PortraitPath = adventurer.image });
         }

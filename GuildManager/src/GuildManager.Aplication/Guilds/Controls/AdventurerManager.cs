@@ -83,7 +83,7 @@ public class AdventurerManager
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));
 
-        return new Adventurer(idCount, generateRandomName(type), job, lvl, 0, health, defense, magic, physic, image, [], false, 0, false, goldPrice, foodPrice);
+        return new Adventurer(idCount, generateRandomName(type), job, lvl, 0, health, defense, magic, physic, image, [], false, 0, false, false, goldPrice, foodPrice);
     }
 
     public string generateRandomName(int type)
@@ -119,6 +119,7 @@ public class AdventurerManager
             ["isHurted"] = adventurer.isHurted,
             ["hurtTurn"] = adventurer.hurtTurn,
             ["isDead"] = adventurer.isDead,
+            ["isInQuest"] = adventurer.isInQuest,
             ["goldPrice"] = adventurer.goldPrice,
             ["foodPrice"] = adventurer.foodPrice,
 
@@ -174,13 +175,13 @@ public class AdventurerManager
             {
                 Console.WriteLine($"{adventurer.name} soigné");
                 adventurer.AdventurerHeal();
-
-                editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
-                {
-                    ["isHurted"] = adventurer.isHurted,
-                    ["hurtTurn"] = adventurer.hurtTurn
-                });
             }
+            editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
+            {
+                ["isHurted"] = adventurer.isHurted,
+                ["hurtTurn"] = adventurer.hurtTurn,
+                ["isInQuest"] = adventurer.isInQuest
+            });
         }
     }
 
@@ -273,7 +274,8 @@ public class AdventurerManager
                 ["def"] = adventurer.def,
                 ["isHurted"] = adventurer.isHurted,
                 ["hurtTurn"] = adventurer.hurtTurn,
-                ["isDead"] = adventurer.isDead
+                ["isDead"] = adventurer.isDead,
+                ["isInQuest"] = adventurer.isInQuest
             });
         }
     }

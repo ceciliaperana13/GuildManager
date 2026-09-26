@@ -10,12 +10,13 @@ public class Adventurer : Character
     public bool isHurted {get; set;}
     public bool isDead {get; set;}
     public int hurtTurn {get; set;}
+    public bool isInQuest {get; set;}
     public int goldPrice {get; private set;}
     public int foodPrice {get; private set;}
     public List<Item> items {get; private set;}
     public int xp {get; set;}
 
-    public Adventurer(int id, string name, string job, int lvl, int xp, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted, int hurtTurn, bool isDead, int goldPrice, int foodPrice) : base(name, lvl, health, def, magicAttack, physicAttack, image)
+    public Adventurer(int id, string name, string job, int lvl, int xp, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted, int hurtTurn, bool isDead, bool isInQuest, int goldPrice, int foodPrice) : base(name, lvl, health, def, magicAttack, physicAttack, image)
     {
         this.id = id;
         this.job = job;
@@ -27,6 +28,7 @@ public class Adventurer : Character
         this.foodPrice = foodPrice;
         this.xp = xp;
         this.hurtTurn = 0;
+        this.isInQuest = isInQuest;
         refreshPower();
     }
 
