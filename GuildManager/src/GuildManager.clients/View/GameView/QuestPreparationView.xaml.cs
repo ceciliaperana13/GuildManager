@@ -30,9 +30,9 @@ public partial class QuestPreparationView : UserControl
         }
     }
 
-    private async void OnSlot0Click(object sender, RoutedEventArgs e) => await OpenPicker(0);
-    private async void OnSlot1Click(object sender, RoutedEventArgs e) => await OpenPicker(1);
-    private async void OnSlot2Click(object sender, RoutedEventArgs e) => await OpenPicker(2);
+    private void OnSlot0Click(object sender, RoutedEventArgs e) => OpenPicker(0);
+    private void OnSlot1Click(object sender, RoutedEventArgs e) => OpenPicker(1);
+    private void OnSlot2Click(object sender, RoutedEventArgs e) => OpenPicker(2);
 
     private void OnAdventurerPicked(AdventurerCard adventurer)
     {
@@ -43,19 +43,10 @@ public partial class QuestPreparationView : UserControl
         Picker.Visibility = Visibility.Collapsed;
     }
 
-    private async System.Threading.Tasks.Task OpenPicker(int slotIndex)
+    private void OpenPicker(int slotIndex)
     {
         _activeSlot = slotIndex;
         if (ViewModel is null) return;
-
-        // En coop, on recharge le roster depuis l'API avant d'afficher le picker,
-        // pour être sûr de voir les aventuriers achetés récemment (par soi ou un
-        // coéquipier), sans dépendre d'un événement temps réel.
-        if (ViewModel.Game.IsCoop)
-        {
-            var apiClient = new GuildApiClient();
-            await ViewModel.Game.SyncCoopRosterAsync(apiClient);
-        }
 
         Picker.SetAdventurers(ViewModel.GetAvailableAdventurers());
         Picker.Visibility = Visibility.Visible;
@@ -68,7 +59,7 @@ public partial class QuestPreparationView : UserControl
         if (ViewModel?.SuccessPercentage is int pct)
         {
             PercentageText.Text = $"{pct}%";
-            FillBar.Width = 460 * (pct / 100.0); // 460 = largeur intérieure approximative de la barre
+            FillBar.Width = 460 * (pct / 100.0);
         }
         else
         {
@@ -83,11 +74,13 @@ public partial class QuestPreparationView : UserControl
 
     private void OnLaunchQuestClicked(object sender, RoutedEventArgs e)
     {
+        if (ViewModel is null) return;
+
         if (ViewModel.AcceptQuest())
             NavigationService.GoBack();
         else
         {
-            OpenTextPopup("Choisissez au moins un aventurier avnat de lancer la quête.");
+            OpenTextPopup("Choisissez au moins un aventurier avant de lancer la quête.");
         }
     }
 

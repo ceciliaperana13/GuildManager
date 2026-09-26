@@ -32,14 +32,7 @@ public class QuestPreparationViewModel : IScreenViewModel
 
     public IEnumerable<AdventurerCard> GetAvailableAdventurers()
     {
-        // --- DEBUG TEMPORAIRE : à retirer une fois le bug identifié ---
-        System.Windows.MessageBox.Show(
-            $"IsCoop={Game.IsCoop} | Total aventuriers={Game.adventurerManager.adventurers.Count}");
-        // --- FIN DEBUG ---
-
-        // En coop, la liste est alimentée par InitCoopAsync + l'événement AdventurerHired.
-        // La rafraîchir localement (logique solo) écraserait/ignorerait le roster partagé.
-        if (Game.adventurerManager.adventurers.Count == 0 && !Game.IsCoop)
+        if (Game.adventurerManager.adventurers.Count == 0)
             Game.adventurerManager.refreshAdventurers();
 
         var selectedIds = SelectedSlots
@@ -47,7 +40,7 @@ public class QuestPreparationViewModel : IScreenViewModel
             .Select(adventurer => adventurer!.Adventurer.id)
             .ToHashSet();
 
-        var result = Game.adventurerManager.adventurers
+        return Game.adventurerManager.adventurers
             .Where(adventurer => !selectedIds.Contains(adventurer.id) && !adventurer.isHurted && !adventurer.isInQuest)
             .Select(adventurer => new AdventurerCard
             {
@@ -63,12 +56,6 @@ public class QuestPreparationViewModel : IScreenViewModel
                 Status = AdventurerStatus.Disponible
             })
             .ToList();
-
-        // --- DEBUG TEMPORAIRE : à retirer une fois le bug identifié ---
-        System.Windows.MessageBox.Show($"Cartes générées pour le picker : {result.Count}");
-        // --- FIN DEBUG ---
-
-        return result;
     }
 
     public void AssignAdventurer(int slotIndex, AdventurerCard adventurer)

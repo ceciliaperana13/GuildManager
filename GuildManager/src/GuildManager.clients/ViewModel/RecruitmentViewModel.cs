@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using GuildManager.Aplication.Guilds.Controls;
-using GuildManager.Client.Services;
 
 namespace GuildManager.Client.ViewModel;
 
@@ -29,10 +28,12 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
     public RecruitmentViewModel(Game game)
     {
         Game = game;
-        _ = LoadCandidatesAsync();
+        LoadCandidates();
     }
 
-    private async System.Threading.Tasks.Task LoadCandidatesAsync()
+    // Candidats indépendants par joueur, en solo comme en coop : seuls l'or et la
+    // nourriture sont partagés (cf. RecruitmentView.OnBuyClicked).
+    private void LoadCandidates()
     {
         IsLoading = true;
         LoadError = null;
@@ -40,56 +41,28 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
         try
         {
             Candidates.Clear();
+            Game.adventurerManager.refreshadventurersToHire(Game.prestige);
 
-            if (AppSession.IsCoop)
+            foreach (var a in Game.adventurerManager.adventurersToHire)
             {
-                var apiClient = new GuildApiClient();
-                var dtos = await apiClient.GetAdventurersToHireAsync();
-
-                foreach (var dto in dtos)
+                Candidates.Add(new AdventurerCandidate
                 {
-                    Candidates.Add(new AdventurerCandidate
-                    {
-                        Id = dto.Id,
-                        Name = dto.Name,
-                        ClassName = dto.Job,
-                        Level = dto.Lvl,
-                        Health = dto.Health,
-                        Defense = dto.Def,
-                        PhysicAttack = dto.PhysicAttack,
-                        MagicAttack = dto.MagicAttack,
-                        PortraitPath = dto.Image,
-                        RecruitmentCost = dto.GoldPrice
-                    });
-                }
-            }
-            else
-            {
-                // Mode solo : génération locale des candidats via Game.adventurerManager,
-                // aucun appel réseau nécessaire.
-                Game.adventurerManager.refreshadventurersToHire(Game.prestige);
-
-                foreach (var a in Game.adventurerManager.adventurersToHire)
-                {
-                    Candidates.Add(new AdventurerCandidate
-                    {
-                        Id = a.id,
-                        Name = a.name,
-                        ClassName = a.job,
-                        Level = a.lvl,
-                        Health = a.health,
-                        Defense = a.def,
-                        PhysicAttack = a.physicAttack,
-                        MagicAttack = a.magicAttack,
-                        PortraitPath = a.image,
-                        RecruitmentCost = a.goldPrice
-                    });
-                }
+                    Id = a.id,
+                    Name = a.name,
+                    ClassName = a.job,
+                    Level = a.lvl,
+                    Health = a.health,
+                    Defense = a.def,
+                    PhysicAttack = a.physicAttack,
+                    MagicAttack = a.magicAttack,
+                    PortraitPath = a.image,
+                    RecruitmentCost = a.goldPrice
+                });
             }
         }
         catch (System.Exception ex)
         {
-            LoadError = $"Impossible de charger les candidats au recrutement : {ex.Message}";
+            LoadError = $"Impossible de générer les candidats au recrutement : {ex.Message}";
         }
         finally
         {

@@ -54,11 +54,8 @@ public partial class LoginMenuView : UserControl
             AppSession.UserId = result!.Id;
             AppSession.Username = result.Username;
 
-            // Enregistrement + heartbeat en continu, tant que l'appli reste ouverte
             SessionKeepAlive.Start(AppSession.ApiBaseUrl, AppSession.Username);
 
-            // Récupération de l'état réel des ressources partagées (pot commun coop)
-            // au lieu de valeurs de test codées en dur.
             var apiClient = new GuildApiClient();
             var resources = await apiClient.GetResourcesAsync();
 
@@ -66,13 +63,7 @@ public partial class LoginMenuView : UserControl
             int food = resources?.Food ?? 0;
 
             Game game = new Game(result.Username, 1, 0, gold, food, 1, 0);
-
-            MessageBox.Show($"IsCoop = {AppSession.IsCoop}");
-if (AppSession.IsCoop)
-{
-    await game.InitCoopAsync(apiClient);
-    MessageBox.Show($"Roster chargé, {game.adventurerManager.adventurers.Count} aventurier(s)");
-}
+            game.SetCoopMode(AppSession.IsCoop);
 
             NavigationService.NavigateTo(new GuildViewModel(), game);
         }

@@ -4,8 +4,6 @@ using System.CodeDom;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
-using GuildManager.Client.Services;
 
 namespace GuildManager.Aplication.Guilds.Controls;
 public class Game
@@ -27,6 +25,8 @@ public class Game
     bool isBought;
     bool turnInProgress;
 
+    // Coop = or/nourriture partagés via l'API ; aventuriers, candidats, xp, niveaux
+    // et quêtes restent indépendants par joueur (mêmes règles qu'en solo).
     public bool IsCoop { get; private set; }
 
     public Game(string playerName, int turn, int mainProgress, int gold, int food, int prestige, int xp)
@@ -41,55 +41,16 @@ public class Game
         this.turnInProgress = true;
     }
 
-    // À appeler une fois après le login, si AppSession.IsCoop est vrai (cf. LoginMenuView).
-    // Charge le roster déjà recruté par la guilde coop et s'abonne aux futurs achats
-    // faits par n'importe quel joueur (soi-même inclus) via SignalR.
-    public async Task InitCoopAsync(GuildApiClient apiClient)
+    public void SetCoopMode(bool isCoop) => IsCoop = isCoop;
+
+    // Achat en coop : l'or partagé est déjà débité côté API (voir
+    // RecruitmentView.OnBuyClicked) avant l'appel à cette méthode.
+    // L'aventurier reste local à ce joueur, comme en solo.
+    public void AddPurchasedAdventurerCoop(Adventurer adventurer)
     {
-        IsCoop = true;
-
-        List<AdventurerCandidateDto> roster = await apiClient.GetAdventurersRosterAsync();
-        foreach (AdventurerCandidateDto dto in roster)
-        {
-            if (adventurerManager.adventurers.Any(a => a.id == dto.Id))
-                continue;
-            adventurerManager.AddAdventurer(MapToAdventurer(dto));
-        }
-
-        // Évite les abonnements en double si InitCoopAsync est rappelé (ex: reconnexion).
-        GuildRealtimeService.AdventurerHired -= OnAdventurerHired;
-        GuildRealtimeService.AdventurerHired += OnAdventurerHired;
+        adventurerManager.AddAdventurer(adventurer);
+        Console.WriteLine(adventurer.name + " recruté (coop).");
     }
-
-    // Recharge le roster depuis l'API à la demande (ex: avant d'ouvrir le picker
-    // de sélection de quête), sans dépendre de SignalR. Complète InitCoopAsync
-    // pour garantir que les achats récents sont bien pris en compte localement.
-    public async Task SyncCoopRosterAsync(GuildApiClient apiClient)
-    {
-        if (!IsCoop) return;
-
-        List<AdventurerCandidateDto> roster = await apiClient.GetAdventurersRosterAsync();
-        foreach (AdventurerCandidateDto dto in roster)
-        {
-            if (adventurerManager.adventurers.Any(a => a.id == dto.Id))
-                continue;
-            adventurerManager.AddAdventurer(MapToAdventurer(dto));
-        }
-    }
-
-    private void OnAdventurerHired(AdventurerCandidateDto dto)
-    {
-        if (adventurerManager.adventurers.Any(a => a.id == dto.Id))
-            return; // déjà présent
-
-        adventurerManager.AddAdventurer(MapToAdventurer(dto));
-    }
-
-    private static Adventurer MapToAdventurer(AdventurerCandidateDto dto) => new Adventurer(
-        dto.Id, dto.Name, dto.Job, dto.Lvl, dto.Xp, dto.Health, dto.Def,
-        dto.MagicAttack, dto.PhysicAttack, dto.Image, dto.Debuff,
-        dto.IsHurted, dto.HurtTurn, dto.IsDead, dto.IsInQuest,
-        dto.GoldPrice, dto.FoodPrice);
 
     public void refreshSpecialadventurers()
     {

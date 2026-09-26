@@ -36,32 +36,36 @@ public partial class RecruitmentView : UserControl
         if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
             return;
 
+        // Le candidat est toujours généré localement (solo comme coop) : on le
+        // retrouve dans adventurersToHire pour récupérer l'objet Adventurer complet.
+        var adventurer = viewModel.Game.adventurerManager.adventurersToHire
+            .FirstOrDefault(a => a.id == _selectedCandidate.Id);
+
+        if (adventurer is null)
+        {
+            PurchaseText.Text = "Cet aventurier n'est plus disponible.";
+            return;
+        }
+
         if (AppSession.IsCoop)
         {
-            // Mode coop : l'achat passe par l'API, qui gère le pot commun partagé.
+            // Mode coop : seul l'or est partagé, débité via l'API. L'aventurier
+            // reste local à ce joueur, indépendant des autres.
             var apiClient = new GuildApiClient();
-            var (success, resources, error) = await apiClient.HireAdventurerAsync(_selectedCandidate.Id);
+            var (success, resources, error) = await apiClient.TransferResourceAsync("gold", adventurer.goldPrice);
 
             if (!success)
             {
                 PurchaseText.Text = error ?? "Achat impossible.";
-                return; // laisse la boîte de dialogue ouverte pour montrer l'erreur
-            }
-
-            viewModel.Game.SyncResources(resources!.Gold, resources.Food);
-        }
-        else
-        {
-            // Mode solo : l'achat se fait directement en local sur l'instance de Game.
-            var adventurer = viewModel.Game.adventurerManager.adventurersToHire
-                .FirstOrDefault(a => a.id == _selectedCandidate.Id);
-
-            if (adventurer is null)
-            {
-                PurchaseText.Text = "Cet aventurier n'est plus disponible.";
                 return;
             }
 
+            viewModel.Game.SyncResources(resources!.Gold, resources.Food);
+            viewModel.Game.AddPurchasedAdventurerCoop(adventurer);
+            viewModel.Game.adventurerManager.adventurersToHire.Remove(adventurer);
+        }
+        else
+        {
             bool bought = viewModel.Game.buyAdventurer(adventurer);
             if (!bought)
             {
@@ -81,5 +85,4 @@ public partial class RecruitmentView : UserControl
         _selectedCandidate = null;
         PurchaseDialog.Visibility = Visibility.Collapsed;
     }
-
 }
