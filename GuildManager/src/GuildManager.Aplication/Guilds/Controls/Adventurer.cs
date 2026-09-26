@@ -7,21 +7,26 @@ public class Adventurer : Character
     public string job {get; private set;}
     // Inventory inventory;
     public List<string> debuff {get; private set;} //à changer par une list d'objet debuff ?
-    public bool isHurted {get; private set;}
+    public bool isHurted {get; set;}
+    public bool isDead {get; set;}
+    public int hurtTurn {get; set;}
     public int goldPrice {get; private set;}
     public int foodPrice {get; private set;}
     public List<Item> items {get; private set;}
     public int xp {get; set;}
 
-    public Adventurer(int id, string name, string job, int lvl, int xp, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted, int goldPrice, int foodPrice) : base(name, lvl, health, def, magicAttack, physicAttack, image)
+    public Adventurer(int id, string name, string job, int lvl, int xp, int health, int def, int magicAttack, int physicAttack, string image, List<string> debuff, bool isHurted, int hurtTurn, bool isDead, int goldPrice, int foodPrice) : base(name, lvl, health, def, magicAttack, physicAttack, image)
     {
         this.id = id;
         this.job = job;
         this.debuff = debuff;
         this.isHurted = isHurted;
+        this.hurtTurn = hurtTurn;
+        this.isDead = isDead;
         this.goldPrice = goldPrice;
         this.foodPrice = foodPrice;
         this.xp = xp;
+        this.hurtTurn = 0;
         refreshPower();
     }
 
@@ -95,5 +100,18 @@ public class Adventurer : Character
         }
     }
     refreshPower();
+    }
+
+    public void adventurerHurt(int turn)
+    {
+        this.isHurted = true;
+        this.hurtTurn = turn;
+    }
+
+    public void AdventurerHeal()
+    {
+        this.isHurted = false;
+        this.hurtTurn = 0;
+        Console.WriteLine($"{this.name} s'est blessé au combat {this.isHurted} {this.hurtTurn}");
     }
 }

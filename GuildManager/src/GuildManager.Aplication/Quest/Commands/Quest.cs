@@ -133,7 +133,7 @@ public class Quest
         return false;
     }
 
-    public bool completeQuest()
+    public bool completeQuest(int turn)
     {
         Random random = new Random();
         double num = random.NextDouble() * 100;
@@ -141,15 +141,40 @@ public class Quest
         if (num <= this.winRate)
         {
             Console.WriteLine($"Quête : {this.name} réussie");
+            if (this.winRate <= 60 && this.type == "Combat")
+            {
+                foreach (Adventurer adventurer in this.adventurers)
+                {
+                    if(random.Next(100) > 50)
+                        adventurer.adventurerHurt(turn);
+                }
+            }
             return true; // cas de victoire
-        } 
-        Console.WriteLine($"Quête : {this.name} échouée");
-        return false; // cas de défaite
+        }
+        else 
+        {
+            if (this.type == "Combat")
+            {
+                foreach (Adventurer adventurer in this.adventurers)
+                {
+                    if(random.Next(100) < 25)
+                        adventurer.adventurerHurt(turn);
+                    else if(random.Next(100) < 75)
+                    {
+                        adventurer.isDead = true;
+                        Console.Write($"{adventurer.name} est mort au combat {adventurer.isDead}");
+                    }
+                    else Console.WriteLine($"{adventurer.name} a fuit");    
+                }
+            }
+            Console.WriteLine($"Quête : {this.name} échouée");
+            return false; // cas de défaite
+        }     
     }
 
-    public Reward giveReward()
+    public Reward giveReward(int turn)
     {
-        if (this.completeQuest())
+        if (this.completeQuest(turn))
         {
             int adventurersXp = this.rewards.prestige / 2;
             //Console.WriteLine($"récompenses : {this.rewards.gold}");
@@ -178,6 +203,8 @@ public class Quest
             Console.WriteLine($"{adventurer.name} à reçut {personalXp} xp");
             adventurer.levelUp();
         }
-    } 
+    }
+
+
 
 }

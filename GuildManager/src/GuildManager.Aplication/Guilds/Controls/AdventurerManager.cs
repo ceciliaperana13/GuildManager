@@ -83,7 +83,7 @@ public class AdventurerManager
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));
 
-        return new Adventurer(idCount, generateRandomName(type), job, lvl, 0, health, defense, magic, physic, image, [], false, goldPrice, foodPrice);
+        return new Adventurer(idCount, generateRandomName(type), job, lvl, 0, health, defense, magic, physic, image, [], false, 0, false, goldPrice, foodPrice);
     }
 
     public string generateRandomName(int type)
@@ -117,6 +117,8 @@ public class AdventurerManager
             ["image"] = adventurer.image,
             ["debuff"] = JsonSerializer.SerializeToNode(adventurer.debuff),
             ["isHurted"] = adventurer.isHurted,
+            ["hurtTurn"] = adventurer.hurtTurn,
+            ["isDead"] = adventurer.isDead,
             ["goldPrice"] = adventurer.goldPrice,
             ["foodPrice"] = adventurer.foodPrice,
 
@@ -160,6 +162,26 @@ public class AdventurerManager
     public void refreshAdventurers()
     {
         this.adventurers = generateAdventurerFromJson("adventurers");
+    }
+
+    public void refreshAdventurersStatus(int turn)
+    {
+        foreach (Adventurer adventurer in this.adventurers.ToList())
+        {
+            if (adventurer.isDead)
+                removeAdventurer(adventurer);
+            else if (adventurer.isHurted && turn >= adventurer.hurtTurn + 3)
+            {
+                Console.WriteLine($"{adventurer.name} soigné");
+                adventurer.AdventurerHeal();
+
+                editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
+                {
+                    ["isHurted"] = adventurer.isHurted,
+                    ["hurtTurn"] = adventurer.hurtTurn
+                });
+            }
+        }
     }
 
     public void refreshMainAdventurers()
@@ -248,7 +270,10 @@ public class AdventurerManager
                 ["health"] = adventurer.health,
                 ["physicAttack"] = adventurer.physicAttack,
                 ["magicAttack"] = adventurer.magicAttack,
-                ["def"] = adventurer.def
+                ["def"] = adventurer.def,
+                ["isHurted"] = adventurer.isHurted,
+                ["hurtTurn"] = adventurer.hurtTurn,
+                ["isDead"] = adventurer.isDead
             });
         }
     }

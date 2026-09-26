@@ -141,7 +141,7 @@ public class Game
         {
             if (quest.inProgress)
             {
-                this.claimReward(this.questManager.completeQuestAndSave(quest, this.adventurerManager));
+                this.claimReward(this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn));
             }
         }
         this.AdventurersRageQuit();
@@ -177,6 +177,7 @@ public class Game
     public void refreshAll()
     {
         this.questManager.refreshQuests(this.prestige);
+        this.adventurerManager.refreshAdventurersStatus(this.turn);
         this.adventurerManager.refreshadventurersToHire(this.prestige);
         this.adventurerManager.refreshAdventurers();
         this.adventurerManager.refreshMainAdventurers();

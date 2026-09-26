@@ -146,10 +146,10 @@ public class QuestManager
         return null;
     }
 
-    public Reward completeQuestAndSave(Quest quest, AdventurerManager adventurerManager)
+    public Reward completeQuestAndSave(Quest quest, AdventurerManager adventurerManager, int turn)
     {
         List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
-        Reward reward = quest.giveReward();
+        Reward reward = quest.giveReward(turn);
         adventurerManager.SaveAdventurersAfterQuest(participants);
 
         return reward;
