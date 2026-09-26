@@ -12,7 +12,7 @@
         "def": 0,
         "magicAttack": 0,
         "physicAttack": 3,
-        "image": "assets/image.png"
+        "image": "/Assets/character/monstre/slime.png"
       },
       {
         "name": "Slime",
@@ -21,7 +21,7 @@
         "physicAttack": 4,
         "magicAttack": 0,
         "def": 0,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/slime.png"
       }
     ],
     "adventurers": [
@@ -49,7 +49,25 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/bandit.png"
+      },
+      {
+        "name": "Bandit",
+        "lvl": 6,
+        "health": 40,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "/Assets/character/monstre/bandit.png"
+      },
+      {
+        "name": "Bandit",
+        "lvl": 6,
+        "health": 40,
+        "physicAttack": 7,
+        "magicAttack": 0,
+        "def": 2,
+        "image": "/Assets/character/monstre/bandit.png"
       }
     ],
     "adventurers": [],
@@ -75,7 +93,7 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/goblin.png"
       },
       {
         "name": "Gobelin",
@@ -84,7 +102,7 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/goblin.png"
       },
       {
         "name": "Gobelin",
@@ -93,7 +111,7 @@
         "physicAttack": 7,
         "magicAttack": 0,
         "def": 2,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/goblin.png"
       }
     ],
     "adventurers": [

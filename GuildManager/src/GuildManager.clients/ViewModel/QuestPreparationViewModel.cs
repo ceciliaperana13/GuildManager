@@ -10,6 +10,8 @@ public class QuestPreparationViewModel : IScreenViewModel
     public string BackgroundPath => "/Assets/UI/Quest_background.png";
     public QuestCard? SelectedQuest { get; }
     public Game Game { get; }
+    public IEnumerable<Monster> Enemies =>
+    Game.questManager.searchQuestByName(SelectedQuest.Title).enemies;
 
     public ObservableCollection<AdventurerCard?> SelectedSlots { get; } = new() { null, null, null };
 
@@ -79,4 +81,13 @@ public class QuestPreparationViewModel : IScreenViewModel
     {
         return Game.questManager.searchQuestByName(SelectedQuest.Title).acceptQuest();
     }
+
+    public bool GiveXp
+{
+    get => Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp;
+    set
+    {
+        Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp = value;
+    }
+}
 }

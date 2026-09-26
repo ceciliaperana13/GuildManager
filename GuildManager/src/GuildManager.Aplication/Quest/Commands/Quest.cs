@@ -155,6 +155,7 @@ public class Quest
             //Console.WriteLine($"récompenses : {this.rewards.gold}");
             if (this.giveXp)
             {
+                Console.WriteLine("Tout l'xp à été atribué aux aventuriers");
                 adventurersXp = this.rewards.prestige;
                 this.rewards.prestige = 0;
             } 

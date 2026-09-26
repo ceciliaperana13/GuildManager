@@ -29,6 +29,7 @@
     <Resource Include="Assets\UI\**\*.png" />
     <Resource Include="Assets\**\**\*.ico" />
     <Resource Include="Assets\character\adventurers\**\*.png" />
+    <Resource Include="Assets\character\monstre\**\*.png" />
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
