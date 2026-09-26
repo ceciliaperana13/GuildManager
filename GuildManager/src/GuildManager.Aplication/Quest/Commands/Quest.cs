@@ -98,8 +98,8 @@ public class Quest
                 teamPower += adventurer.power;
                 
             }
-            Console.WriteLine("PUissance adventurers : " + teamPower);
-            Console.WriteLine("PUissance enemy : " + enemiesPower);
+            //Console.WriteLine("PUissance adventurers : " + teamPower);
+            //Console.WriteLine("PUissance enemy : " + enemiesPower);
             if (teamPower + enemiesPower == 0)
                 return 0; // évite une division par 0
 

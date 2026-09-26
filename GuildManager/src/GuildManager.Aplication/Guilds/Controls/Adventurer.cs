@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.StaticAssets;
+
 namespace GuildManager.Aplication.Guilds.Controls;
 public class Adventurer : Character
 {
@@ -40,11 +42,58 @@ public class Adventurer : Character
 
     public void levelUp()
     {
-        if (this.xp >= this.lvl*10)
+        while (this.xp >= this.lvl*10)
         {
-            this.lvl++;
             this.xp -= this.lvl*10;
+            this.lvl++;
             Console.WriteLine($"{this.name} est passé niveau {this.lvl}");
+            this.assignPoints();
         }
+    }
+
+    public void assignPoints()
+    {
+        int points = 20;
+        Random random = new Random();
+
+        for (int i = 0; i < points; i++)
+        {
+            int roll = random.Next(100);
+
+            if (this.job == "mage")
+            {
+                if (roll < 50)       // 50%
+                    this.magicAttack++;
+                else if (roll < 80)  // 30%
+                    this.health++;
+                else if (roll < 90)  // 10%
+                    this.def++;
+                else                 // 10%
+                    this.physicAttack++;
+            }
+            else if (this.job == "tank")
+            {
+                if (roll < 40)       // 40%
+                    this.def++;
+                else if (roll < 80)  // 40%
+                    this.health++;
+                else if (roll < 90)  // 10%
+                    this.magicAttack++;
+                else                 // 10%
+                    this.physicAttack++;
+            }
+        else
+        {
+            if (roll < 30)           // 30%
+                    this.health++;
+                else if (roll < 70)  // 40%
+                    this.physicAttack++;
+                else if (roll < 90)  // 20%
+                    this.def++;
+                else                 // 10%
+                    this.magicAttack++;
+        }
+    }
+    refreshPower();
     }
 }

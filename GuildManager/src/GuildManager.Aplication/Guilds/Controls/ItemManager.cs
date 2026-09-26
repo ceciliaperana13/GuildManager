@@ -19,8 +19,8 @@ public class ItemManager
     public void refreshShop(int prestige)
 {
     List<Item> items = generateItemsFromJson();
-    Console.WriteLine($"generateItemsFromJson a retourné {items.Count} items");
-    Console.WriteLine($"prestige = {prestige}, seuil = {prestige/10 + 1}");
+    //Console.WriteLine($"generateItemsFromJson a retourné {items.Count} items");
+    //Console.WriteLine($"prestige = {prestige}, seuil = {prestige/10 + 1}");
 
     this.itemsShop.Clear();
     foreach(Item item in items)
@@ -31,7 +31,7 @@ public class ItemManager
             this.itemsShop.Add(item);
         }
     }
-    Console.WriteLine($"itemsShop contient maintenant {this.itemsShop.Count} items");
+    //Console.WriteLine($"itemsShop contient maintenant {this.itemsShop.Count} items");
 }
 
     public void refreshInventory()
@@ -48,7 +48,7 @@ public class ItemManager
     {
         string itemsJson = File.ReadAllText("data/items.json");
         List<Item> items = JsonSerializer.Deserialize<List<Item>>(itemsJson) ?? new List<Item>();
-        Console.WriteLine($"Items lus depuis items.json : {items.Count}");
+        //Console.WriteLine($"Items lus depuis items.json : {items.Count}");
 
         string invJson = File.ReadAllText("data/inventory.json");
         JsonObject root = JsonNode.Parse(invJson)!.AsObject();

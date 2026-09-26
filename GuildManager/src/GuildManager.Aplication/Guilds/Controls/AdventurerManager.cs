@@ -152,8 +152,8 @@ public class AdventurerManager
         {
             Adventurer adventurer = this.generateCharacter(prestige);
             this.adventurersToHire.Add(adventurer);
-            adventurer.Write();
-            Console.WriteLine("\n");
+            //adventurer.Write();
+            //Console.WriteLine("\n");
         }
     }
 
@@ -237,19 +237,18 @@ public class AdventurerManager
         }
     }
 
-    /// <summary>
-    /// Persiste plusieurs aventuriers d'un coup après une quête (xp + lvl notamment).
-    /// À appeler juste après quest.giveReward(), pour chaque aventurier ayant participé.
-    /// Usage : manager.SaveAdventurersAfterQuest(quest.adventurers);
-    /// </summary>
     public void SaveAdventurersAfterQuest(IEnumerable<Adventurer> participants)
     {
-        foreach (var adventurer in participants)
+        foreach (Adventurer adventurer in participants)
         {
             editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
             {
                 ["xp"] = adventurer.xp,
-                ["lvl"] = adventurer.lvl
+                ["lvl"] = adventurer.lvl,
+                ["health"] = adventurer.health,
+                ["physicAttack"] = adventurer.physicAttack,
+                ["magicAttack"] = adventurer.magicAttack,
+                ["def"] = adventurer.def
             });
         }
     }
@@ -278,4 +277,17 @@ public class AdventurerManager
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));
     }
+
+    // public void SaveAdventurerStats(Adventurer adventurer)
+    // {
+    //     editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
+    //     {
+    //         ["lvl"] = adventurer.lvl,
+    //         ["xp"] = adventurer.xp,
+    //         ["health"] = adventurer.health,
+    //         ["physicAttack"] = adventurer.physicAttack,
+    //         ["magicAttack"] = adventurer.magicAttack,
+    //         ["def"] = adventurer.def
+    //     });
+    // }
 }

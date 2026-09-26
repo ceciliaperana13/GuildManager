@@ -1,12 +1,12 @@
 {
-  "idCount": 2662,
+  "idCount": 2683,
   "mainAdventurers": [],
   "adventurers": [
     {
       "id": 2612,
       "name": "Edrik",
       "job": "guerrier",
-      "lvl": 6,
+      "lvl": 8,
       "xp": -10,
       "health": 40,
       "physicAttack": 29,
@@ -22,12 +22,12 @@
       "id": 2614,
       "name": "Faelorn",
       "job": "guerrier",
-      "lvl": 8,
-      "xp": 20,
-      "health": 29,
-      "physicAttack": 61,
-      "magicAttack": 30,
-      "def": 20,
+      "lvl": 10,
+      "xp": 30,
+      "health": 35,
+      "physicAttack": 70,
+      "magicAttack": 34,
+      "def": 21,
       "image": "/Assets/character/adventurers/guerrier1.png",
       "debuff": [],
       "isHurted": false,
@@ -39,7 +39,7 @@
       "name": "Ma\u00EBlys",
       "job": "tank",
       "lvl": 9,
-      "xp": 0,
+      "xp": 50,
       "health": 38,
       "physicAttack": 25,
       "magicAttack": 52,
@@ -49,6 +49,22 @@
       "isHurted": false,
       "goldPrice": 280,
       "foodPrice": 65
+    },
+    {
+      "id": 2676,
+      "name": "Isolde",
+      "job": "tank",
+      "lvl": 6,
+      "xp": -10,
+      "health": 30,
+      "physicAttack": 36,
+      "magicAttack": 5,
+      "def": 49,
+      "image": "/Assets/character/adventurers/tank2.png",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 180,
+      "foodPrice": 18
     }
   ]
 }
