@@ -18,8 +18,13 @@ public class Quest
     public Reward rewards { get; private set; }
     public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
+    public string? TimeoutFlag { get; private set; }
     [JsonIgnore]
     public bool? LastCompletionSucceeded { get; private set; }
+
+    public string? StoryDialogueId { get; private set; }
+
+    public void SetStoryDialogueId(string? dialogueId) => StoryDialogueId = dialogueId;
 
     
     // public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress)
@@ -35,21 +40,29 @@ public class Quest
     //     this.inProgress = inProgress;
     //     this.winRate = refreshWinRate();
     // }
-    [JsonConstructor]
-    public Quest(string name, string type, int lvl, string description, List<Monster> enemies, List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress, double winRate)
-    {
-        this.name = name;
-        this.type = type;
-        this.lvl = lvl;
-        this.description = description;
-        this.enemies = enemies;
-        this.adventurers = adventurers;
-        this.rewards = rewards;
-        this.remainingTime = remainingTime;
-        this.inProgress = inProgress;
-        this.winRate = winRate;
-        this.refreshWinRate();
-    }
+    public bool IsStoryQuest { get; private set; }
+
+[JsonConstructor]
+public Quest(string name, string type, int lvl, string description, List<Monster> enemies,
+    List<Adventurer> adventurers, Reward rewards, int remainingTime, bool inProgress, double winRate,
+    string? timeoutFlag = null, bool isStoryQuest = false)
+{
+    this.name = name;
+    this.type = type;
+    this.lvl = lvl;
+    this.description = description;
+    this.enemies = enemies ?? new List<Monster>();
+    this.adventurers = adventurers ?? new List<Adventurer>();
+    this.rewards = rewards;
+    this.remainingTime = remainingTime;
+    this.inProgress = inProgress;
+    this.winRate = winRate;
+    this.TimeoutFlag = timeoutFlag;
+    this.IsStoryQuest = isStoryQuest;
+    this.refreshWinRate();
+}
+
+    public void SetTimeoutFlag(string? flag) => this.TimeoutFlag = flag;
 
     void refreshCharacterPower()
     {

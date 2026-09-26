@@ -22,15 +22,44 @@ public static class DialogueRepository
     public static DialogueEntry Get(string id) => _entries[id];
 
     public static DialogueEntry? GetByTrigger(
-        string trigger,
-        int act,
-        System.Func<string, bool>? conditionEvaluator = null,
-        ISet<string>? excludedIds = null)
+    string trigger,
+    int act,
+    System.Func<string, bool>? conditionEvaluator = null,
+    ISet<string>? excludedIds = null,
+    bool? questSucceeded = null,
+    string? completedStoryDialogueId = null)
+{
+    return _entries.Values.FirstOrDefault(entry =>
+        entry.Trigger == trigger
+        && entry.Act == act
+        && (excludedIds is null || !excludedIds.Contains(entry.Id))
+        && (trigger != "questResult" || !questSucceeded.HasValue || IsQuestResult(entry, questSucceeded.Value))
+        && (trigger != "questResult" || completedStoryDialogueId is null || MatchesCompletedQuest(entry, completedStoryDialogueId))
+        && HasRequiredDialogue(entry, excludedIds)
+        && (entry.Condition is null || conditionEvaluator?.Invoke(entry.Condition) == true));
+}
+
+private static bool MatchesCompletedQuest(DialogueEntry entry, string completedStoryDialogueId)
+{
+    if (entry.RequiresDialogueIds is { Count: > 0 })
+        return entry.RequiresDialogueIds.Contains(completedStoryDialogueId);
+
+    return entry.RequiresDialogueId == completedStoryDialogueId;
+}
+
+    private static bool HasRequiredDialogue(DialogueEntry entry, ISet<string>? shownDialogueIds)
     {
-        return _entries.Values.FirstOrDefault(entry =>
-            entry.Trigger == trigger
-            && entry.Act == act
-            && (excludedIds is null || !excludedIds.Contains(entry.Id))
-            && (entry.Condition is null || conditionEvaluator?.Invoke(entry.Condition) == true));
+        if (entry.RequiresDialogueIds is { Count: > 0 })
+            return shownDialogueIds is not null
+                && entry.RequiresDialogueIds.Any(shownDialogueIds.Contains);
+
+        return entry.RequiresDialogueId is null
+            || shownDialogueIds is not null && shownDialogueIds.Contains(entry.RequiresDialogueId);
+    }
+
+    private static bool IsQuestResult(DialogueEntry entry, bool succeeded)
+    {
+        var result = succeeded ? "victory" : "defeat";
+        return entry.Id.Contains($"_{result}", System.StringComparison.OrdinalIgnoreCase);
     }
 }

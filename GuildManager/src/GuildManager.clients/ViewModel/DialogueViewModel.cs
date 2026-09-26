@@ -36,11 +36,11 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
     }
 
     public void SetGame(Game game)
-    {
-        Game = game;
-        if (_entry.Trigger == "manual")
-            Game.MarkDialogueAsShown(_entry.Id);
-    }
+{
+    Game = game;
+    Game.MarkDialogueAsShown(_entry.Id);
+    Game.ApplyDialogueEffects(_entry.Effects);
+}
 
     public void Advance()
     {
@@ -62,26 +62,26 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
     }
 
     public void ChooseOption(DialogueChoice choice)
-    {
-        Game.ApplyDialogueEffects(choice.Effects);
+{
+    Game.ApplyDialogueEffects(choice.Effects);
 
-        if (choice.NextDialogueId != null)
-        {
-            _entry = DialogueRepository.Get(choice.NextDialogueId);
-            _lineIndex = 0;
-            if (_entry.Trigger == "manual")
-                Game.MarkDialogueAsShown(_entry.Id);
-            Raise();
-        }
-        else if (choice.EndsGame == true)
-        {
-            ReturnToGameMenu();
-        }
-        else
-        {
-            ReturnToGameMenu();
-        }
+    if (choice.NextDialogueId != null)
+    {
+        _entry = DialogueRepository.Get(choice.NextDialogueId);
+        _lineIndex = 0;
+        Game.MarkDialogueAsShown(_entry.Id);
+        Game.ApplyDialogueEffects(_entry.Effects);
+        Raise();
     }
+    else if (choice.EndsGame == true)
+    {
+        ReturnToGameMenu();
+    }
+    else
+    {
+        ReturnToGameMenu();
+    }
+}
 
     private void ReturnToGameMenu() => NavigationService.NavigateTo(new GuildViewModel(), Game);
 

@@ -69,19 +69,38 @@ public partial class GuildView : UserControl
     (DataContext as GuildViewModel)?.RefreshResources();
 
     DialogueEntry? dialogue = null;
-    if (Game.turn % 5 == 0)
+    if (Game.LastQuestSucceeded is not null)
+{
+    dialogue = DialogueRepository.GetByTrigger(
+        "questResult",
+        Game.mainProgress,
+        Game.HasStoryFlag,
+        Game.ShownDialogueIds,
+        Game.LastQuestSucceeded,
+        Game.LastCompletedStoryDialogueId);
+}
+    if (dialogue is null && Game.IsPeriodicDialogueTurn)
     {
         dialogue = DialogueRepository.GetByTrigger(
-            "manual", Game.mainProgress, Game.HasStoryFlag, Game.ShownDialogueIds);
+            "manual",
+            Game.mainProgress,
+            Game.HasStoryFlag,
+            Game.ShownDialogueIds);
     }
 
-    if (dialogue is null)
+    if (dialogue is null && Game.LastQuestSucceeded is null)
     {
-        var trigger = Game.LastQuestSucceeded is not null ? "questResult" : "turnStart";
-        dialogue = DialogueRepository.GetByTrigger(trigger, Game.mainProgress, Game.HasStoryFlag);
+        dialogue = DialogueRepository.GetByTrigger(
+            "turnStart",
+            Game.mainProgress,
+            Game.HasStoryFlag,
+            Game.ShownDialogueIds);
     }
     if (dialogue is not null)
     {
+        if (dialogue.Trigger == "questResult")
+            Game.MarkDialogueAsShown(dialogue.Id);
+
         NavigationService.NavigateTo(
             new DialogueViewModel(dialogue.Id, "/Assets/UI/guilde_background.png"),
             Game);

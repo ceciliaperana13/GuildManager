@@ -56,7 +56,7 @@ public partial class LoginMenuView : UserControl
 
             // Enregistrement + heartbeat en continu, tant que l'appli reste ouverte
             SessionKeepAlive.Start(AppSession.ApiBaseUrl, AppSession.Username);
-            Game game = new Game("test", 1, 0, 10000, 10000, 1, 0);
+            Game game = new Game("test", 0, 0, 10000, 10000, 1, 0);
             NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)

@@ -17,46 +17,6 @@
     "image": "character/perso non jouables/chef.png"
   },
   {
-    "id": "tutorial_start",
-    "act": 0,
-    "trigger": "manual",
-    "speaker": "Chef de guilde",
-    "characterId": "chef_de_guilde",
-    "lines": [
-      "Pour commencer, embauche ton premier aventurier et envoie-le en quête de récolte. Rien de dangereux, juste de quoi te faire la main."
-    ],
-    "choices": null,
-    "endsGame": false,
-    "image": "character/perso non jouables/chef.png"
-  },
-  {
-    "id": "tutorial_victory",
-    "act": 0,
-    "trigger": "questResult",
-    "speaker": "Chef de guilde",
-    "characterId": "chef_de_guilde",
-    "lines": [
-      "Bien joué ! Tu progresses vite.",
-      "Si tu te sens prêt, il paraît que des slimes traînent aux abords des bois. Rien de sérieux, mais une bonne occasion de continuer à t'entraîner."
-    ],
-    "choices": null,
-    "endsGame": false,
-    "image": "character/perso non jouables/chef.png"
-  },
-  {
-    "id": "tutorial_defeat",
-    "act": 0,
-    "trigger": "questResult",
-    "speaker": "Chef de guilde",
-    "characterId": "chef_de_guilde",
-    "lines": [
-      "Pas de panique, ça arrive même aux meilleurs. Renvoie ton équipe sur la même quête, ils ont dû apprendre de leurs erreurs."
-    ],
-    "choices": null,
-    "endsGame": false,
-    "image": "character/perso non jouables/chef.png"
-  },
-  {
     "id": "act1_intro",
     "act": 1,
     "trigger": "manual",
@@ -70,6 +30,14 @@
     ],
     "choices": null,
     "endsGame": false,
+    "effects": {
+      "unlockQuest": {
+        "questName": "Elimination du clan orc",
+        "expiresAfterTurns": 3,
+        "timeoutFlag": "act1_orc_timeout",
+        "introDialogueId": "act1_intro"
+      }
+    },
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -99,6 +67,7 @@
       }
     ],
     "endsGame": false,
+    "requiresDialogueId": "act1_intro",
     "image": null
   },
   {
@@ -113,6 +82,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act1_intro",
     "image": null
   },
   {
@@ -127,12 +97,14 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act1_defeat_01",
     "image": "character/perso non jouables/chef.png"
   },
   {
     "id": "act1_timeout",
     "act": 1,
     "trigger": "turnStart",
+    "condition": "act1_orc_timeout == true",
     "speaker": "Messager royal",
     "characterId": "messager_royal",
     "lines": [
@@ -141,6 +113,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act1_intro",
     "image": "character/perso non jouables/messager.png"
   },
   {
@@ -154,6 +127,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act1_timeout",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -170,16 +144,21 @@
     "choices": [
       {
         "text": "Enquêter sur les esprits maudits",
-        "effects": {},
+        "effects": {
+          "flag_act2_esprits": true
+        },
         "nextDialogueId": "act2_esprits_intro"
       },
       {
         "text": "Enquêter sur le monstre inconnu",
-        "effects": {},
+        "effects": {
+          "flag_act2_monstre": true
+        },
         "nextDialogueId": "act2_monstre_intro"
       }
     ],
     "endsGame": false,
+    "requiresDialogueId": "act1_victory",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -193,6 +172,16 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act2_intro",
+    "condition": "flag_act2_esprits == true",
+    "effects": {
+      "unlockQuest": {
+        "questName": "Enquête sur les esprits maudits",
+        "expiresAfterTurns": 3,
+        "timeoutFlag": "act2_esprits_timeout",
+        "introDialogueId": "act2_esprits_intro"
+      }
+    },
     "image": null
   },
   {
@@ -207,6 +196,8 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act2_esprits_intro",
+    "condition": "flag_act2_esprits == true",
     "image": null
   },
   {
@@ -223,6 +214,7 @@
     "choices": null,
     "endsGame": false,
     "condition": "flag_cristal_analyse == true",
+    "requiresDialogueId": "act2_esprits_intro",
     "image": null
   },
   {
@@ -240,6 +232,8 @@
       "curse_random_character": true
     },
     "endsGame": false,
+    "requiresDialogueId": "act2_esprits_intro",
+    "condition": "flag_act2_esprits == true",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -253,6 +247,16 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act2_intro",
+    "condition": "flag_act2_monstre == true",
+    "effects": {
+      "unlockQuest": {
+        "questName": "Chasse au monstre inconnu",
+        "expiresAfterTurns": 3,
+        "timeoutFlag": "act2_monstre_timeout",
+        "introDialogueId": "act2_monstre_intro"
+      }
+    },
     "image": null
   },
   {
@@ -267,6 +271,8 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act2_monstre_intro",
+    "condition": "flag_act2_monstre == true",
     "image": null
   },
   {
@@ -284,6 +290,8 @@
       "poison_random_character": true
     },
     "endsGame": false,
+    "requiresDialogueId": "act2_monstre_intro",
+    "condition": "flag_act2_monstre == true",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -321,6 +329,13 @@
       }
     ],
     "endsGame": false,
+    "requiresDialogueIds": [
+      "act2_esprits_victory",
+      "act2_esprits_victory_cristal",
+      "act2_esprits_defeat",
+      "act2_monstre_victory",
+      "act2_monstre_defeat"
+    ],
     "image": "character/perso non jouables/Macaron1.png"
   },
   {
@@ -352,6 +367,7 @@
       }
     ],
     "endsGame": false,
+    "requiresDialogueId": "act2_macaron_event",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -367,6 +383,15 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act3_intro",
+    "effects": {
+      "unlockQuest": {
+        "questName": "Exploration du donjon nain",
+        "expiresAfterTurns": 3,
+        "timeoutFlag": "act3_donjon_timeout",
+        "introDialogueId": "act3_disparitions_teaser"
+      }
+    },
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -389,6 +414,7 @@
       }
     ],
     "endsGame": false,
+    "requiresDialogueId": "act3_disparitions_teaser",
     "image": null
   },
   {
@@ -403,6 +429,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act3_disparitions_teaser",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -420,16 +447,24 @@
     "choices": [
       {
         "text": "Enquêter sur les Alchimistes Anonymes",
-        "effects": {},
+        "effects": {
+          "flag_act4_alchimistes": true
+        },
         "nextDialogueId": "act4_alchimistes_intro"
       },
       {
         "text": "Enquêter sur le Culte du Dernier Souffle",
-        "effects": {},
+        "effects": {
+          "flag_act4_culte": true
+        },
         "nextDialogueId": "act4_culte_intro"
       }
     ],
     "endsGame": false,
+    "requiresDialogueIds": [
+      "act3_donjon_victory",
+      "act3_donjon_defeat"
+    ],
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -443,6 +478,16 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act4_intro",
+    "effects": {
+      "unlockQuest": {
+        "questName": "Infiltration des Alchimistes Anonymes",
+        "expiresAfterTurns": 4,
+        "timeoutFlag": "act4_alchimistes_timeout",
+        "introDialogueId": "act4_alchimistes_intro"
+      }
+    },
+    "condition": "flag_act4_alchimistes == true",
     "image": null
   },
   {
@@ -457,6 +502,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act4_alchimistes_intro",
     "image": null
   },
   {
@@ -471,6 +517,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act4_alchimistes_intro",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -501,6 +548,7 @@
       }
     ],
     "endsGame": false,
+    "requiresDialogueId": "act4_alchimistes_defeat",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -514,6 +562,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act4_alchimistes_confinement_victory",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -527,6 +576,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act4_alchimistes_defeat",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -540,6 +590,16 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act4_intro",
+    "condition": "flag_act4_culte == true",
+    "effects": {
+      "unlockQuest": {
+        "questName": "Infiltration du Culte du Dernier Souffle",
+        "expiresAfterTurns": 4,
+        "timeoutFlag": "act4_culte_timeout",
+        "introDialogueId": "act4_culte_intro"
+      }
+    },
     "image": null
   },
   {
@@ -554,6 +614,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act4_culte_intro",
     "image": null
   },
   {
@@ -567,6 +628,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act4_culte_intro",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -597,6 +659,7 @@
       }
     ],
     "endsGame": false,
+    "requiresDialogueId": "act4_culte_defeat",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -610,6 +673,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act4_culte_defense_victory",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -623,6 +687,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act4_culte_defeat",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -636,6 +701,18 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueIds": [
+      "act4_alchimistes_confinement_victory",
+      "act4_culte_defense_victory"
+    ],
+    "effects": {
+      "unlockQuest": {
+        "questName": "Localisation de l'antagoniste",
+        "expiresAfterTurns": 5,
+        "timeoutFlag": "search_antagonist_timeout",
+        "introDialogueId": "search_antagonist_intro"
+      }
+    },
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -649,6 +726,8 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "search_antagonist_intro",
+    "condition": "search_antagonist_timeout == true",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -663,6 +742,16 @@
     ],
     "choices": null,
     "endsGame": false,
+    "effects": {
+      "unlockQuest": {
+        "questName": "Confrontation avec Macaron le Charlatan",
+        "expiresAfterTurns": 5,
+        "timeoutFlag": "act5_macaron_timeout",
+        "introDialogueId": "act5_macaron_intro"
+      }
+    },
+    "requiresDialogueId": "search_antagonist_intro",
+    "condition": "flag_act4_alchimistes == true",
     "image": "character/perso non jouables/Macaron1.png"
   },
   {
@@ -677,6 +766,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act5_macaron_intro",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -691,6 +781,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act5_macaron_intro",
     "image": "character/perso non jouables/macaron3.png"
   },
   {
@@ -705,6 +796,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act5_macaron_defeat",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -719,6 +811,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act5_macaron_defeat",
     "image": null
   },
   {
@@ -733,6 +826,16 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "search_antagonist_intro",
+    "condition": "flag_act4_culte == true",
+    "effects": {
+      "unlockQuest": {
+        "questName": "Confrontation avec la Liche",
+        "expiresAfterTurns": 5,
+        "timeoutFlag": "act5_liche_timeout",
+        "introDialogueId": "act5_liche_intro"
+      }
+    },
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -746,6 +849,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act5_liche_intro",
     "image": "character/perso non jouables/chef.png"
   },
   {
@@ -760,6 +864,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "requiresDialogueId": "act5_liche_intro",
     "image": "character/perso non jouables/liche.png"
   },
   {
@@ -774,6 +879,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act5_liche_defeat",
     "image": null
   },
   {
@@ -788,6 +894,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "requiresDialogueId": "act5_liche_defeat",
     "image": "character/perso non jouables/chef.png"
   }
 ]

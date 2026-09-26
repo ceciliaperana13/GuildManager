@@ -11,24 +11,24 @@ public class QuestListViewModel : IScreenViewModel
 
     public ObservableCollection<QuestCard> Quests { get; } = new();
 
+
+
     public QuestListViewModel(Game game)
-    {
-        Game = game;
-        LoadQuests(game);
-    }
+{
+    Game = game;
+    LoadQuests(game);
+}
 
-    private void LoadQuests(Game game)
+private void LoadQuests(Game game)
+{
+    foreach (var logicQuest in game.questManager.quests)
     {
-        game.questManager.refreshQuests(game.prestige);
-
-        foreach (var logicQuest in game.questManager.quests)
+        Quests.Add(new QuestCard
         {
-            Quests.Add(new QuestCard
-            {
-                Title = logicQuest.name,
-                Description = logicQuest.description,
-                IsGuildQuest = logicQuest.type == "Recherche"
-            });
-        }
+            Title = logicQuest.name,
+            Description = logicQuest.description,
+            IsGuildQuest = logicQuest.type == "Recherche"
+        });
     }
+}
 }

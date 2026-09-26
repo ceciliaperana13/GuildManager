@@ -24,9 +24,7 @@
         "image": "assets/...png"
       }
     ],
-    "adventurers": [
-      
-    ],
+    "adventurers": [],
     "rewards": {
       "gold": 150,
       "food": 20,
@@ -40,7 +38,7 @@
     "name": "Escorte de la caravane",
     "type": "Combat",
     "lvl": 8,
-    "description": "Prot\u00E9gez une caravane de marchands sur la route menant au village voisin.",
+    "description": "Protégez une caravane de marchands sur la route menant au village voisin.",
     "enemies": [
       {
         "name": "Bandit",
@@ -66,7 +64,7 @@
     "name": "Extermination de gobelins",
     "type": "Combat",
     "lvl": 8,
-    "description": "Un petit groupe de gobelins \u00E0 \u00E9t\u00E9 aper\u00E7ut r\u00F4dant pr\u00E8s d\u0027un village, chassez les avant qu\u0027ils ne s\u0027attaquent aux villageois.",
+    "description": "Un petit groupe de gobelins à été aperçut rôdant près d'un village, chassez les avant qu'ils ne s'attaquent aux villageois.",
     "enemies": [
       {
         "name": "Gobelin",
@@ -96,8 +94,7 @@
         "image": "assets/...png"
       }
     ],
-    "adventurers": [
-    ],
+    "adventurers": [],
     "rewards": {
       "gold": 300,
       "food": 10,
@@ -112,8 +109,7 @@
     "type": "Recherche",
     "lvl": 8,
     "description": "La guilde des apothicaire a besoin de divers herbes pour la fabrication de potionsde soin",
-    "enemies": [
-    ],
+    "enemies": [],
     "adventurers": [],
     "rewards": {
       "gold": 300,
@@ -123,6 +119,375 @@
     },
     "remainingTime": 1,
     "inProgress": false,
-    "winRate" : 50
+    "winRate": 50
+  },
+  {
+    "name": "Elimination du clan orc",
+    "type": "Combat",
+    "lvl": 12,
+    "description": "Un clan d'orcs s'est installé dans les montagnes et se comporte de façon étrange. Le roi exige une intervention rapide.",
+    "enemies": [
+      {
+        "name": "Guerrier Orc",
+        "lvl": 8,
+        "health": 50,
+        "def": 3,
+        "magicAttack": 0,
+        "physicAttack": 12,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Guerrier Orc",
+        "lvl": 8,
+        "health": 50,
+        "def": 3,
+        "magicAttack": 0,
+        "physicAttack": 12,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Chef Orc",
+        "lvl": 10,
+        "health": 80,
+        "def": 4,
+        "magicAttack": 5,
+        "physicAttack": 15,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 400,
+      "food": 30,
+      "prestige": 300,
+      "items": []
+    },
+    "remainingTime": 3,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Enquête sur les esprits maudits",
+    "type": "Combat",
+    "lvl": 18,
+    "description": "Des silhouettes non-mortes rôdent la nuit entre les tombes du vieux cimetière. Un nécromancien semble tirer les ficelles.",
+    "enemies": [
+      {
+        "name": "Esprit Errant",
+        "lvl": 14,
+        "health": 35,
+        "def": 2,
+        "magicAttack": 8,
+        "physicAttack": 10,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Esprit Errant",
+        "lvl": 14,
+        "health": 35,
+        "def": 2,
+        "magicAttack": 8,
+        "physicAttack": 10,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Esprit Errant",
+        "lvl": 14,
+        "health": 35,
+        "def": 2,
+        "magicAttack": 8,
+        "physicAttack": 10,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Nécromancien",
+        "lvl": 16,
+        "health": 60,
+        "def": 3,
+        "magicAttack": 20,
+        "physicAttack": 5,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 600,
+      "food": 30,
+      "prestige": 400,
+      "items": []
+    },
+    "remainingTime": 3,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Chasse au monstre inconnu",
+    "type": "Combat",
+    "lvl": 18,
+    "description": "Une bête énorme, jamais vue dans la région, décime les troupeaux des villages voisins.",
+    "enemies": [
+      {
+        "name": "Chimère",
+        "lvl": 18,
+        "health": 150,
+        "def": 8,
+        "magicAttack": 10,
+        "physicAttack": 22,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 600,
+      "food": 30,
+      "prestige": 400,
+      "items": []
+    },
+    "remainingTime": 3,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Exploration du donjon nain",
+    "type": "Donjon",
+    "lvl": 25,
+    "description": "Une antique cité naine, tombée en ruine dans les plus hautes montagnes du royaume, gardée par des golems.",
+    "enemies": [
+      {
+        "name": "Golem de Pierre",
+        "lvl": 22,
+        "health": 120,
+        "def": 15,
+        "magicAttack": 0,
+        "physicAttack": 18,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Golem de Pierre",
+        "lvl": 22,
+        "health": 120,
+        "def": 15,
+        "magicAttack": 0,
+        "physicAttack": 18,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Golem Ancien",
+        "lvl": 25,
+        "health": 200,
+        "def": 18,
+        "magicAttack": 10,
+        "physicAttack": 25,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 800,
+      "food": 40,
+      "prestige": 500,
+      "items": []
+    },
+    "remainingTime": 3,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Infiltration des Alchimistes Anonymes",
+    "type": "Combat",
+    "lvl": 32,
+    "description": "Une organisation extrémiste mène des expériences sur des innocents et des monstres dans les égouts de la capitale.",
+    "enemies": [
+      {
+        "name": "Mutant Expérimental",
+        "lvl": 28,
+        "health": 90,
+        "def": 6,
+        "magicAttack": 15,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Mutant Expérimental",
+        "lvl": 28,
+        "health": 90,
+        "def": 6,
+        "magicAttack": 15,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Mutant Expérimental",
+        "lvl": 28,
+        "health": 90,
+        "def": 6,
+        "magicAttack": 15,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Garde Alchimiste",
+        "lvl": 30,
+        "health": 110,
+        "def": 10,
+        "magicAttack": 5,
+        "physicAttack": 25,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 1000,
+      "food": 50,
+      "prestige": 700,
+      "items": []
+    },
+    "remainingTime": 4,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Infiltration du Culte du Dernier Souffle",
+    "type": "Combat",
+    "lvl": 32,
+    "description": "Une secte de nécromanciens hérétiques opère depuis les cryptes souterraines, infiltrée jusque dans l'Église elle-même.",
+    "enemies": [
+      {
+        "name": "Cultiste Nécromancien",
+        "lvl": 28,
+        "health": 70,
+        "def": 5,
+        "magicAttack": 25,
+        "physicAttack": 10,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Cultiste Nécromancien",
+        "lvl": 28,
+        "health": 70,
+        "def": 5,
+        "magicAttack": 25,
+        "physicAttack": 10,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Mort-vivant d'élite",
+        "lvl": 30,
+        "health": 100,
+        "def": 8,
+        "magicAttack": 10,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Mort-vivant d'élite",
+        "lvl": 30,
+        "health": 100,
+        "def": 8,
+        "magicAttack": 10,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 1000,
+      "food": 50,
+      "prestige": 700,
+      "items": []
+    },
+    "remainingTime": 4,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Localisation de l'antagoniste",
+    "type": "Recherche",
+    "lvl": 35,
+    "description": "Il faut localiser précisément l'ennemi avant l'affrontement final. Le temps presse.",
+    "enemies": [],
+    "adventurers": [],
+    "rewards": {
+      "gold": 500,
+      "food": 20,
+      "prestige": 100,
+      "items": []
+    },
+    "remainingTime": 5,
+    "inProgress": false,
+    "winRate": 50,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Confrontation avec Macaron le Charlatan",
+    "type": "Combat",
+    "lvl": 40,
+    "description": "Réfugié dans un fort en ruine, Macaron le Charlatan s'apprête à achever son grand œuvre : l'évolution forcée de l'humanité.",
+    "enemies": [
+      {
+        "name": "Macaron le Charlatan (forme parfaite)",
+        "lvl": 40,
+        "health": 300,
+        "def": 15,
+        "magicAttack": 35,
+        "physicAttack": 35,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 2000,
+      "food": 100,
+      "prestige": 1500,
+      "items": []
+    },
+    "remainingTime": 5,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Confrontation avec la Liche",
+    "type": "Combat",
+    "lvl": 40,
+    "description": "Les adeptes du Culte du Dernier Souffle s'apprêtent à ressusciter l'ancien empereur elfe sous la forme d'une liche.",
+    "enemies": [
+      {
+        "name": "Garde Squelette",
+        "lvl": 35,
+        "health": 80,
+        "def": 10,
+        "magicAttack": 0,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      },
+      {
+        "name": "Garde Squelette",
+        "lvl": 35,
+        "health": 80,
+        "def": 10,
+        "magicAttack": 0,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      },
+      {
+        "name": "La Liche",
+        "lvl": 42,
+        "health": 350,
+        "def": 20,
+        "magicAttack": 50,
+        "physicAttack": 20,
+        "image": "assets/...png"
+      }
+    ],
+    "adventurers": [],
+    "rewards": {
+      "gold": 2000,
+      "food": 100,
+      "prestige": 1500,
+      "items": []
+    },
+    "remainingTime": 5,
+    "inProgress": false,
+    "isStoryQuest": true
   }
 ]

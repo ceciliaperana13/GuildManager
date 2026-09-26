@@ -1,6 +1,23 @@
 {
-  "idCount": 2530,
-  "mainAdventurers": [],
+  "idCount": 2732,
+  "mainAdventurers": [
+    {
+      "id": 2596,
+      "job": "guerrier",
+      "debuff": [],
+      "isHurted": false,
+      "goldPrice": 0,
+      "foodPrice": 10,
+      "name": "Aventurier Prometteur",
+      "lvl": 1,
+      "health": 50,
+      "def": 12,
+      "magicAttack": 4,
+      "physicAttack": 20,
+      "power": 75,
+      "image": "/Assets/character/perso speciaux/epeiste.png"
+    }
+  ],
   "adventurers": [
     {
       "id": 1060,

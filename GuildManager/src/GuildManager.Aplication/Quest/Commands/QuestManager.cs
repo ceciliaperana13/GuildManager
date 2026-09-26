@@ -28,14 +28,15 @@ public class QuestManager
         List<Quest> availableQuests = new List<Quest>();
 
         foreach (Quest quest in quests)
-        {
-            if (quest.type == type
-                && quest.lvl >= lvl - levelGap
-                && quest.lvl <= lvl + levelGap)
-            {
-                availableQuests.Add(quest);
-            }
-        }
+{
+    if (!quest.IsStoryQuest
+        && quest.type == type
+        && quest.lvl >= lvl - levelGap
+        && quest.lvl <= lvl + levelGap)
+    {
+        availableQuests.Add(quest);
+    }
+}
 
         if (availableQuests.Count == 0)
             throw new InvalidOperationException($"Aucune quête disponible pour le type '{type}' au niveau {lvl}.");
@@ -109,18 +110,26 @@ public class QuestManager
         File.WriteAllText(path, quests.ToJsonString(options));
     }
 
-    public void refreshQuests(int prestige)
+    public bool refreshQuests(int prestige, IDictionary<string, bool>? storyFlags = null)
     {
         //remove old quests
         List<Quest> newQuests = new List<Quest>();
+        bool researchQuestExpired = false;
         foreach(Quest quest in this.quests)
         {
+            if (quest.type == "Recherche" && !quest.inProgress && quest.remainingTime <= 1)
+                researchQuestExpired = true;
+
             quest.remainingTime--;
-            if (quest.remainingTime > 0)
-            {
-                //this.editQuestData(quest.name, "adventurers", new JsonArray());
-                newQuests.Add(quest);
-            }   
+        if (quest.remainingTime > 0)
+        {
+            newQuests.Add(quest);
+        }
+        else if (quest.TimeoutFlag is not null && storyFlags is not null && quest.LastCompletionSucceeded is null)
+        {
+            // la quête n'a jamais été acceptée/résolue -> elle expire vraiment
+            storyFlags[quest.TimeoutFlag] = true;
+        }   
         }
         this.quests = newQuests;
 
@@ -134,15 +143,34 @@ public class QuestManager
         {
             this.quests.Add(generateQuest(type, random.Next((prestige-1)*10+1, prestige*10-1), 100));
         }
+
+        return researchQuestExpired;
     }
 
     public Quest searchQuestByName(string name)
-    {
-        foreach (Quest quest in this.quests)
-        {
-            if (quest.name == name)
-                return quest;
-        }
-        return null;
-    }
+{
+    foreach (Quest quest in this.quests)
+        if (quest.name == name) return quest;
+    return null;
+}
+
+public Quest UnlockStoryQuest(string questName, int? expiresAfterTurns, string? timeoutFlag, string? introDialogueId)
+{
+    Quest? existing = this.quests.FirstOrDefault(q => q.name == questName && q.IsStoryQuest);
+    if (existing is not null)
+        return existing; // déjà débloquée, on ne duplique pas
+
+    Quest template = generateQuestsFromJson("data/quest.json")
+        .FirstOrDefault(q => q.name == questName)
+        ?? throw new InvalidOperationException($"Quête '{questName}' introuvable dans quest.json.");
+
+    if (expiresAfterTurns.HasValue)
+        template.remainingTime = expiresAfterTurns.Value;
+
+    template.SetTimeoutFlag(timeoutFlag);
+    template.SetStoryDialogueId(introDialogueId);
+
+    this.quests.Add(template);
+    return template;
+}
 }

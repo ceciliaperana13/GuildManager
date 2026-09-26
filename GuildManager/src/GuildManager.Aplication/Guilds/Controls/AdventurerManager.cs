@@ -170,6 +170,58 @@ public class AdventurerManager
         this.addAdventurerToJson(adventurer);        
     }
 
+    public Adventurer? RecruitMainAdventurer(string characterId)
+    {
+        refreshMainAdventurers();
+        string name;
+        string job;
+        string image;
+        int health;
+        int defense;
+        int magic;
+        int physic;
+
+        switch (characterId)
+        {
+            case "aventurier_prometteur":
+                (name, job, image, health, defense, magic, physic) = ("Aventurier Prometteur", "guerrier", "/Assets/character/perso speciaux/epeiste.png", 50, 12, 4, 20);
+                break;
+            case "sorcier":
+                (name, job, image, health, defense, magic, physic) = ("Sorcier", "mage", "/Assets/character/perso speciaux/sorcier2.png", 45, 6, 25, 8);
+                break;
+            case "alchimiste":
+                (name, job, image, health, defense, magic, physic) = ("Alchimiste", "mage", "/Assets/character/perso speciaux/alchimiste.png", 40, 5, 22, 10);
+                break;
+            case "nain":
+                (name, job, image, health, defense, magic, physic) = ("Nain", "tank", "/Assets/character/perso speciaux/tankNain1.png", 65, 25, 3, 10);
+                break;
+            default:
+                return null;
+        }
+
+        Adventurer? existing = mainAdventurers.FirstOrDefault(adventurer => adventurer.image == image);
+        if (existing is not null)
+            return existing;
+
+        string json = File.ReadAllText(DataFile);
+        JsonObject root = JsonNode.Parse(json)!.AsObject();
+        int id = root["idCount"]?.GetValue<int>() ?? 0;
+        root["idCount"] = id + 1;
+
+        Adventurer adventurer = new(id, name, job, 1, health, defense, magic, physic, image, [], false, 0, 10);
+        mainAdventurers.Add(adventurer);
+
+        if (root["mainAdventurers"] is not JsonArray mainAdventurersJson)
+        {
+            mainAdventurersJson = new JsonArray();
+            root["mainAdventurers"] = mainAdventurersJson;
+        }
+
+        mainAdventurersJson.Add(JsonSerializer.SerializeToNode(adventurer));
+        File.WriteAllText(DataFile, root.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
+        return adventurer;
+    }
+
     public void removeAdventurer(Adventurer adventurer)
     {
         // remove on list

@@ -15,12 +15,17 @@ public class Game
     public Dictionary<string, bool> storyFlags { get; } = new();
     public HashSet<string> ShownDialogueIds { get; } = new();
     public bool? LastQuestSucceeded { get; private set; }
+    public bool IsPeriodicDialogueTurn { get; private set; }
+    public int TurnsSinceActStart { get; private set; }
     public List<Item> inventory = new List<Item>();
     public AdventurerManager adventurerManager = new AdventurerManager();
     public QuestManager questManager = new QuestManager();
     bool isBought;
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
+    public string? LastCompletedStoryDialogueId { get; private set; }
+
+    
 
 
     public Game(string playerName, int turn, int mainProgress, int gold, int food, int prestige, int xp)
@@ -35,6 +40,7 @@ public class Game
         //this.adventurers = characterGenerator.generateAdventurerFromJson("adventurers");
         //this.adventurersToBuy = new List<Adventurer>();
         this.turnInProgress = true;
+         this.questManager.refreshQuests(this.prestige, this.storyFlags);
     }
 
     public void refreshSpecialadventurers()
@@ -107,33 +113,34 @@ public class Game
 
     public void ApplyDialogueEffects(Dictionary<string, object>? effects)
     {
-        if (effects is null) return;
 
-        foreach (var effect in effects)
-        {
-            if (effect.Value is JsonElement jsonValue && jsonValue.ValueKind == JsonValueKind.Number
-                && jsonValue.TryGetInt32(out int amount))
-            {
-                switch (effect.Key)
-                {
-                    case "gold": gold += amount; break;
-                    case "food": food += amount; break;
-                    case "prestige": prestige += amount; break;
-                    case "xp": xp += amount; break;
-                }
+    if (effects is null) return;
 
-                continue;
-            }
+    foreach (var effect in effects)
+    {
+        if (effect.Key == "unlockQuest" && effect.Value is JsonElement questJson
+        && questJson.ValueKind == JsonValueKind.Object)
+    {
+        string questName = questJson.GetProperty("questName").GetString()!;
+        int? expiresAfterTurns = questJson.TryGetProperty("expiresAfterTurns", out var turnsEl)
+            ? turnsEl.GetInt32() : (int?)null;
+        string? timeoutFlag = questJson.TryGetProperty("timeoutFlag", out var flagEl)
+            ? flagEl.GetString() : null;
+        string? introDialogueId = questJson.TryGetProperty("introDialogueId", out var introEl)
+            ? introEl.GetString() : null;
 
-            if (effect.Value is JsonElement jsonFlag && jsonFlag.ValueKind == JsonValueKind.True)
+        questManager.UnlockStoryQuest(questName, expiresAfterTurns, timeoutFlag, introDialogueId);
+        continue;
+    }
+
+        if (effect.Value is JsonElement jsonValue && jsonValue.ValueKind == JsonValueKind.Number
+            && jsonValue.TryGetInt32(out int amount))
+
             {
                 storyFlags[effect.Key] = true;
 
                 if (effect.Key.StartsWith("recruit_", StringComparison.Ordinal))
-                {
-                    var adventurer = adventurerManager.generateCharacter(prestige);
-                    adventurerManager.AddAdventurer(adventurer);
-                }
+                    adventurerManager.RecruitMainAdventurer(effect.Key["recruit_".Length..]);
             }
         }
     }
@@ -144,7 +151,24 @@ public class Game
         return storyFlags.TryGetValue(flag, out bool value) && value;
     }
 
-    public void MarkDialogueAsShown(string dialogueId) => ShownDialogueIds.Add(dialogueId);
+    public void MarkDialogueAsShown(string dialogueId)
+    {
+        ShownDialogueIds.Add(dialogueId);
+
+        if (dialogueId == "intro_01")
+            AdvanceMainProgress(1);
+
+        if (dialogueId == "act1_intro")
+            adventurerManager.RecruitMainAdventurer("aventurier_prometteur");
+    }
+
+    public void AdvanceMainProgress(int progress)
+    {
+        if (progress <= mainProgress) return;
+
+        mainProgress = progress;
+        TurnsSinceActStart = 0;
+    }
 
     public bool Win()
     {
@@ -156,23 +180,37 @@ public class Game
         return false;
     }
 
-    public void passTurn()
+public void passTurn()
+{
+    this.turn++;
+    TurnsSinceActStart++;
+    IsPeriodicDialogueTurn = TurnsSinceActStart % 5 == 0;
+    this.isBought = false;
+    LastQuestSucceeded = null;
+    LastCompletedStoryDialogueId = null;
+
+    foreach(Quest quest in this.questManager.quests)
     {
-        this.turn++;
-        this.isBought = false;
-        LastQuestSucceeded = null;
-        // complétion des quêtes après le tour
-        foreach(Quest quest in this.questManager.quests)
+        if (quest.inProgress)
         {
-            if (quest.inProgress)
+            this.claimReward(quest.giveReward());
+
+            if (quest.StoryDialogueId is not null)
             {
-                this.claimReward(quest.giveReward());
                 LastQuestSucceeded = quest.LastCompletionSucceeded;
-                quest.markCompleted();
+                LastCompletedStoryDialogueId = quest.StoryDialogueId;
             }
+
+            quest.markCompleted();
         }
+    }
+        if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
+            this.storyFlags["search_antagonist_timeout"] = true;
+            if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
+    this.storyFlags["search_antagonist_timeout"] = true;
         this.AdventurersRageQuit();
-        this.questManager.refreshQuests(this.prestige);
+        if (this.questManager.refreshQuests(this.prestige))
+            this.storyFlags["search_antagonist_timeout"] = true;
         this.adventurerManager.refreshadventurersToHire(this.prestige);
         this.adventurerManager.refreshAdventurers();
         this.adventurerManager.refreshMainAdventurers();

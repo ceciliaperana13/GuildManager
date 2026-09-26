@@ -13,8 +13,11 @@ public class DialogueEntry
     public string? CharacterId { get; set; }
     public List<string> Lines { get; set; } = new();
     public List<DialogueChoice>? Choices { get; set; }
+    public Dictionary<string, object>? Effects { get; set; }
     public bool EndsGame { get; set; }
     public string? Condition { get; set; }
+    public string? RequiresDialogueId { get; set; }
+    public List<string>? RequiresDialogueIds { get; set; }
 }
 
 public class DialogueChoice
