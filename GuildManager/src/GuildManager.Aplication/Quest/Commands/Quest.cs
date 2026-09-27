@@ -18,7 +18,12 @@ public class Quest
     public Reward rewards { get; private set; }
     public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
-    public string? TimeoutFlag { get; private set; }
+
+    [JsonPropertyName("isStoryQuest")]
+    public bool IsStoryQuest { get; private set; }
+
+[JsonPropertyName("timeoutFlag")]
+public string? TimeoutFlag { get; private set; }
     [JsonIgnore]
     public bool? LastCompletionSucceeded { get; private set; }
 
@@ -40,7 +45,6 @@ public class Quest
     //     this.inProgress = inProgress;
     //     this.winRate = refreshWinRate();
     // }
-    public bool IsStoryQuest { get; private set; }
 
 [JsonConstructor]
 public Quest(string name, string type, int lvl, string description, List<Monster> enemies,

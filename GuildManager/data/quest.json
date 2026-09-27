@@ -489,5 +489,40 @@
     "remainingTime": 5,
     "inProgress": false,
     "isStoryQuest": true
-  }
+  },
+  {
+  "name": "Donjon oublié",
+  "type": "Donjon",
+  "lvl": 20,
+  "description": "D'anciennes ruines, récemment redécouvertes, regorgeraient de trésors... et de dangers oubliés.",
+  "enemies": [
+    {
+      "name": "Gardien de Pierre",
+      "lvl": 18,
+      "health": 100,
+      "def": 12,
+      "magicAttack": 0,
+      "physicAttack": 16,
+      "image": "assets/...png"
+    },
+    {
+      "name": "Gardien de Pierre",
+      "lvl": 18,
+      "health": 100,
+      "def": 12,
+      "magicAttack": 0,
+      "physicAttack": 16,
+      "image": "assets/...png"
+    }
+  ],
+  "adventurers": [],
+  "rewards": {
+    "gold": 700,
+    "food": 30,
+    "prestige": 450,
+    "items": []
+  },
+  "remainingTime": 1,
+  "inProgress": false
+}
 ]

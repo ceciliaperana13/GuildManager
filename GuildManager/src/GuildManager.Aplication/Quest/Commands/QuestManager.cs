@@ -14,13 +14,33 @@ public class QuestManager
         this.quests = new List<Quest>();
     }
 
-    public List<Quest> generateQuestsFromJson(string file)
-    {
-        string json = File.ReadAllText(file);
-        List<Quest> quests = JsonSerializer.Deserialize<List<Quest>>(json) ?? new List<Quest>();
+   public List<Quest> generateQuestsFromJson(string file)
+{
+    string json = File.ReadAllText(file);
 
-        return quests;
+    // --- DIAGNOSTIC TEMPORAIRE ---
+    using (var doc = JsonDocument.Parse(json))
+    {
+        foreach (var el in doc.RootElement.EnumerateArray())
+        {
+            if (el.TryGetProperty("name", out var nameEl) && nameEl.GetString() == "Elimination du clan orc")
+            {
+                bool hasKey = el.TryGetProperty("isStoryQuest", out var flagEl);
+                Console.WriteLine($"[DIAG] clé 'isStoryQuest' présente ? {hasKey}");
+                if (hasKey)
+                    Console.WriteLine($"[DIAG] valeur brute JSON : {flagEl.ToString()} | ValueKind={flagEl.ValueKind}");
+            }
+        }
     }
+
+    
+    // --- FIN DIAGNOSTIC ---
+
+    List<Quest> quests = JsonSerializer.Deserialize<List<Quest>>(json) ?? new List<Quest>();
+    foreach (var q in quests)
+    Console.WriteLine($"{q.name} | type={q.type} | IsStoryQuest={q.IsStoryQuest}");
+    return quests;
+}
 
     public Quest generateQuest(string type, int lvl, int levelGap = 5)
     {

@@ -151,16 +151,39 @@ public class Game
         return storyFlags.TryGetValue(flag, out bool value) && value;
     }
 
-    public void MarkDialogueAsShown(string dialogueId)
+    public void MarkDialogueAsShown(string dialogueId, int? advancesActTo = null)
+{
+    ShownDialogueIds.Add(dialogueId);
+
+    if (dialogueId == "intro_01")
+        AdvanceMainProgress(1);
+
+    if (dialogueId == "act1_intro")
+        adventurerManager.RecruitMainAdventurer("aventurier_prometteur");
+
+    bool espritsOutcome = dialogueId is "act2_esprits_victory" or "act2_esprits_victory_cristal" or "act2_esprits_defeat";
+    bool monstreOutcome = dialogueId is "act2_monstre_victory" or "act2_monstre_defeat";
+
+    if (espritsOutcome)
     {
-        ShownDialogueIds.Add(dialogueId);
-
-        if (dialogueId == "intro_01")
-            AdvanceMainProgress(1);
-
-        if (dialogueId == "act1_intro")
-            adventurerManager.RecruitMainAdventurer("aventurier_prometteur");
+        storyFlags["act2_esprits_resolved"] = true;
+        if (!ShownDialogueIds.Contains("act2_monstre_intro"))
+            storyFlags["flag_act2_monstre"] = true;
     }
+
+    if (monstreOutcome)
+    {
+        storyFlags["act2_monstre_resolved"] = true;
+        if (!ShownDialogueIds.Contains("act2_esprits_intro"))
+            storyFlags["flag_act2_esprits"] = true;
+    }
+
+    if (storyFlags.GetValueOrDefault("act2_esprits_resolved") && storyFlags.GetValueOrDefault("act2_monstre_resolved"))
+        storyFlags["act2_both_resolved"] = true;
+
+    if (advancesActTo.HasValue)
+        AdvanceMainProgress(advancesActTo.Value);
+}
 
     public void AdvanceMainProgress(int progress)
     {

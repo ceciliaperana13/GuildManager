@@ -68,6 +68,7 @@
     ],
     "endsGame": false,
     "requiresDialogueId": "act1_intro",
+    "advancesActTo": 2,
     "image": null
   },
   {
@@ -328,6 +329,7 @@
         "nextDialogueId": null
       }
     ],
+    "advancesActTo": 3,
     "endsGame": false,
     "requiresDialogueIds": [
       "act2_esprits_victory",
@@ -414,6 +416,7 @@
       }
     ],
     "endsGame": false,
+    "advancesActTo": 4,
     "requiresDialogueId": "act3_disparitions_teaser",
     "image": null
   },
@@ -429,6 +432,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "advancesActTo": 4,
     "requiresDialogueId": "act3_disparitions_teaser",
     "image": "character/perso non jouables/chef.png"
   },
@@ -726,6 +730,7 @@
     ],
     "choices": null,
     "endsGame": false,
+    "advancesActTo": 5,
     "requiresDialogueId": "search_antagonist_intro",
     "condition": "search_antagonist_timeout == true",
     "image": "character/perso non jouables/chef.png"

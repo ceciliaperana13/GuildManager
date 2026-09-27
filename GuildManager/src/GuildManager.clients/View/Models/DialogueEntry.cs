@@ -18,6 +18,7 @@ public class DialogueEntry
     public string? Condition { get; set; }
     public string? RequiresDialogueId { get; set; }
     public List<string>? RequiresDialogueIds { get; set; }
+    public int? AdvancesActTo { get; set; }
 }
 
 public class DialogueChoice

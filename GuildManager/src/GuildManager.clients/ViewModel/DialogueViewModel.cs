@@ -38,7 +38,7 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
     public void SetGame(Game game)
 {
     Game = game;
-    Game.MarkDialogueAsShown(_entry.Id);
+    Game.MarkDialogueAsShown(_entry.Id, _entry.AdvancesActTo);
     Game.ApplyDialogueEffects(_entry.Effects);
 }
 
@@ -69,7 +69,7 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
     {
         _entry = DialogueRepository.Get(choice.NextDialogueId);
         _lineIndex = 0;
-        Game.MarkDialogueAsShown(_entry.Id);
+        Game.MarkDialogueAsShown(_entry.Id, _entry.AdvancesActTo);
         Game.ApplyDialogueEffects(_entry.Effects);
         Raise();
     }
