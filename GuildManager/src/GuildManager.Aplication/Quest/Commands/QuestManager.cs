@@ -19,6 +19,7 @@ public class QuestManager
     string json = File.ReadAllText(file);
 
     List<Quest> quests = JsonSerializer.Deserialize<List<Quest>>(json) ?? new List<Quest>();
+
     return quests;
 }
 
