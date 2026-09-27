@@ -43,23 +43,19 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
 }
 
     public void Advance()
-    {
-        if (HasChoices) return;
+{
+    if (HasChoices) return;
 
-        if (!IsLastLine)
-        {
-            _lineIndex++;
-            Raise();
-        }
-        else if (_entry.EndsGame)
-        {
-            ReturnToGameMenu();
-        }
-        else
-        {
-            ReturnToGameMenu();
-        }
+    if (!IsLastLine)
+    {
+        _lineIndex++;
+        Raise();
     }
+    else
+    {
+        EndOrReturn(_entry.EndsGame, _entry.EndingResult);
+    }
+}
 
     public void ChooseOption(DialogueChoice choice)
 {
@@ -73,14 +69,20 @@ public class DialogueViewModel : IScreenViewModel, IGameAwareViewModel, INotifyP
         Game.ApplyDialogueEffects(_entry.Effects);
         Raise();
     }
-    else if (choice.EndsGame == true)
-    {
-        ReturnToGameMenu();
-    }
     else
     {
-        ReturnToGameMenu();
+        EndOrReturn(choice.EndsGame == true, choice.EndingResult);
     }
+}
+
+private void EndOrReturn(bool endsGame, string? endingResult)
+{
+    if (endsGame && endingResult == "victory")
+        NavigationService.NavigateTo(new VictoryViewModel(Game), Game);
+    else if (endsGame && endingResult == "defeat")
+        NavigationService.NavigateTo(new DefeatViewModel(Game, "Le destin en a décidé autrement."), Game);
+    else
+        ReturnToGameMenu();
 }
 
     private void ReturnToGameMenu() => NavigationService.NavigateTo(new GuildViewModel(), Game);

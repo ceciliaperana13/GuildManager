@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace GuildManager.Aplication.Guilds.Controls;
 
@@ -10,6 +13,8 @@ public class AdventurerManager
     public List<Adventurer> mainAdventurers;
     public List<Adventurer> adventurers;
     public List<Adventurer> adventurersToHire;
+
+    private const string DataFile = "data/adventurers.json";
 
     // Compteur d'id propre à la save courante (remplace l'ancien idCount du json global)
     public int IdCounter { get; set; }
@@ -108,33 +113,28 @@ public class AdventurerManager
     
     public void refreshAdventurers()
     {
-        this.adventurers = generateAdventurerFromJson("adventurers");
-        this.refreshMainAdventurers();
+
     }
 
     public void refreshAdventurersStatus(int turn)
+{
+    foreach (Adventurer adventurer in this.adventurers.ToList())
     {
-        foreach (Adventurer adventurer in this.adventurers.ToList())
+        if (adventurer.isDead)
+            removeAdventurer(adventurer);
+        else if (adventurer.isHurted && turn >= adventurer.hurtTurn + 3)
         {
-            if (adventurer.isDead)
-                removeAdventurer(adventurer);
-            else if (adventurer.isHurted && turn >= adventurer.hurtTurn + 3)
-            {
-                Console.WriteLine($"{adventurer.name} soigné");
-                adventurer.AdventurerHeal();
-            }
-            editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
-            {
-                ["isHurted"] = adventurer.isHurted,
-                ["hurtTurn"] = adventurer.hurtTurn
-                //["isInQuest"] = adventurer.isInQuest
-            });
+            Console.WriteLine($"{adventurer.name} soigné");
+            adventurer.AdventurerHeal();
         }
+        // Plus besoin de persister ici : l'objet est déjà à jour en mémoire.
+        // La sauvegarde réelle passe désormais par GameSaveDto/SaveSoloService.
     }
+}
 
     public void refreshMainAdventurers()
     {
-        this.mainAdventurers = generateAdventurerFromJson("mainAdventurers");
+
     }
 
     public void AddAdventurer(Adventurer adventurer)
@@ -143,57 +143,43 @@ public class AdventurerManager
     }
 
     public Adventurer? RecruitMainAdventurer(string characterId)
+{
+    string name;
+    string job;
+    string image;
+    int health;
+    int defense;
+    int magic;
+    int physic;
+
+    switch (characterId)
     {
-        refreshMainAdventurers();
-        string name;
-        string job;
-        string image;
-        int health;
-        int defense;
-        int magic;
-        int physic;
-
-        switch (characterId)
-        {
-            case "aventurier_prometteur":
-                (name, job, image, health, defense, magic, physic) = ("Aventurier Prometteur", "guerrier", "/Assets/character/perso speciaux/epeiste.png", 50, 12, 4, 20);
-                break;
-            case "sorcier":
-                (name, job, image, health, defense, magic, physic) = ("Sorcier", "mage", "/Assets/character/perso speciaux/sorcier2.png", 45, 6, 25, 8);
-                break;
-            case "alchimiste":
-                (name, job, image, health, defense, magic, physic) = ("Alchimiste", "mage", "/Assets/character/perso speciaux/alchimiste.png", 40, 5, 22, 10);
-                break;
-            case "nain":
-                (name, job, image, health, defense, magic, physic) = ("Nain", "tank", "/Assets/character/perso speciaux/tankNain1.png", 65, 25, 3, 10);
-                break;
-            default:
-                return null;
-        }
-
-        Adventurer? existing = mainAdventurers.FirstOrDefault(adventurer => adventurer.image == image);
-        if (existing is not null)
-            return existing;
-
-        string json = File.ReadAllText(DataFile);
-        JsonObject root = JsonNode.Parse(json)!.AsObject();
-        int id = root["idCount"]?.GetValue<int>() ?? 0;
-        root["idCount"] = id + 1;
-
-        Adventurer adventurer = new(id, name, job, 1, 0, health, defense, magic, physic, image, [], false, 0, false, false, 10, 10);
-        mainAdventurers.Add(adventurer);
-
-        if (root["mainAdventurers"] is not JsonArray mainAdventurersJson)
-        {
-            mainAdventurersJson = new JsonArray();
-            root["mainAdventurers"] = mainAdventurersJson;
-        }
-
-        mainAdventurersJson.Add(JsonSerializer.SerializeToNode(adventurer));
-        File.WriteAllText(DataFile, root.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
-        return adventurer;
+        case "aventurier_prometteur":
+            (name, job, image, health, defense, magic, physic) = ("Aventurier Prometteur", "guerrier", "/Assets/character/perso speciaux/epeiste.png", 50, 12, 4, 20);
+            break;
+        case "sorcier":
+            (name, job, image, health, defense, magic, physic) = ("Sorcier", "mage", "/Assets/character/perso speciaux/sorcier2.png", 45, 6, 25, 8);
+            break;
+        case "alchimiste":
+            (name, job, image, health, defense, magic, physic) = ("Alchimiste", "mage", "/Assets/character/perso speciaux/alchimiste.png", 40, 5, 22, 10);
+            break;
+        case "nain":
+            (name, job, image, health, defense, magic, physic) = ("Nain", "tank", "/Assets/character/perso speciaux/tankNain1.png", 65, 25, 3, 10);
+            break;
+        default:
+            return null;
     }
 
+    Adventurer? existing = mainAdventurers.FirstOrDefault(adventurer => adventurer.image == image);
+    if (existing is not null)
+        return existing;
+
+    IdCounter++;
+    Adventurer adventurer = new(IdCounter, name, job, 1, 0, health, defense, magic, physic, image, [], false, 0, false, false, 10, 10);
+    mainAdventurers.Add(adventurer);
+
+    return adventurer;
+}
     public void removeAdventurer(Adventurer adventurer)
     {
         this.adventurers.RemoveAll(a => a.id == adventurer.id);
@@ -234,22 +220,7 @@ public class AdventurerManager
 
     public void SaveAdventurersAfterQuest(IEnumerable<Adventurer> participants)
     {
-        foreach (Adventurer adventurer in participants)
-        {
-            editAdventurerData(adventurer.id, new Dictionary<string, JsonNode?>
-            {
-                ["xp"] = adventurer.xp,
-                ["lvl"] = adventurer.lvl,
-                ["health"] = adventurer.health,
-                ["physicAttack"] = adventurer.physicAttack,
-                ["magicAttack"] = adventurer.magicAttack,
-                ["def"] = adventurer.def,
-                ["isHurted"] = adventurer.isHurted,
-                ["hurtTurn"] = adventurer.hurtTurn,
-                ["isDead"] = adventurer.isDead,
-                ["isInQuest"] = adventurer.isInQuest
-            });
-        }
+        
     }
 
     public void editAdventurerData(int id, string attribute, JsonNode? newValue)
@@ -276,6 +247,8 @@ public class AdventurerManager
         var options = new JsonSerializerOptions { WriteIndented = true };
         File.WriteAllText(DataFile, root.ToJsonString(options));
     }
+
+
 
     // public void SaveAdventurerStats(Adventurer adventurer)
     // {

@@ -20,7 +20,7 @@
                Visibility="{Binding CharacterImagePath, Converter={StaticResource NullToVisibilityConverter}}"/>
 
         <!-- 3. La boîte de dialogue -->
-        <StackPanel VerticalAlignment="Bottom" Margin="40,0,40,40">
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,40" MaxWidth="1400">
 
             <Border Background="#2E2318" BorderBrush="#C9A24B" BorderThickness="2" CornerRadius="4"
                     Padding="14,4" HorizontalAlignment="Left" Margin="60,0,0,8">
@@ -31,12 +31,12 @@
                 <Image Source="/Assets/UI/dialogue_box.png" Stretch="Fill" Height="160"/>
 
                 <TextBlock Text="{Binding CurrentText}" Foreground="#3B2412" FontSize="18"
-                           Margin="60,20,110,20" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        Margin="150,20,110,20" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
                 <Image Source="/Assets/UI/arrow_next.png" Width="48" Height="48"
-                       HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,25,0"
-                       Visibility="{Binding HasChoices, Converter={StaticResource InverseBoolToVis}}"
-                       MouseLeftButtonDown="OnAdvanceClicked" Cursor="Hand"/>
+                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,25,0"
+                    Visibility="{Binding HasChoices, Converter={StaticResource InverseBoolToVis}}"
+                    MouseLeftButtonDown="OnAdvanceClicked" Cursor="Hand"/>
             </Grid>
 
         </StackPanel>

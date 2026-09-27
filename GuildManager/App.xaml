@@ -45,7 +45,16 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type vm:DialogueViewModel}">
     <v:DialogueView/>
-</DataTemplate>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:SoloMenuViewModel}">
+        <v:SoloMenuView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:VictoryViewModel}">
+        <v:VictoryView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type vm:DefeatViewModel}">
+        <v:DefeatView />
+    </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

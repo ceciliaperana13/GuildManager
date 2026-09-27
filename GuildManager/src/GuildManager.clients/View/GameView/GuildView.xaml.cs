@@ -68,50 +68,61 @@ public partial class GuildView : UserControl
     }
 
     private async void OnFlipClicked(object sender, RoutedEventArgs e)
+{
+    if (Game is null) return;
+
+    Game.passTurn();
+
+    int goldBefore = Game.gold;
+    int foodBefore = Game.food;
+
+    // En coop, l'or/la nourriture gagnés ou consommés pendant ce tour doivent
+    // être répercutés sur le pot commun partagé (saves.json côté serveur),
+    // pour que tous les joueurs voient le même solde à jour.
+    if (Game.IsCoop)
     {
-        if (Game is null) return;
+        int goldDelta = Game.gold - goldBefore;
+        int foodDelta = Game.food - foodBefore;
 
-        int goldBefore = Game.gold;
-        int foodBefore = Game.food;
-
-        Game.passTurn();
-
-        // En coop, l'or/la nourriture gagnés ou consommés pendant ce tour doivent
-        // être répercutés sur le pot commun partagé (saves.json côté serveur),
-        // pour que tous les joueurs voient le même solde à jour.
-        if (Game.IsCoop)
+        if (goldDelta != 0 || foodDelta != 0)
         {
-            int goldDelta = Game.gold - goldBefore;
-            int foodDelta = Game.food - foodBefore;
-
-            if (goldDelta != 0 || foodDelta != 0)
-            {
-                var apiClient = new GuildApiClient();
-                var (success, resources, _) = await apiClient.AdjustResourcesAsync(goldDelta, foodDelta);
-                if (success)
-                    Game.SyncResources(resources!.Gold, resources.Food);
-            }
+            var apiClient = new GuildApiClient();
+            var (success, resources, _) = await apiClient.AdjustResourcesAsync(goldDelta, foodDelta);
+            if (success)
+                Game.SyncResources(resources!.Gold, resources.Food);
         }
-        else if (NavigationService.CurrentSaveId is Guid saveId)
+    }
+    else if (NavigationService.CurrentSaveId is Guid saveId)
+    {
+        // Solo : la progression (or, nourriture, aventuriers, xp, quêtes...)
+        // est persistée localement dans savesolo.json après chaque tour.
+        new SaveSoloService().UpdateSave(saveId, Game);
+    }
+
+    if (Game.IsDefeated())
         {
-            // Solo : la progression (or, nourriture, aventuriers, xp, quêtes...)
-            // est persistée localement dans savesolo.json après chaque tour.
-            new SaveSoloService().UpdateSave(saveId, Game);
+            NavigationService.NavigateTo(new DefeatViewModel(Game, "Votre guilde a fait faillite, faute d'or."), Game);
+            return;
+        }
+    if (Game.Win())
+        {
+            NavigationService.NavigateTo(new VictoryViewModel(Game), Game);
+            return;
         }
 
-        (DataContext as GuildViewModel)?.RefreshResources();
+    (DataContext as GuildViewModel)?.RefreshResources();
 
     DialogueEntry? dialogue = null;
     if (Game.LastQuestSucceeded is not null)
-{
-    dialogue = DialogueRepository.GetByTrigger(
-        "questResult",
-        Game.mainProgress,
-        Game.HasStoryFlag,
-        Game.ShownDialogueIds,
-        Game.LastQuestSucceeded,
-        Game.LastCompletedStoryDialogueId);
-}
+    {
+        dialogue = DialogueRepository.GetByTrigger(
+            "questResult",
+            Game.mainProgress,
+            Game.HasStoryFlag,
+            Game.ShownDialogueIds,
+            Game.LastQuestSucceeded,
+            Game.LastCompletedStoryDialogueId);
+    }
     if (dialogue is null && Game.IsPeriodicDialogueTurn)
     {
         dialogue = DialogueRepository.GetByTrigger(
@@ -140,14 +151,14 @@ public partial class GuildView : UserControl
         return;
     }
 
-        var pendingSummaries = new Queue<QuestSummaryData>(Game.LastQuestSummaries);
+    var pendingSummaries = new Queue<QuestSummaryData>(Game.LastQuestSummaries);
 
-        foreach (var data in DequeueAll(pendingSummaries))
-        {
-            await PlayCoinFlipAsync();
-            await ShowSummaryAsync(data);
-        }
+    foreach (var data in DequeueAll(pendingSummaries))
+    {
+        await PlayCoinFlipAsync();
+        await ShowSummaryAsync(data);
     }
+}
 
     private static IEnumerable<QuestSummaryData> DequeueAll(Queue<QuestSummaryData> queue)
     {

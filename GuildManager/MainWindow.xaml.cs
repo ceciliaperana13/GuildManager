@@ -7,10 +7,6 @@ namespace MonProjet;
 
 using GuildManager.Client.ViewModel;
 
-
-using GuildManager.Client.ViewModel;
-
-
 public partial class MainWindow : Window
 {
     public MainWindow()

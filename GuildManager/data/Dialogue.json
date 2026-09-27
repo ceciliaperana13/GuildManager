@@ -98,6 +98,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act1_defeat_01",
     "image": "character/perso non jouables/chef.png"
   },
@@ -128,6 +129,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act1_timeout",
     "image": "character/perso non jouables/chef.png"
   },
@@ -547,8 +549,7 @@
       {
         "text": "Refuser",
         "effects": {},
-        "nextDialogueId": "act4_alchimistes_revolte",
-        "endsGame": true
+        "nextDialogueId": "act4_alchimistes_revolte"
       }
     ],
     "endsGame": false,
@@ -566,6 +567,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act4_alchimistes_confinement_victory",
     "image": "character/perso non jouables/chef.png"
   },
@@ -580,6 +582,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act4_alchimistes_defeat",
     "image": "character/perso non jouables/chef.png"
   },
@@ -658,8 +661,7 @@
       {
         "text": "Refuser",
         "effects": {},
-        "nextDialogueId": "act4_culte_revolte",
-        "endsGame": true
+        "nextDialogueId": "act4_culte_revolte"
       }
     ],
     "endsGame": false,
@@ -677,6 +679,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act4_culte_defense_victory",
     "image": "character/perso non jouables/chef.png"
   },
@@ -691,6 +694,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act4_culte_defeat",
     "image": "character/perso non jouables/chef.png"
   },
@@ -771,6 +775,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "victory",
     "requiresDialogueId": "act5_macaron_intro",
     "image": "character/perso non jouables/chef.png"
   },
@@ -786,6 +791,14 @@
     ],
     "choices": null,
     "endsGame": false,
+    "effects": {
+      "unlockQuest": {
+        "questName": "Confrontation finale avec Macaron le Charlatan",
+        "expiresAfterTurns": 5,
+        "timeoutFlag": "act5_macaron_final_timeout",
+        "introDialogueId": "act5_macaron_defeat"
+      }
+    },
     "requiresDialogueId": "act5_macaron_intro",
     "image": "character/perso non jouables/macaron3.png"
   },
@@ -801,6 +814,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "victory",
     "requiresDialogueId": "act5_macaron_defeat",
     "image": "character/perso non jouables/chef.png"
   },
@@ -816,6 +830,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act5_macaron_defeat",
     "image": null
   },
@@ -854,6 +869,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "victory",
     "requiresDialogueId": "act5_liche_intro",
     "image": "character/perso non jouables/chef.png"
   },
@@ -869,6 +885,14 @@
     ],
     "choices": null,
     "endsGame": false,
+    "effects": {
+      "unlockQuest": {
+        "questName": "Confrontation finale avec la Liche",
+        "expiresAfterTurns": 5,
+        "timeoutFlag": "act5_liche_final_timeout",
+        "introDialogueId": "act5_liche_defeat"
+      }
+    },
     "requiresDialogueId": "act5_liche_intro",
     "image": "character/perso non jouables/liche.png"
   },
@@ -884,6 +908,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "defeat",
     "requiresDialogueId": "act5_liche_defeat",
     "image": null
   },
@@ -899,6 +924,7 @@
     ],
     "choices": null,
     "endsGame": true,
+    "endingResult": "victory",
     "requiresDialogueId": "act5_liche_defeat",
     "image": "character/perso non jouables/chef.png"
   }

@@ -29,6 +29,7 @@ public class Game
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
     public string? LastCompletedStoryDialogueId { get; private set; }
+    public bool IsDefeated() => this.gold <= 0;
 
     
     public List<QuestSummaryData> LastQuestSummaries { get; private set; } = new();
@@ -61,17 +62,10 @@ public class Game
         Console.WriteLine(adventurer.name + " recruté (coop).");
     }
 
-    public void SetCoopMode(bool isCoop) => IsCoop = isCoop;
 
     // Achat en coop : l'or partagé est déjà débité côté API (voir
     // RecruitmentView.OnBuyClicked) avant l'appel à cette méthode.
     // L'aventurier reste local à ce joueur, comme en solo.
-    public void AddPurchasedAdventurerCoop(Adventurer adventurer)
-    {
-        adventurerManager.AddAdventurer(adventurer);
-        Console.WriteLine(adventurer.name + " recruté (coop).");
-    }
-
     public void refreshSpecialadventurers()
     {
         
