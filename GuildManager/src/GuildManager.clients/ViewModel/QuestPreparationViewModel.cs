@@ -43,23 +43,23 @@ public class QuestPreparationViewModel : IScreenViewModel
             .Select(adventurer => adventurer!.Adventurer.id)
             .ToHashSet();
 
-        return Game.adventurerManager.mainAdventurers.Concat(Game.adventurerManager.adventurers).ToList()
-                .Concat(Game.adventurerManager.mainAdventurers)
-                .Where(adventurer => !selectedIds.Contains(adventurer.id) && !adventurer.isHurted && !adventurer.isInQuest)
-                .Select(adventurer => new AdventurerCard
-                {
-                    Adventurer = adventurer,
-                    Name = adventurer.name,
-                    ClassName = adventurer.job,
-                    Health = adventurer.health,
-                    Defense = adventurer.def,
-                    MagicAttack = adventurer.magicAttack,
-                    PhysicAttack = adventurer.physicAttack,
-                    PortraitPath = adventurer.image,
-                    Level = adventurer.lvl,
-                    Status = AdventurerStatus.Disponible
-                })
-                .ToList();
+        return Game.adventurerManager.mainAdventurers
+            .Concat(Game.adventurerManager.adventurers)
+            .Where(adventurer => !selectedIds.Contains(adventurer.id) && !adventurer.isHurted && !adventurer.isInQuest)
+            .Select(adventurer => new AdventurerCard
+            {
+                Adventurer = adventurer,
+                Name = adventurer.name,
+                ClassName = adventurer.job,
+                Health = adventurer.health,
+                Defense = adventurer.def,
+                MagicAttack = adventurer.magicAttack,
+                PhysicAttack = adventurer.physicAttack,
+                PortraitPath = adventurer.image,
+                Level = adventurer.lvl,
+                Status = AdventurerStatus.Disponible
+            })
+            .ToList();
     }
 
     public void AssignAdventurer(int slotIndex, AdventurerCard adventurer)

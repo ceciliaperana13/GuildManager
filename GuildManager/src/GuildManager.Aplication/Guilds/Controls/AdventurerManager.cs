@@ -239,7 +239,7 @@ public class AdventurerManager
         int id = root["idCount"]?.GetValue<int>() ?? 0;
         root["idCount"] = id + 1;
 
-        Adventurer adventurer = new(id, name, job, 1, health, defense, magic, physic, image, [], false, 0, 10);
+        Adventurer adventurer = new(id, name, job, 1, 0, health, defense, magic, physic, image, [], false, 0, false, false, 10, 10);
         mainAdventurers.Add(adventurer);
 
         if (root["mainAdventurers"] is not JsonArray mainAdventurersJson)

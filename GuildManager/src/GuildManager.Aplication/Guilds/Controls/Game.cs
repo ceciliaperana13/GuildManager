@@ -234,75 +234,60 @@ public void passTurn()
     LastQuestSucceeded = null;
     LastCompletedStoryDialogueId = null;
 
-    foreach(Quest quest in this.questManager.quests)
+    var summaries = new List<QuestSummaryData>();
+
+    foreach (Quest quest in this.questManager.quests)
     {
         if (quest.inProgress)
         {
-            this.claimReward(quest.giveReward());
+            List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
+
+            Reward reward = this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn);
+            this.claimReward(reward);
 
             if (quest.StoryDialogueId is not null)
             {
                 LastQuestSucceeded = quest.LastCompletionSucceeded;
                 LastCompletedStoryDialogueId = quest.StoryDialogueId;
-    public void passTurn()
-    {
-        this.turn++;
-        this.isBought = false;
-
-        var summaries = new List<QuestSummaryData>();
-
-        foreach (Quest quest in this.questManager.quests)
-        {
-            if (quest.inProgress)
-            {
-                List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
-
-                Reward reward = this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn);
-                this.claimReward(reward);
-
-                var adventurerCards = participants.Select(a => new AdventurerCard
-                {
-                    Adventurer = a,
-                    Name = a.name,
-                    ClassName = a.job,
-                    Health = a.health,
-                    Defense = a.def,
-                    MagicAttack = a.magicAttack,
-                    PhysicAttack = a.physicAttack,
-                    PortraitPath = a.image,
-                    Level = a.lvl,
-                    Status = a.isDead ? AdventurerStatus.Mort
-                        : a.isHurted ? AdventurerStatus.Blesse
-                        : AdventurerStatus.Disponible
-                }).ToList();
-
-                int xpPerAdventurer = adventurerCards.Count > 0
-                    ? quest.LastXpShared / adventurerCards.Count
-                    : 0;
-
-                summaries.Add(new QuestSummaryData(quest.name, quest.LastResultWon, adventurerCards, xpPerAdventurer, reward));
             }
 
-            quest.markCompleted();
+            var adventurerCards = participants.Select(a => new AdventurerCard
+            {
+                Adventurer = a,
+                Name = a.name,
+                ClassName = a.job,
+                Health = a.health,
+                Defense = a.def,
+                MagicAttack = a.magicAttack,
+                PhysicAttack = a.physicAttack,
+                PortraitPath = a.image,
+                Level = a.lvl,
+                Status = a.isDead ? AdventurerStatus.Mort
+                    : a.isHurted ? AdventurerStatus.Blesse
+                    : AdventurerStatus.Disponible
+            }).ToList();
+
+            int xpPerAdventurer = adventurerCards.Count > 0
+                ? quest.LastXpShared / adventurerCards.Count
+                : 0;
+
+            summaries.Add(new QuestSummaryData(quest.name, quest.LastResultWon, adventurerCards, xpPerAdventurer, reward));
         }
+
+        quest.markCompleted();
     }
-        if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
-            this.storyFlags["search_antagonist_timeout"] = true;
-            if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
-    this.storyFlags["search_antagonist_timeout"] = true;
 
-        this.LastQuestSummaries = summaries;
+    this.LastQuestSummaries = summaries;
 
-        this.AdventurersRageQuit();
-        if (this.questManager.refreshQuests(this.prestige))
-            this.storyFlags["search_antagonist_timeout"] = true;
-        this.adventurerManager.refreshadventurersToHire(this.prestige);
-        this.adventurerManager.refreshAdventurers();
-        this.adventurerManager.refreshMainAdventurers();
-        this.refreshAll();
-        this.food -= this.adventurerManager.adventurersEat();
-        Console.WriteLine($"Bouffe : {this.food}");
-    }   
+    this.AdventurersRageQuit();
+
+    if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
+        this.storyFlags["search_antagonist_timeout"] = true;
+
+    this.refreshAll();
+
+    this.food -= this.adventurerManager.adventurersEat();   
+}
 
     public List<Adventurer> AdventurersRageQuit()
     {

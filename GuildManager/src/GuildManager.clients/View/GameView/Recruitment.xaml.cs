@@ -31,13 +31,20 @@ public partial class RecruitmentView : UserControl
     }
 
     private void OnBuyClicked(object sender, RoutedEventArgs e)
-    {
-        if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
-            return;
+{
+    if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
+        return;
 
-        viewModel.Game.buyAdventurer(_selectedCandidate.Adventurer);
-        ClosePurchaseDialog();
+    bool success = viewModel.Game.buyAdventurer(_selectedCandidate.Adventurer);
+    ClosePurchaseDialog();
+
+    if (!success)
+    {
+        // Adaptez à votre système de popup existant (textPopup vu dans QuestPreparationView, par ex.)
+        PurchaseText.Text = "Recrutement impossible : or insuffisant, ou déjà recruté quelqu'un ce tour-ci.";
+        PurchaseDialog.Visibility = Visibility.Visible;
     }
+}
 
     private void OnCancelPurchaseClicked(object sender, RoutedEventArgs e) => ClosePurchaseDialog();
 

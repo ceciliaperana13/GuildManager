@@ -160,7 +160,6 @@ public Quest(string name, string type, int lvl, string description, List<Monster
 
     public void markCompleted() => this.inProgress = false;
 
-    public void markCompleted() => this.inProgress = false;
 
     public bool completeQuest(int turn)
     {
