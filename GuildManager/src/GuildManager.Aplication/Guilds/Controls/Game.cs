@@ -134,39 +134,68 @@ public class Game
         this.prestigeUp();
     }
 
-    public void ApplyDialogueEffects(Dictionary<string, object>? effects)
-    {
-
+public void ApplyDialogueEffects(Dictionary<string, object>? effects)
+{
     if (effects is null) return;
 
     foreach (var effect in effects)
     {
         if (effect.Key == "unlockQuest" && effect.Value is JsonElement questJson
-        && questJson.ValueKind == JsonValueKind.Object)
-    {
-        string questName = questJson.GetProperty("questName").GetString()!;
-        int? expiresAfterTurns = questJson.TryGetProperty("expiresAfterTurns", out var turnsEl)
-            ? turnsEl.GetInt32() : (int?)null;
-        string? timeoutFlag = questJson.TryGetProperty("timeoutFlag", out var flagEl)
-            ? flagEl.GetString() : null;
-        string? introDialogueId = questJson.TryGetProperty("introDialogueId", out var introEl)
-            ? introEl.GetString() : null;
+            && questJson.ValueKind == JsonValueKind.Object)
+        {
+            string questName = questJson.GetProperty("questName").GetString()!;
+            int? expiresAfterTurns = questJson.TryGetProperty("expiresAfterTurns", out var turnsEl)
+                ? turnsEl.GetInt32() : (int?)null;
+            string? timeoutFlag = questJson.TryGetProperty("timeoutFlag", out var flagEl)
+                ? flagEl.GetString() : null;
+            string? introDialogueId = questJson.TryGetProperty("introDialogueId", out var introEl)
+                ? introEl.GetString() : null;
 
-        questManager.UnlockStoryQuest(questName, expiresAfterTurns, timeoutFlag, introDialogueId);
-        continue;
-    }
+            questManager.UnlockStoryQuest(questName, expiresAfterTurns, timeoutFlag, introDialogueId);
+            continue;
+        }
 
-        if (effect.Value is JsonElement jsonValue && jsonValue.ValueKind == JsonValueKind.Number
-            && jsonValue.TryGetInt32(out int amount))
+        if (effect.Value is not JsonElement jsonValue)
+            continue;
 
-            {
-                storyFlags[effect.Key] = true;
+        switch (jsonValue.ValueKind)
+        {
+            case JsonValueKind.True:
+            case JsonValueKind.False:
+                storyFlags[effect.Key] = jsonValue.GetBoolean();
 
                 if (effect.Key.StartsWith("recruit_", StringComparison.Ordinal))
                     adventurerManager.RecruitMainAdventurer(effect.Key["recruit_".Length..]);
-            }
+                break;
+
+            case JsonValueKind.Number when jsonValue.TryGetInt32(out int amount):
+                ApplyNumericEffect(effect.Key, amount);
+                break;
         }
     }
+}
+
+private void ApplyNumericEffect(string key, int amount)
+{
+    switch (key)
+    {
+        case "gold":
+            this.gold += amount;
+            break;
+        case "food":
+            this.food += amount;
+            break;
+        case "prestige":
+            this.prestige += amount;
+            break;
+        case "xp":
+            this.xp += amount;
+            break;
+        default:
+            Console.WriteLine($"Effet numérique inconnu ignoré : {key} = {amount}");
+            break;
+    }
+}
 
     public bool HasStoryFlag(string condition)
     {
@@ -246,12 +275,11 @@ public void passTurn()
             Reward reward = this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn);
             this.claimReward(reward);
 
-            if (quest.StoryDialogueId is not null)
-            {
-                LastQuestSucceeded = quest.LastCompletionSucceeded;
-                LastCompletedStoryDialogueId = quest.StoryDialogueId;
-            }
-
+           if (quest.StoryDialogueId is not null)
+                    {
+                        LastQuestSucceeded = quest.LastResultWon;
+                        LastCompletedStoryDialogueId = quest.StoryDialogueId;
+                    }
             var adventurerCards = participants.Select(a => new AdventurerCard
             {
                 Adventurer = a,
@@ -273,9 +301,9 @@ public void passTurn()
                 : 0;
 
             summaries.Add(new QuestSummaryData(quest.name, quest.LastResultWon, adventurerCards, xpPerAdventurer, reward));
+            quest.markCompleted();
         }
 
-        quest.markCompleted();
     }
 
     this.LastQuestSummaries = summaries;

@@ -142,8 +142,7 @@ public partial class GuildView : UserControl
     }
     if (dialogue is not null)
     {
-        if (dialogue.Trigger == "questResult")
-            Game.MarkDialogueAsShown(dialogue.Id);
+        Game.MarkDialogueAsShown(dialogue.Id);
 
         NavigationService.NavigateTo(
             new DialogueViewModel(dialogue.Id, "/Assets/UI/guilde_background.png"),
