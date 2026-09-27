@@ -1,5 +1,5 @@
 {
-  "idCount": 3025,
+  "idCount": 3028,
   "mainAdventurers": [],
   "adventurers": [
     {
@@ -7,7 +7,7 @@
       "name": "Eryndor",
       "job": "tank",
       "lvl": 13,
-      "xp": 0,
+      "xp": 100,
       "health": 60,
       "physicAttack": 46,
       "magicAttack": 46,
