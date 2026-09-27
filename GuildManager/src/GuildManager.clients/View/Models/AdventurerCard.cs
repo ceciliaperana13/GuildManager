@@ -16,6 +16,7 @@ public class AdventurerCard
     public string Name { get; set; } = "";
     public string ClassName { get; set; } = "";
     public string PortraitPath { get; set; } = "";
+    public string FramePath { get; set; } = "";
     public int Level { get; set; }
     public int Health { get; set; }
     public int PhysicAttack { get; set; }

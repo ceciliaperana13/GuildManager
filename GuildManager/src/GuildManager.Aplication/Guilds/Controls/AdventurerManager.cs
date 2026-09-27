@@ -163,6 +163,7 @@ public class AdventurerManager
     public void refreshAdventurers()
     {
         this.adventurers = generateAdventurerFromJson("adventurers");
+        this.refreshMainAdventurers();
     }
 
     public void refreshAdventurersStatus(int turn)
@@ -293,11 +294,21 @@ public class AdventurerManager
     {
         string json = File.ReadAllText(DataFile);
         JsonObject root = JsonNode.Parse(json)!.AsObject();
-        JsonArray adventurers = root["adventurers"]!.AsArray();
 
-        JsonObject? target = adventurers
-            .Select(a => a!.AsObject())
-            .FirstOrDefault(a => a["id"]?.GetValue<int>() == id);
+        JsonObject? target = null;
+
+        foreach (string section in new[] { "adventurers", "mainAdventurers" })
+        {
+            if (root[section] is JsonArray array)
+            {
+                target = array
+                    .Select(a => a!.AsObject())
+                    .FirstOrDefault(a => a["id"]?.GetValue<int>() == id);
+
+                if (target is not null)
+                    break;
+            }
+        }
 
         if (target is null)
             throw new InvalidOperationException($"Aventurier '{id}' introuvable.");
@@ -306,8 +317,8 @@ public class AdventurerManager
             target[kvp.Key] = kvp.Value;
 
         var options = new JsonSerializerOptions { WriteIndented = true };
-        File.WriteAllText(DataFile, root.ToJsonString(options));
-    }
+            File.WriteAllText(DataFile, root.ToJsonString(options));
+        }
 
     // public void SaveAdventurerStats(Adventurer adventurer)
     // {

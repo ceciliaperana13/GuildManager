@@ -14,7 +14,7 @@
                     <DataTemplate>
                         <Border Width="200" Height="300" Margin="10">
                             <Border.Background>
-                                 <ImageBrush ImageSource="/Assets/UI/cadre.png" Stretch="UniformToFill"/>
+                                 <ImageBrush ImageSource="{Binding FramePath}" Stretch="UniformToFill"/>
                             </Border.Background>
                             <StackPanel Margin="25">
                                 <Image Source="{Binding PortraitPath}" Height="120"/>

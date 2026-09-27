@@ -40,7 +40,7 @@ public class QuestPreparationViewModel : IScreenViewModel
             .Select(adventurer => adventurer!.Adventurer.id)
             .ToHashSet();
 
-        return Game.adventurerManager.adventurers
+        return Game.adventurerManager.mainAdventurers.Concat(Game.adventurerManager.adventurers).ToList()
             .Where(adventurer => !selectedIds.Contains(adventurer.id) && !adventurer.isHurted && !adventurer.isInQuest)
             .Select(adventurer => new AdventurerCard
             {

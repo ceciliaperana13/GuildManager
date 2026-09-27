@@ -1,6 +1,26 @@
 {
-  "idCount": 3166,
-  "mainAdventurers": [],
+  "idCount": 3169,
+  "mainAdventurers": [
+    {
+      "id": 1,
+      "name": "Test",
+      "job": "guerrier",
+      "lvl": 20,
+      "xp": 100,
+      "health": 240,
+      "physicAttack": 300,
+      "magicAttack": 2,
+      "def": 200,
+      "image": "/Assets/character/perso sp\u00E9ciaux/\u00E9p\u00E9iste.png",
+      "debuff": [],
+      "isHurted": false,
+      "hurtTurn": 0,
+      "isDead": false,
+      "isInQuest": false,
+      "goldPrice": 140,
+      "foodPrice": 14
+    }
+  ],
   "adventurers": [
     {
       "id": 3009,
@@ -36,7 +56,7 @@
       "isHurted": false,
       "hurtTurn": 0,
       "isDead": false,
-      "isInQuest": false,
+      "isInQuest": true,
       "goldPrice": 140,
       "foodPrice": 14
     },
@@ -74,7 +94,7 @@
       "isHurted": false,
       "hurtTurn": 0,
       "isDead": false,
-      "isInQuest": false,
+      "isInQuest": true,
       "goldPrice": 280,
       "foodPrice": 28
     },
@@ -112,7 +132,7 @@
       "isHurted": false,
       "hurtTurn": 0,
       "isDead": false,
-      "isInQuest": false,
+      "isInQuest": true,
       "goldPrice": 220,
       "foodPrice": 22
     }
