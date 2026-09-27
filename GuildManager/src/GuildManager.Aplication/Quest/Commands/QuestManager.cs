@@ -50,7 +50,7 @@ public class QuestManager
 
     public void editQuestData(string questname, string attribute, JsonNode newValue)
     {
-        string path = "data/quest.json"; // à modifier
+        string path = "data/quest.json";
         string json = File.ReadAllText(path);
 
         JsonArray quests = JsonNode.Parse(json)!.AsArray();
@@ -174,4 +174,13 @@ public Quest UnlockStoryQuest(string questName, int? expiresAfterTurns, string? 
     this.quests.Add(template);
     return template;
 }
+
+    public Reward completeQuestAndSave(Quest quest, AdventurerManager adventurerManager, int turn)
+    {
+        List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
+        Reward reward = quest.giveReward(turn);
+        adventurerManager.SaveAdventurersAfterQuest(participants);
+
+        return reward;
+    }
 }

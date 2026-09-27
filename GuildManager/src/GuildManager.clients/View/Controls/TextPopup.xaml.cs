@@ -21,6 +21,5 @@ public partial class TextPopup : UserControl
     }
 
     private void OnBackgroundClicked(object sender, MouseButtonEventArgs e) => CancelRequested?.Invoke();
-    // la fonction s'execute mais l'invoke ne marche pas
     private void OnPanelClicked(object sender, MouseButtonEventArgs e) => e.Handled = true; // évite de fermer en cliquant le panneau
 }

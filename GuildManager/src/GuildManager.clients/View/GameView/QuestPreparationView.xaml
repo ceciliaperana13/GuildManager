@@ -4,6 +4,47 @@
              xmlns:controls="clr-namespace:GuildManager.Client.View.Controls">
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Disabled"
+                          Margin="0,100,0,20"
+                          HorizontalAlignment="Center">
+                <ItemsControl ItemsSource="{Binding Enemies}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#3B2412"
+                                    BorderThickness="2"
+                                    Background="#F5E6C8"
+                                    CornerRadius="8"
+                                    Padding="14"
+                                    Margin="8,0">
+                                <StackPanel Orientation="Vertical"
+                                            Width="120">
+                                    <Image Source="{Binding image}"
+                                           Width="90" Height="90"
+                                           Stretch="Uniform"
+                                           HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding name}"
+                                                FontWeight="Bold"
+                                                Foreground="#3B2412"
+                                                FontSize="17"
+                                                TextAlignment="Center"
+                                                TextWrapping="Wrap"
+                                                Margin="0,6,0,0"/>
+                                    <TextBlock Text="{Binding lvl, StringFormat='Niv. {0}'}"
+                                               Foreground="#3B2412"
+                                               FontSize="15"
+                                               TextAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
 
             <!-- Les 3 slots d'aventurier, chacun avec son slot d'équipement en dessous -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -46,7 +87,7 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel Margin="16,0">
+                <StackPanel Margin="0,0">
                     <Button Click="OnSlot2Click" Background="Transparent" BorderThickness="0" Cursor="Hand">
                         <Button.Template>
                             <ControlTemplate TargetType="Button"><ContentPresenter/></ControlTemplate>
@@ -68,13 +109,49 @@
             </StackPanel>
 
             <!-- Jauge de % de victoire -->
-            <Grid Canvas.Left="162" Canvas.Top="720" Width="700" Height="233">
+            <Grid Canvas.Left="162" Canvas.Top="720" Width="700" Height="233" Margin="0,-30,0,0">
                     <Image Source="/Assets/UI/victory_bar.png" Stretch="Fill"/>
                     <Border x:Name="FillBar" Background="#66FFD700" HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Width="0" Height="40" Margin="90,0,90,0" CornerRadius="4"/>
+                            Width="0" Height="40" Margin="120,0,90,0" CornerRadius="4"/>
                     <TextBlock x:Name="PercentageText" Text="--%" FontSize="24" FontWeight="Bold"
                                 Foreground="#3B2412" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
+
+            <CheckBox x:Name="GiveXpCheckBox"
+                      Content="Donner tout le prestige en XP"
+                      IsChecked="{Binding GiveXp, Mode=TwoWay}"
+                      HorizontalAlignment="Center"
+                      FontSize="20"
+                      Foreground="#3B2412"
+                      Margin="0,-50,0,10">
+                <CheckBox.Template>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="Box"
+                                    Width="24" Height="24"
+                                    BorderBrush="#3B2412"
+                                    BorderThickness="2"
+                                    Background="#F5E6C8">
+                                <TextBlock x:Name="CheckMark"
+                                           Text="✓"
+                                           FontWeight="Bold"
+                                           FontSize="16"
+                                           Foreground="#3B2412"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Visibility="Collapsed"/>
+                            </Border>
+                            <ContentPresenter Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="Box" Property="Background" Value="#D4AF37"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </CheckBox.Template>
+            </CheckBox>
 
             <controls:FantasyMenuButton NormalImage="/Assets/UI/bouton_jouer.png"
                                          HoverImage="/Assets/UI/bouton_jouer_hover.png"

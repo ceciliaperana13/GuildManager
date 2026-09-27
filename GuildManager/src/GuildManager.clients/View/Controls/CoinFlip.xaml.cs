@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -10,6 +11,8 @@ namespace GuildManager.Client.View.Controls;
 public partial class CoinFlip : UserControl
 {
     private DispatcherTimer? _hideTimer;
+
+    public event EventHandler? FlipCompleted;
 
     public CoinFlip()
     {
@@ -35,6 +38,8 @@ public partial class CoinFlip : UserControl
 
     private void OnFlipCompleted(object? sender, EventArgs e)
     {
+        FlipCompleted?.Invoke(this, EventArgs.Empty);
+
         _hideTimer?.Stop();
         _hideTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
         _hideTimer.Tick += HideCoin;

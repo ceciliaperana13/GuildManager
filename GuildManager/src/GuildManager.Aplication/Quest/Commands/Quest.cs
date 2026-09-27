@@ -18,6 +18,9 @@ public class Quest
     public Reward rewards { get; private set; }
     public int remainingTime { get; set; }
     public bool inProgress { get; private set; }
+    public bool giveXp { get; set; }
+    public int LastXpShared { get; private set; }
+    public bool LastResultWon { get; private set; }
 
     [JsonPropertyName("isStoryQuest")]
     public bool IsStoryQuest { get; private set; }
@@ -115,8 +118,8 @@ public Quest(string name, string type, int lvl, string description, List<Monster
                 teamPower += adventurer.power;
                 
             }
-            Console.WriteLine("PUissance adventurers : " + teamPower);
-            Console.WriteLine("PUissance enemy : " + enemiesPower);
+            //Console.WriteLine("PUissance adventurers : " + teamPower);
+            //Console.WriteLine("PUissance enemy : " + enemiesPower);
             if (teamPower + enemiesPower == 0)
                 return 0; // évite une division par 0
 
@@ -139,12 +142,17 @@ public Quest(string name, string type, int lvl, string description, List<Monster
         this.winRate = refreshWinRate();
     }
 
-    public bool acceptQuest()
+    public bool acceptQuest(AdventurerManager adventurerManager)
     {
         if (this.adventurers.Count > 0)
-        {
+        {   
             this.inProgress = true;
             Console.WriteLine($"Quête acceptée : {this.name}");
+            foreach (Adventurer adventurer in this.adventurers)
+            {
+                adventurer.isInQuest = true;
+                adventurerManager.editAdventurerData(adventurer.id, "isInQuest", true);
+            }
             return true;
         }
         return false;
@@ -152,29 +160,85 @@ public Quest(string name, string type, int lvl, string description, List<Monster
 
     public void markCompleted() => this.inProgress = false;
 
-    public bool completeQuest()
+    public void markCompleted() => this.inProgress = false;
+
+    public bool completeQuest(int turn)
     {
+        this.inProgress = false;
         Random random = new Random();
         double num = random.NextDouble() * 100;
 
-        if (num <= this.winRate)
+        if (num <= this.winRate) // victoire
         {
-            Console.WriteLine($"Quête : {this.name} réussie");
-            return true; // cas de victoire
-        } 
-        Console.WriteLine($"Quête : {this.name} échouée");
-        return false; // cas de défaite
+            this.LastResultWon = true;
+            foreach (Adventurer adventurer in this.adventurers)
+            {
+                adventurer.isInQuest = false;
+                if (this.winRate <= 60 && this.type == "Combat" && random.Next(100) > 50)
+                    adventurer.adventurerHurt(turn);
+            }
+            return true; 
+        }
+        else // défaite
+        {
+            this.LastResultWon = false;
+            foreach (Adventurer adventurer in this.adventurers)
+            {
+                adventurer.isInQuest = false;
+                if (this.type == "Combat")
+                {
+                    if (random.Next(100) < 25)
+                        adventurer.adventurerHurt(turn);
+                    else if (random.Next(100) < 75 && adventurer.id > 7) // 7 premiers id reservé aux perso spéciaux
+                    {   
+                        adventurer.isDead = true;
+                        Console.Write($"{adventurer.name} est mort au combat {adventurer.isDead}");
+                    }
+                    else Console.WriteLine($"{adventurer.name} a fuit");    
+                }
+            }
+            Console.WriteLine($"Quête : {this.name} échouée");
+            return false; 
+        }
     }
 
-    public Reward giveReward()
+    public Reward giveReward(int turn)
     {
-        LastCompletionSucceeded = this.completeQuest();
-        if (LastCompletionSucceeded == true)
+        if (this.completeQuest(turn))
         {
-            //Console.WriteLine($"récompenses : {this.rewards.gold}");
+            int adventurersXp = this.rewards.prestige / 2;
+
+            if (this.giveXp)
+            {
+                adventurersXp = this.rewards.prestige;
+                this.rewards.prestige = 0;
+            } 
+            else
+                this.rewards.prestige /= 2;
+
+            this.LastXpShared = adventurersXp;
+            shareXp(adventurersXp);
             return this.rewards;
         }
-        else 
-            return new Reward(0, 0, 0, []);  
+        else
+        {
+            this.LastXpShared = 0;
+            return new Reward(0, 0, 0, []);
+        }
     }
+
+
+    public void shareXp(int xp)
+    {
+        int personalXp = xp / this.adventurers.Count();
+        foreach(Adventurer adventurer in this.adventurers)
+        {
+            adventurer.xp += personalXp;
+            Console.WriteLine($"{adventurer.name} à reçut {personalXp} xp");
+            adventurer.levelUp();
+        }
+    }
+
+
+
 }

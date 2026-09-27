@@ -1,6 +1,7 @@
 using System.CodeDom;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using GuildManager.Client.Models;
 
 namespace GuildManager.Aplication.Guilds.Controls;
 public class Game
@@ -20,12 +21,14 @@ public class Game
     public List<Item> inventory = new List<Item>();
     public AdventurerManager adventurerManager = new AdventurerManager();
     public QuestManager questManager = new QuestManager();
+    public ItemManager itemManager = new ItemManager();
     bool isBought;
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
     public string? LastCompletedStoryDialogueId { get; private set; }
 
     
+    public List<QuestSummaryData> LastQuestSummaries { get; private set; } = new();
 
 
     public Game(string playerName, int turn, int mainProgress, int gold, int food, int prestige, int xp)
@@ -74,6 +77,23 @@ public class Game
         
     }
 
+    public bool buyItem(Item item)
+    {
+        if (this.gold >= item.goldPrice)
+        {
+            itemManager.addItem(item);
+            this.gold -= item.goldPrice;
+            Console.WriteLine(item.name + " acheté.");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("Pas assez d'or pour acheter " + item.name);
+            return false;
+        }
+        
+    }
+
     // public void refreshQuest()
     // {
     //     foreach(Quest quest in this.questManager.quests)
@@ -103,7 +123,9 @@ public class Game
         Console.WriteLine($"Vous avez gagné {reward.gold} gold, {reward.food} food et {reward.prestige} xp");
         this.gold += reward.gold;
         this.food += reward.food;
-        this.xp += reward.prestige;
+
+        this.xp += reward.prestige/2;
+        
         // foreach (Item item in reward.Item4)
         // {
         //     this.inventory.Add(item);
@@ -222,6 +244,43 @@ public void passTurn()
             {
                 LastQuestSucceeded = quest.LastCompletionSucceeded;
                 LastCompletedStoryDialogueId = quest.StoryDialogueId;
+    public void passTurn()
+    {
+        this.turn++;
+        this.isBought = false;
+
+        var summaries = new List<QuestSummaryData>();
+
+        foreach (Quest quest in this.questManager.quests)
+        {
+            if (quest.inProgress)
+            {
+                List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
+
+                Reward reward = this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn);
+                this.claimReward(reward);
+
+                var adventurerCards = participants.Select(a => new AdventurerCard
+                {
+                    Adventurer = a,
+                    Name = a.name,
+                    ClassName = a.job,
+                    Health = a.health,
+                    Defense = a.def,
+                    MagicAttack = a.magicAttack,
+                    PhysicAttack = a.physicAttack,
+                    PortraitPath = a.image,
+                    Level = a.lvl,
+                    Status = a.isDead ? AdventurerStatus.Mort
+                        : a.isHurted ? AdventurerStatus.Blesse
+                        : AdventurerStatus.Disponible
+                }).ToList();
+
+                int xpPerAdventurer = adventurerCards.Count > 0
+                    ? quest.LastXpShared / adventurerCards.Count
+                    : 0;
+
+                summaries.Add(new QuestSummaryData(quest.name, quest.LastResultWon, adventurerCards, xpPerAdventurer, reward));
             }
 
             quest.markCompleted();
@@ -231,15 +290,19 @@ public void passTurn()
             this.storyFlags["search_antagonist_timeout"] = true;
             if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
     this.storyFlags["search_antagonist_timeout"] = true;
+
+        this.LastQuestSummaries = summaries;
+
         this.AdventurersRageQuit();
         if (this.questManager.refreshQuests(this.prestige))
             this.storyFlags["search_antagonist_timeout"] = true;
         this.adventurerManager.refreshadventurersToHire(this.prestige);
         this.adventurerManager.refreshAdventurers();
         this.adventurerManager.refreshMainAdventurers();
+        this.refreshAll();
         this.food -= this.adventurerManager.adventurersEat();
         Console.WriteLine($"Bouffe : {this.food}");
-    }
+    }   
 
     public List<Adventurer> AdventurersRageQuit()
     {
@@ -263,6 +326,17 @@ public void passTurn()
         }
 
         return adventurersQuit;
+    }
+
+    public void refreshAll()
+    {
+        this.questManager.refreshQuests(this.prestige);
+        this.adventurerManager.refreshAdventurersStatus(this.turn);
+        this.adventurerManager.refreshadventurersToHire(this.prestige);
+        this.adventurerManager.refreshAdventurers();
+        this.adventurerManager.refreshMainAdventurers();
+        this.itemManager.refreshShop(this.prestige);
+        this.itemManager.refreshInventory();
     }
 
     // public void playTurn()

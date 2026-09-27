@@ -2,11 +2,11 @@ namespace GuildManager.Aplication.Guilds.Controls;
 public class Character
 {
     public string name {get ; private set;}
-    public int lvl {get ; private set;}
-    public int health {get ; private set;}
-    public int def {get ; private set;}
-    public int magicAttack {get ; private set;}
-    public int physicAttack {get ; private set;}
+    public int lvl {get ; protected set;}
+    public int health {get ; protected set;}
+    public int def {get ; protected set;}
+    public int magicAttack {get ; protected set;}
+    public int physicAttack {get ; protected set;}
     public double power {get ; set;}
     public string image {get ; private set;}
 
