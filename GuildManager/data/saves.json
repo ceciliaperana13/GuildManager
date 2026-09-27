@@ -1,10 +1,19 @@
 {
-    "playerName" : "",
-    "turn" : 0,
-    "mainProgress" : 0,
-    "gold" : 1000,
-    "food" : 1000,
-    "prestige" : 1,
-    "xp" : 0,
-    "quests" : []
+  "GuildId": 1,
+  "Gold": 300,
+  "Food": 640,
+  "CurrentTurn": 0,
+  "Members": [
+    {
+      "Username": "cecilia",
+      "JoinedAt": "2026-09-26T16:11:03.1326512Z"
+    },
+    {
+      "Username": "Henry",
+      "JoinedAt": "2026-09-27T14:54:12.5624798Z"
+    }
+  ],
+  "Characters": [],
+  "StoryFlags": [],
+  "LastUpdated": "2026-09-27T14:56:04.8496404Z"
 }

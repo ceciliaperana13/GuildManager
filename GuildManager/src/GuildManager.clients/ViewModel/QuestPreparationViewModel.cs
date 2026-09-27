@@ -74,8 +74,6 @@ public class QuestPreparationViewModel : IScreenViewModel
         var chosen = SelectedSlots.Where(a => a != null).ToList();
         if (chosen.Count == 0) { SuccessPercentage = null; return; }
 
-        
-        // SuccessPercentage = QuestLogic.CalculerPourcentageVictoire(chosen, SelectedQuest);
         Quest quest = Game.questManager.searchQuestByName(SelectedQuest.Title);
         quest.refreshWinRate();
         SuccessPercentage = (int)quest.refreshWinRate();
@@ -87,11 +85,11 @@ public class QuestPreparationViewModel : IScreenViewModel
     }
 
     public bool GiveXp
-{
-    get => Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp;
-    set
     {
-        Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp = value;
+        get => Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp;
+        set
+        {
+            Game.questManager.searchQuestByName(SelectedQuest.Title).giveXp = value;
+        }
     }
-}
 }

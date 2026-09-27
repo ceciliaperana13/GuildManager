@@ -71,7 +71,34 @@ public partial class GuildView : UserControl
     {
         if (Game is null) return;
 
+        int goldBefore = Game.gold;
+        int foodBefore = Game.food;
+
         Game.passTurn();
+
+        // En coop, l'or/la nourriture gagnés ou consommés pendant ce tour doivent
+        // être répercutés sur le pot commun partagé (saves.json côté serveur),
+        // pour que tous les joueurs voient le même solde à jour.
+        if (Game.IsCoop)
+        {
+            int goldDelta = Game.gold - goldBefore;
+            int foodDelta = Game.food - foodBefore;
+
+            if (goldDelta != 0 || foodDelta != 0)
+            {
+                var apiClient = new GuildApiClient();
+                var (success, resources, _) = await apiClient.AdjustResourcesAsync(goldDelta, foodDelta);
+                if (success)
+                    Game.SyncResources(resources!.Gold, resources.Food);
+            }
+        }
+        else if (NavigationService.CurrentSaveId is Guid saveId)
+        {
+            // Solo : la progression (or, nourriture, aventuriers, xp, quêtes...)
+            // est persistée localement dans savesolo.json après chaque tour.
+            new SaveSoloService().UpdateSave(saveId, Game);
+        }
+
         (DataContext as GuildViewModel)?.RefreshResources();
 
     DialogueEntry? dialogue = null;

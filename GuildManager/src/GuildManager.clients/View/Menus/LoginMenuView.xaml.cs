@@ -54,9 +54,17 @@ public partial class LoginMenuView : UserControl
             AppSession.UserId = result!.Id;
             AppSession.Username = result.Username;
 
-            // Enregistrement + heartbeat en continu, tant que l'appli reste ouverte
             SessionKeepAlive.Start(AppSession.ApiBaseUrl, AppSession.Username);
-            Game game = new Game("test", 0, 0, 10000, 10000, 1, 0);
+
+            var apiClient = new GuildApiClient();
+            var resources = await apiClient.GetResourcesAsync();
+
+            int gold = resources?.Gold ?? 0;
+            int food = resources?.Food ?? 0;
+
+            Game game = new Game(result.Username, 1, 0, gold, food, 1, 0);
+            game.SetCoopMode(AppSession.IsCoop);
+
             NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)

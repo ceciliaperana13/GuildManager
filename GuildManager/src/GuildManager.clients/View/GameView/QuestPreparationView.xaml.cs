@@ -46,13 +46,11 @@ public partial class QuestPreparationView : UserControl
     private void OpenPicker(int slotIndex)
     {
         _activeSlot = slotIndex;
-                if (ViewModel is null) return;
+        if (ViewModel is null) return;
 
-                Picker.SetAdventurers(ViewModel.GetAvailableAdventurers());
-                Picker.Visibility = Visibility.Visible;
+        Picker.SetAdventurers(ViewModel.GetAvailableAdventurers());
+        Picker.Visibility = Visibility.Visible;
     }
-
-    
 
     private void OnPickerCancelled() => Picker.Visibility = Visibility.Collapsed;
 
@@ -61,7 +59,7 @@ public partial class QuestPreparationView : UserControl
         if (ViewModel?.SuccessPercentage is int pct)
         {
             PercentageText.Text = $"{pct}%";
-            FillBar.Width = 460 * (pct / 100.0); // 460 = largeur intérieure approximative de la barre
+            FillBar.Width = 460 * (pct / 100.0);
         }
         else
         {
@@ -70,23 +68,19 @@ public partial class QuestPreparationView : UserControl
         }
     }
 
-    private void OpenPickerFor(int slotIndex)
-    {
-        // TODO: afficher la popup de sélection filtrée sur les aventuriers Disponible
-        // au choix de l'utilisateur : _viewModel.AssignAdventurer(slotIndex, adventurerChoisi);
-    }
-
     private void OnEquipment0Click(object sender, RoutedEventArgs e) { /* TODO */ }
     private void OnEquipment1Click(object sender, RoutedEventArgs e) { /* TODO */ }
     private void OnEquipment2Click(object sender, RoutedEventArgs e) { /* TODO */ }
 
     private void OnLaunchQuestClicked(object sender, RoutedEventArgs e)
     {
+        if (ViewModel is null) return;
+
         if (ViewModel.AcceptQuest())
             NavigationService.GoBack();
         else
         {
-            OpenTextPopup("Choisissez au moins un aventurier avnat de lancer la quête.");
+            OpenTextPopup("Choisissez au moins un aventurier avant de lancer la quête.");
         }
     }
 

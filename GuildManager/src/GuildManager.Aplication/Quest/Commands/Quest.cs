@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -116,18 +115,14 @@ public Quest(string name, string type, int lvl, string description, List<Monster
             foreach (Adventurer adventurer in this.adventurers)
             {
                 teamPower += adventurer.power;
-                
+
             }
-            //Console.WriteLine("PUissance adventurers : " + teamPower);
-            //Console.WriteLine("PUissance enemy : " + enemiesPower);
             if (teamPower + enemiesPower == 0)
                 return 0; // évite une division par 0
 
-            //return teamPower / (teamPower + enemiesPower) * 100;
-            //return 1/(1+10*(enemiesPower-teamPower)/100)*100;
             return 1.0 / (1.0 + Math.Pow(10, (enemiesPower - teamPower) / 100.0)) * 100.0;
         }
-        
+
     }
 
     public void addAdventurer(Adventurer adventurer)
@@ -142,16 +137,18 @@ public Quest(string name, string type, int lvl, string description, List<Monster
         this.winRate = refreshWinRate();
     }
 
+    // AdventurerManager ne persiste plus rien sur disque (voir refactor
+    // d'AdventurerManager) : la mutation en mémoire ci-dessous suffit,
+    // la sauvegarde complète est écrite ailleurs (SaveSoloService / API coop).
     public bool acceptQuest(AdventurerManager adventurerManager)
     {
         if (this.adventurers.Count > 0)
-        {   
+        {
             this.inProgress = true;
             Console.WriteLine($"Quête acceptée : {this.name}");
             foreach (Adventurer adventurer in this.adventurers)
             {
                 adventurer.isInQuest = true;
-                adventurerManager.editAdventurerData(adventurer.id, "isInQuest", true);
             }
             return true;
         }
@@ -211,7 +208,7 @@ public Quest(string name, string type, int lvl, string description, List<Monster
             {
                 adventurersXp = this.rewards.prestige;
                 this.rewards.prestige = 0;
-            } 
+            }
             else
                 this.rewards.prestige /= 2;
 
@@ -230,14 +227,11 @@ public Quest(string name, string type, int lvl, string description, List<Monster
     public void shareXp(int xp)
     {
         int personalXp = xp / this.adventurers.Count();
-        foreach(Adventurer adventurer in this.adventurers)
+        foreach (Adventurer adventurer in this.adventurers)
         {
             adventurer.xp += personalXp;
             Console.WriteLine($"{adventurer.name} à reçut {personalXp} xp");
             adventurer.levelUp();
         }
     }
-
-
-
 }

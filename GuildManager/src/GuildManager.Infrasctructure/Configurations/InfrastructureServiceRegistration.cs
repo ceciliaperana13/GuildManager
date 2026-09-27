@@ -9,7 +9,7 @@ namespace GuildManager.Infrastructure.Configurations;
 
 public static class InfrastructureServiceRegistration
 {
-    // A appeler depuis Program.cs de GuildManager.Api :
+    
     //     builder.Services.AddInfrastructure(builder.Configuration);
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {

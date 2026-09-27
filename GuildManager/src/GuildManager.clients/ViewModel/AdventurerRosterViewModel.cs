@@ -11,8 +11,26 @@ public class AdventurerRosterViewModel : IScreenViewModel
 
     public ObservableCollection<AdventurerCard> Adventurers { get; } = new();
 
+    public Game Game { get; }
+
     public AdventurerRosterViewModel(Game game)
     {
+        Game = game;
+        LoadAdventurers();
+    }
+
+    // Le roster est toujours local au joueur (solo comme coop) : seuls l'or et
+    // la nourriture sont partagés entre joueurs, pas les aventuriers.
+    private void LoadAdventurers()
+    {
+        Adventurers.Clear();
+
+        foreach (Adventurer adventurer in Game.adventurerManager.adventurers)
+        {
+            AdventurerStatus status;
+            if (adventurer.isDead)
+                status = AdventurerStatus.Mort;
+            else if (adventurer.isHurted)
         game.adventurerManager.refreshAdventurers();
 
         var mainAdventurerIds = game.adventurerManager.mainAdventurers

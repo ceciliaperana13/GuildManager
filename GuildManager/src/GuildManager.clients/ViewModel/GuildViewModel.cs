@@ -1,5 +1,7 @@
 using System.ComponentModel;
+using System.Windows;
 using GuildManager.Aplication.Guilds.Controls;
+using GuildManager.Client.Services;
 
 namespace GuildManager.Client.ViewModel;
 
@@ -20,10 +22,23 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
 
     public void SetGame(Game game)
     {
+        // Si on avait déjà une souscription (revenue sur cet écran après
+        // une navigation), on se désinscrit d'abord pour éviter les doublons.
+        GuildRealtimeService.ResourcesUpdated -= OnResourcesUpdated;
+
         Game = game;
         OnPropertyChanged(nameof(Gold));
         OnPropertyChanged(nameof(Food));
         OnPropertyChanged(nameof(Prestige));
+
+        // On se réabonne pour être notifié des futurs changements de ressources.
+        GuildRealtimeService.ResourcesUpdated += OnResourcesUpdated;
+    }
+
+    private void OnResourcesUpdated(ResourcesResponse resources)
+    {
+        Game.SyncResources(resources.Gold, resources.Food);
+        RefreshResources();
     }
 
     public void RefreshResources()
