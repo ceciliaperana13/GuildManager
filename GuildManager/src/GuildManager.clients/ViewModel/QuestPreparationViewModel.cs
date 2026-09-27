@@ -33,27 +33,31 @@ public class QuestPreparationViewModel : IScreenViewModel
         if (Game.adventurerManager.adventurers.Count == 0)
             Game.adventurerManager.refreshAdventurers();
 
+        if(Game.adventurerManager.mainAdventurers.Count == 0)
+            Game.adventurerManager.refreshMainAdventurers();
+
         var selectedNames = SelectedSlots
             .Where(adventurer => adventurer is not null)
             .Select(adventurer => adventurer!.Name)
             .ToHashSet();
 
         return Game.adventurerManager.adventurers
-            .Where(adventurer => !selectedNames.Contains(adventurer.name))
-            .Select(adventurer => new AdventurerCard
-            {
-                Adventurer = adventurer,
-                Name = adventurer.name,
-                ClassName = adventurer.job,
-                Health = adventurer.health,
-                Defense = adventurer.def,
-                MagicAttack = adventurer.magicAttack,
-                PhysicAttack = adventurer.physicAttack,
-                PortraitPath = adventurer.image,
-                Level = adventurer.lvl,
-                Status = AdventurerStatus.Disponible
-            })
-            .ToList();
+                .Concat(Game.adventurerManager.mainAdventurers)
+                .Where(adventurer => !selectedNames.Contains(adventurer.name))
+                .Select(adventurer => new AdventurerCard
+                {
+                    Adventurer = adventurer,
+                    Name = adventurer.name,
+                    ClassName = adventurer.job,
+                    Health = adventurer.health,
+                    Defense = adventurer.def,
+                    MagicAttack = adventurer.magicAttack,
+                    PhysicAttack = adventurer.physicAttack,
+                    PortraitPath = adventurer.image,
+                    Level = adventurer.lvl,
+                    Status = AdventurerStatus.Disponible
+                })
+                .ToList();
     }
 
     public void AssignAdventurer(int slotIndex, AdventurerCard adventurer)
