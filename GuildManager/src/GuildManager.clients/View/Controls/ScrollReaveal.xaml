@@ -7,7 +7,7 @@
         <Storyboard x:Key="OuvrirParchemin">
             <DoubleAnimation Storyboard.TargetName="ContenueParchemin"
                              Storyboard.TargetProperty="Width"
-                             From="0" To="700" Duration="0:0:1.2">
+                             From="0" To="850" Duration="0:0:1.2">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -19,14 +19,14 @@
     </UserControl.Resources>
 
     <StackPanel Orientation ="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Image Source="/Assets/UI/Scroll_right.png" Height="420" Stretch="Uniform"/>
+        <Image Source="/Assets/UI/Scroll_right.png" Height="500" Stretch="Uniform"/>
 
-        <Border x:Name="ContenueParchemin" Width="0" Height="380"
-                Background="#F2E3c6" ClipToBounds="True">
+        <Border x:Name="ContenueParchemin" Width="0" Height="460"
+                Background="#CC9A61" ClipToBounds="True">
             <ContentPresenter x:Name="ContenueInterieur"
                               Content="{Binding ScrollContent, ElementName=Root}"
                               Opacity="0" Margin="30"/>
         </Border>
-        <Image Source="/Assets/UI/Scroll_left.png" Height="420" Stretch="Uniform"/> 
+        <Image Source="/Assets/UI/Scroll_left.png" Height="500" Stretch="Uniform"/> 
     </StackPanel>
 </UserControl>                             
