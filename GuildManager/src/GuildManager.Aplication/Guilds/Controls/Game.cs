@@ -27,16 +27,19 @@ public class Game
     public ItemManager itemManager = new ItemManager();
     bool isBought;
     bool turnInProgress;
-    bool isCoop; // à utiliser pour le mode coop ?
     public string? LastCompletedStoryDialogueId { get; private set; }
     public bool IsDefeated() => this.gold <= 0;
 
-    
     public List<QuestSummaryData> LastQuestSummaries { get; private set; } = new();
 
     // Coop = or/nourriture partagés via l'API ; aventuriers, candidats, xp, niveaux
     // et quêtes restent indépendants par joueur (mêmes règles qu'en solo).
     public bool IsCoop { get; private set; }
+
+    // Dernier solde connu du pot commun (serveur). Tout écart avec gold/food
+    // est un changement local pas encore envoyé.
+    private int _syncedGold;
+    private int _syncedFood;
 
     public Game(string playerName, int turn, int mainProgress, int gold, int food, int prestige, int xp)
     {
@@ -47,25 +50,51 @@ public class Game
         this.food = food;
         this.prestige = prestige;
         this.xp = xp;
+        this._syncedGold = gold;
+        this._syncedFood = food;
         this.turnInProgress = true;
-         this.questManager.refreshQuests(this.prestige, this.storyFlags);
+        this.questManager.refreshQuests(this.prestige, this.storyFlags);
     }
 
     public void SetCoopMode(bool isCoop) => IsCoop = isCoop;
 
-    // Achat en coop : l'or partagé est déjà débité côté API (voir
-    // RecruitmentView.OnBuyClicked) avant l'appel à cette méthode.
-    // L'aventurier reste local à ce joueur, comme en solo.
+    // ---------- Synchronisation coop ----------
+
+    // Écart entre l'état local et le dernier état connu du serveur
+    public (int GoldDelta, int FoodDelta) PendingCoopDelta()
+        => (gold - _syncedGold, food - _syncedFood);
+
+    // Appelé par SignalR : prend le solde serveur sans perdre les gains locaux pas encore envoyés
+    public void SyncResources(int serverGold, int serverFood)
+    {
+        var (dg, df) = PendingCoopDelta();
+        _syncedGold = serverGold;
+        _syncedFood = serverFood;
+        gold = serverGold + dg;
+        food = serverFood + df;
+    }
+
+    // Appelé après un envoi réussi : le serveur fait autorité, plus rien en attente
+    public void CommitResources(int serverGold, int serverFood)
+    {
+        _syncedGold = gold = serverGold;
+        _syncedFood = food = serverFood;
+    }
+
+    // Dépense locale (achat coop) ; elle sera envoyée par CoopSync.PushAsync
+    public void SpendResources(int goldCost, int foodCost)
+    {
+        gold -= goldCost;
+        food -= foodCost;
+    }
+
+    // Achat en coop : l'aventurier reste local à ce joueur, comme en solo.
     public void AddPurchasedAdventurerCoop(Adventurer adventurer)
     {
         adventurerManager.AddAdventurer(adventurer);
         Console.WriteLine(adventurer.name + " recruté (coop).");
     }
 
-
-    // Achat en coop : l'or partagé est déjà débité côté API (voir
-    // RecruitmentView.OnBuyClicked) avant l'appel à cette méthode.
-    // L'aventurier reste local à ce joueur, comme en solo.
     public void refreshSpecialadventurers()
     {
         
@@ -94,7 +123,6 @@ public class Game
             Console.WriteLine("Vous avez déjà recruter un aventurier ce tour-ci");
             return false;
         }
-        
     }
 
     public bool buyItem(Item item)
@@ -111,7 +139,6 @@ public class Game
             Console.WriteLine("Pas assez d'or pour acheter " + item.name);
             return false;
         }
-        
     }
 
     public void prestigeUp()
@@ -134,68 +161,68 @@ public class Game
         this.prestigeUp();
     }
 
-public void ApplyDialogueEffects(Dictionary<string, object>? effects)
-{
-    if (effects is null) return;
-
-    foreach (var effect in effects)
+    public void ApplyDialogueEffects(Dictionary<string, object>? effects)
     {
-        if (effect.Key == "unlockQuest" && effect.Value is JsonElement questJson
-            && questJson.ValueKind == JsonValueKind.Object)
-        {
-            string questName = questJson.GetProperty("questName").GetString()!;
-            int? expiresAfterTurns = questJson.TryGetProperty("expiresAfterTurns", out var turnsEl)
-                ? turnsEl.GetInt32() : (int?)null;
-            string? timeoutFlag = questJson.TryGetProperty("timeoutFlag", out var flagEl)
-                ? flagEl.GetString() : null;
-            string? introDialogueId = questJson.TryGetProperty("introDialogueId", out var introEl)
-                ? introEl.GetString() : null;
+        if (effects is null) return;
 
-            questManager.UnlockStoryQuest(questName, expiresAfterTurns, timeoutFlag, introDialogueId);
-            continue;
+        foreach (var effect in effects)
+        {
+            if (effect.Key == "unlockQuest" && effect.Value is JsonElement questJson
+                && questJson.ValueKind == JsonValueKind.Object)
+            {
+                string questName = questJson.GetProperty("questName").GetString()!;
+                int? expiresAfterTurns = questJson.TryGetProperty("expiresAfterTurns", out var turnsEl)
+                    ? turnsEl.GetInt32() : (int?)null;
+                string? timeoutFlag = questJson.TryGetProperty("timeoutFlag", out var flagEl)
+                    ? flagEl.GetString() : null;
+                string? introDialogueId = questJson.TryGetProperty("introDialogueId", out var introEl)
+                    ? introEl.GetString() : null;
+
+                questManager.UnlockStoryQuest(questName, expiresAfterTurns, timeoutFlag, introDialogueId);
+                continue;
+            }
+
+            if (effect.Value is not JsonElement jsonValue)
+                continue;
+
+            switch (jsonValue.ValueKind)
+            {
+                case JsonValueKind.True:
+                case JsonValueKind.False:
+                    storyFlags[effect.Key] = jsonValue.GetBoolean();
+
+                    if (effect.Key.StartsWith("recruit_", StringComparison.Ordinal))
+                        adventurerManager.RecruitMainAdventurer(effect.Key["recruit_".Length..]);
+                    break;
+
+                case JsonValueKind.Number when jsonValue.TryGetInt32(out int amount):
+                    ApplyNumericEffect(effect.Key, amount);
+                    break;
+            }
         }
+    }
 
-        if (effect.Value is not JsonElement jsonValue)
-            continue;
-
-        switch (jsonValue.ValueKind)
+    private void ApplyNumericEffect(string key, int amount)
+    {
+        switch (key)
         {
-            case JsonValueKind.True:
-            case JsonValueKind.False:
-                storyFlags[effect.Key] = jsonValue.GetBoolean();
-
-                if (effect.Key.StartsWith("recruit_", StringComparison.Ordinal))
-                    adventurerManager.RecruitMainAdventurer(effect.Key["recruit_".Length..]);
+            case "gold":
+                this.gold += amount;
                 break;
-
-            case JsonValueKind.Number when jsonValue.TryGetInt32(out int amount):
-                ApplyNumericEffect(effect.Key, amount);
+            case "food":
+                this.food += amount;
+                break;
+            case "prestige":
+                this.prestige += amount;
+                break;
+            case "xp":
+                this.xp += amount;
+                break;
+            default:
+                Console.WriteLine($"Effet numérique inconnu ignoré : {key} = {amount}");
                 break;
         }
     }
-}
-
-private void ApplyNumericEffect(string key, int amount)
-{
-    switch (key)
-    {
-        case "gold":
-            this.gold += amount;
-            break;
-        case "food":
-            this.food += amount;
-            break;
-        case "prestige":
-            this.prestige += amount;
-            break;
-        case "xp":
-            this.xp += amount;
-            break;
-        default:
-            Console.WriteLine($"Effet numérique inconnu ignoré : {key} = {amount}");
-            break;
-    }
-}
 
     public bool HasStoryFlag(string condition)
     {
@@ -204,38 +231,38 @@ private void ApplyNumericEffect(string key, int amount)
     }
 
     public void MarkDialogueAsShown(string dialogueId, int? advancesActTo = null)
-{
-    ShownDialogueIds.Add(dialogueId);
-
-    if (dialogueId == "intro_01")
-        AdvanceMainProgress(1);
-
-    if (dialogueId == "act1_intro")
-        adventurerManager.RecruitMainAdventurer("aventurier_prometteur");
-
-    bool espritsOutcome = dialogueId is "act2_esprits_victory" or "act2_esprits_victory_cristal" or "act2_esprits_defeat";
-    bool monstreOutcome = dialogueId is "act2_monstre_victory" or "act2_monstre_defeat";
-
-    if (espritsOutcome)
     {
-        storyFlags["act2_esprits_resolved"] = true;
-        if (!ShownDialogueIds.Contains("act2_monstre_intro"))
-            storyFlags["flag_act2_monstre"] = true;
+        ShownDialogueIds.Add(dialogueId);
+
+        if (dialogueId == "intro_01")
+            AdvanceMainProgress(1);
+
+        if (dialogueId == "act1_intro")
+            adventurerManager.RecruitMainAdventurer("aventurier_prometteur");
+
+        bool espritsOutcome = dialogueId is "act2_esprits_victory" or "act2_esprits_victory_cristal" or "act2_esprits_defeat";
+        bool monstreOutcome = dialogueId is "act2_monstre_victory" or "act2_monstre_defeat";
+
+        if (espritsOutcome)
+        {
+            storyFlags["act2_esprits_resolved"] = true;
+            if (!ShownDialogueIds.Contains("act2_monstre_intro"))
+                storyFlags["flag_act2_monstre"] = true;
+        }
+
+        if (monstreOutcome)
+        {
+            storyFlags["act2_monstre_resolved"] = true;
+            if (!ShownDialogueIds.Contains("act2_esprits_intro"))
+                storyFlags["flag_act2_esprits"] = true;
+        }
+
+        if (storyFlags.GetValueOrDefault("act2_esprits_resolved") && storyFlags.GetValueOrDefault("act2_monstre_resolved"))
+            storyFlags["act2_both_resolved"] = true;
+
+        if (advancesActTo.HasValue)
+            AdvanceMainProgress(advancesActTo.Value);
     }
-
-    if (monstreOutcome)
-    {
-        storyFlags["act2_monstre_resolved"] = true;
-        if (!ShownDialogueIds.Contains("act2_esprits_intro"))
-            storyFlags["flag_act2_esprits"] = true;
-    }
-
-    if (storyFlags.GetValueOrDefault("act2_esprits_resolved") && storyFlags.GetValueOrDefault("act2_monstre_resolved"))
-        storyFlags["act2_both_resolved"] = true;
-
-    if (advancesActTo.HasValue)
-        AdvanceMainProgress(advancesActTo.Value);
-}
 
     public void AdvanceMainProgress(int progress)
     {
@@ -255,68 +282,67 @@ private void ApplyNumericEffect(string key, int amount)
         return false;
     }
 
-public void passTurn()
-{
-    this.turn++;
-    TurnsSinceActStart++;
-    IsPeriodicDialogueTurn = TurnsSinceActStart % 5 == 0;
-    this.isBought = false;
-    LastQuestSucceeded = null;
-    LastCompletedStoryDialogueId = null;
-
-    var summaries = new List<QuestSummaryData>();
-
-    foreach (Quest quest in this.questManager.quests)
+    public void passTurn()
     {
-        if (quest.inProgress)
+        this.turn++;
+        TurnsSinceActStart++;
+        IsPeriodicDialogueTurn = TurnsSinceActStart % 5 == 0;
+        this.isBought = false;
+        LastQuestSucceeded = null;
+        LastCompletedStoryDialogueId = null;
+
+        var summaries = new List<QuestSummaryData>();
+
+        foreach (Quest quest in this.questManager.quests)
         {
-            List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
-
-            Reward reward = this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn);
-            this.claimReward(reward);
-
-           if (quest.StoryDialogueId is not null)
-                    {
-                        LastQuestSucceeded = quest.LastResultWon;
-                        LastCompletedStoryDialogueId = quest.StoryDialogueId;
-                    }
-            var adventurerCards = participants.Select(a => new AdventurerCard
+            if (quest.inProgress)
             {
-                Adventurer = a,
-                Name = a.name,
-                ClassName = a.job,
-                Health = a.health,
-                Defense = a.def,
-                MagicAttack = a.magicAttack,
-                PhysicAttack = a.physicAttack,
-                PortraitPath = a.image,
-                Level = a.lvl,
-                Status = a.isDead ? AdventurerStatus.Mort
-                    : a.isHurted ? AdventurerStatus.Blesse
-                    : AdventurerStatus.Disponible
-            }).ToList();
+                List<Adventurer> participants = new List<Adventurer>(quest.adventurers);
 
-            int xpPerAdventurer = adventurerCards.Count > 0
-                ? quest.LastXpShared / adventurerCards.Count
-                : 0;
+                Reward reward = this.questManager.completeQuestAndSave(quest, this.adventurerManager, this.turn);
+                this.claimReward(reward);
 
-            summaries.Add(new QuestSummaryData(quest.name, quest.LastResultWon, adventurerCards, xpPerAdventurer, reward));
-            quest.markCompleted();
+                if (quest.StoryDialogueId is not null)
+                {
+                    LastQuestSucceeded = quest.LastResultWon;
+                    LastCompletedStoryDialogueId = quest.StoryDialogueId;
+                }
+                var adventurerCards = participants.Select(a => new AdventurerCard
+                {
+                    Adventurer = a,
+                    Name = a.name,
+                    ClassName = a.job,
+                    Health = a.health,
+                    Defense = a.def,
+                    MagicAttack = a.magicAttack,
+                    PhysicAttack = a.physicAttack,
+                    PortraitPath = a.image,
+                    Level = a.lvl,
+                    Status = a.isDead ? AdventurerStatus.Mort
+                        : a.isHurted ? AdventurerStatus.Blesse
+                        : AdventurerStatus.Disponible
+                }).ToList();
+
+                int xpPerAdventurer = adventurerCards.Count > 0
+                    ? quest.LastXpShared / adventurerCards.Count
+                    : 0;
+
+                summaries.Add(new QuestSummaryData(quest.name, quest.LastResultWon, adventurerCards, xpPerAdventurer, reward));
+                quest.markCompleted();
+            }
         }
 
+        this.LastQuestSummaries = summaries;
+
+        this.AdventurersRageQuit();
+
+        if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
+            this.storyFlags["search_antagonist_timeout"] = true;
+
+        this.refreshAll();
+
+        this.food -= this.adventurerManager.adventurersEat();
     }
-
-    this.LastQuestSummaries = summaries;
-
-    this.AdventurersRageQuit();
-
-    if (this.questManager.refreshQuests(this.prestige, this.storyFlags))
-        this.storyFlags["search_antagonist_timeout"] = true;
-
-    this.refreshAll();
-
-    this.food -= this.adventurerManager.adventurersEat();   
-}
 
     public List<Adventurer> AdventurersRageQuit()
     {
@@ -330,7 +356,6 @@ public void passTurn()
                 double chance = 50 - (30*(adventurer.lvl-1)/99);
                 if (value < chance)
                     adventurersQuit.Add(adventurer);
-                    
             }
         }
         foreach(Adventurer adventurer in adventurersQuit)
@@ -351,11 +376,5 @@ public void passTurn()
         this.adventurerManager.refreshMainAdventurers();
         this.itemManager.refreshShop(this.prestige);
         this.itemManager.refreshInventory();
-    }
-
-    public void SyncResources(int gold, int food)
-    {
-        this.gold = gold;
-        this.food = food;
     }
 }

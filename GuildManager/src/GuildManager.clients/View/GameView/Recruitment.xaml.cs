@@ -36,9 +36,9 @@ public partial class RecruitmentView : UserControl
         if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
             return;
 
-        // Le candidat est toujours généré localement (solo comme coop) : on le
-        // retrouve dans adventurersToHire pour récupérer l'objet Adventurer complet.
-        var adventurer = viewModel.Game.adventurerManager.adventurersToHire
+        var game = viewModel.Game;
+
+        var adventurer = game.adventurerManager.adventurersToHire
             .FirstOrDefault(a => a.id == _selectedCandidate.Id);
 
         if (adventurer is null)
@@ -49,37 +49,34 @@ public partial class RecruitmentView : UserControl
 
         if (AppSession.IsCoop)
         {
-            // Vérification locale (le solde est synchronisé en temps réel par SignalR)
-            if (viewModel.Game.gold < adventurer.goldPrice)
+            if (game.gold < adventurer.goldPrice)
             {
                 PurchaseText.Text = "Pas assez d'or dans le pot commun.";
                 return;
             }
-            if (viewModel.Game.food < adventurer.foodPrice)
+            if (game.food < adventurer.foodPrice)
             {
                 PurchaseText.Text = "Pas assez de nourriture dans le pot commun.";
                 return;
             }
 
-            // Or ET nourriture débités d'un coup sur le pot commun partagé.
-            // L'aventurier reste local à ce joueur, indépendant des autres.
-            var apiClient = new GuildApiClient();
-            var (success, resources, error) = await apiClient.AdjustResourcesAsync(
-                -adventurer.goldPrice, -adventurer.foodPrice);
+            // Dépense locale, puis envoi de tout l'écart au pot commun partagé.
+            game.SpendResources(adventurer.goldPrice, adventurer.foodPrice);
 
-            if (!success)
+            if (!await CoopSync.PushAsync(game))
             {
-                PurchaseText.Text = error ?? "Achat impossible.";
+                // Échec réseau : on annule la dépense locale
+                game.SpendResources(-adventurer.goldPrice, -adventurer.foodPrice);
+                PurchaseText.Text = "Achat impossible : serveur injoignable.";
                 return;
             }
 
-            viewModel.Game.SyncResources(resources!.Gold, resources.Food);
-            viewModel.Game.AddPurchasedAdventurerCoop(adventurer);
-            viewModel.Game.adventurerManager.adventurersToHire.Remove(adventurer);
+            game.AddPurchasedAdventurerCoop(adventurer);
+            game.adventurerManager.adventurersToHire.Remove(adventurer);
         }
         else
         {
-            bool bought = viewModel.Game.buyAdventurer(adventurer);
+            bool bought = game.buyAdventurer(adventurer);
             if (!bought)
             {
                 PurchaseText.Text = "Pas assez d'or, ou recrutement déjà effectué ce tour-ci.";

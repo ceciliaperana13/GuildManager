@@ -7,7 +7,6 @@ using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
 using GuildManager.Client.Models;
 using GuildManager.Client.Services;
-using GuildManager.Client.Models;
 using GuildManager.Client.View.Controls;
 using GuildManager.Aplication.Guilds.Controls;
 
@@ -43,7 +42,7 @@ public partial class GuildView : UserControl
         _refreshTimer = null;
     }
 
-    private async System.Threading.Tasks.Task RefreshOnlinePlayersAsync()
+    private async Task RefreshOnlinePlayersAsync()
     {
         var players = await SessionKeepAlive.GetOnlinePlayersAsync();
         var names = players.Select(p => p.Name == AppSession.Username ? $"{p.Name} (vous)" : p.Name).ToList();
@@ -64,100 +63,86 @@ public partial class GuildView : UserControl
 
     private void OnStoreClicked(object sender, RoutedEventArgs e)
     {
-        
     }
 
     private async void OnFlipClicked(object sender, RoutedEventArgs e)
-{
-    if (Game is null) return;
-
-    Game.passTurn();
-
-    int goldBefore = Game.gold;
-    int foodBefore = Game.food;
-
-    // En coop, l'or/la nourriture gagnés ou consommés pendant ce tour doivent
-    // être répercutés sur le pot commun partagé (saves.json côté serveur),
-    // pour que tous les joueurs voient le même solde à jour.
-    if (Game.IsCoop)
     {
-        int goldDelta = Game.gold - goldBefore;
-        int foodDelta = Game.food - foodBefore;
+        if (Game is null) return;
 
-        if (goldDelta != 0 || foodDelta != 0)
+        Game.passTurn();
+
+        if (Game.IsCoop)
         {
-            var apiClient = new GuildApiClient();
-            var (success, resources, _) = await apiClient.AdjustResourcesAsync(goldDelta, foodDelta);
-            if (success)
-                Game.SyncResources(resources!.Gold, resources.Food);
+            // Envoie au pot commun tout l'écart local (gains de quête,
+            // nourriture consommée...) : sauvegardé dans saves.json et
+            // diffusé en temps réel aux autres joueurs.
+            await CoopSync.PushAsync(Game);
         }
-    }
-    else if (NavigationService.CurrentSaveId is Guid saveId)
-    {
-        // Solo : la progression (or, nourriture, aventuriers, xp, quêtes...)
-        // est persistée localement dans savesolo.json après chaque tour.
-        new SaveSoloService().UpdateSave(saveId, Game);
-    }
+        else if (NavigationService.CurrentSaveId is Guid saveId)
+        {
+            // Solo : progression persistée localement dans savesolo.json.
+            new SaveSoloService().UpdateSave(saveId, Game);
+        }
 
-    if (Game.IsDefeated())
+        if (Game.IsDefeated())
         {
             NavigationService.NavigateTo(new DefeatViewModel(Game, "Votre guilde a fait faillite, faute d'or."), Game);
             return;
         }
-    if (Game.Win())
+        if (Game.Win())
         {
             NavigationService.NavigateTo(new VictoryViewModel(Game), Game);
             return;
         }
 
-    (DataContext as GuildViewModel)?.RefreshResources();
+        (DataContext as GuildViewModel)?.RefreshResources();
 
-    DialogueEntry? dialogue = null;
-    if (Game.LastQuestSucceeded is not null)
-    {
-        dialogue = DialogueRepository.GetByTrigger(
-            "questResult",
-            Game.mainProgress,
-            Game.HasStoryFlag,
-            Game.ShownDialogueIds,
-            Game.LastQuestSucceeded,
-            Game.LastCompletedStoryDialogueId);
-    }
-    if (dialogue is null && Game.IsPeriodicDialogueTurn)
-    {
-        dialogue = DialogueRepository.GetByTrigger(
-            "manual",
-            Game.mainProgress,
-            Game.HasStoryFlag,
-            Game.ShownDialogueIds);
-    }
+        DialogueEntry? dialogue = null;
+        if (Game.LastQuestSucceeded is not null)
+        {
+            dialogue = DialogueRepository.GetByTrigger(
+                "questResult",
+                Game.mainProgress,
+                Game.HasStoryFlag,
+                Game.ShownDialogueIds,
+                Game.LastQuestSucceeded,
+                Game.LastCompletedStoryDialogueId);
+        }
+        if (dialogue is null && Game.IsPeriodicDialogueTurn)
+        {
+            dialogue = DialogueRepository.GetByTrigger(
+                "manual",
+                Game.mainProgress,
+                Game.HasStoryFlag,
+                Game.ShownDialogueIds);
+        }
 
-    if (dialogue is null && Game.LastQuestSucceeded is null)
-    {
-        dialogue = DialogueRepository.GetByTrigger(
-            "turnStart",
-            Game.mainProgress,
-            Game.HasStoryFlag,
-            Game.ShownDialogueIds);
-    }
-    if (dialogue is not null)
-    {
-        Game.MarkDialogueAsShown(dialogue.Id);
+        if (dialogue is null && Game.LastQuestSucceeded is null)
+        {
+            dialogue = DialogueRepository.GetByTrigger(
+                "turnStart",
+                Game.mainProgress,
+                Game.HasStoryFlag,
+                Game.ShownDialogueIds);
+        }
+        if (dialogue is not null)
+        {
+            Game.MarkDialogueAsShown(dialogue.Id);
 
-        NavigationService.NavigateTo(
-            new DialogueViewModel(dialogue.Id, "/Assets/UI/guilde_background.png"),
-            Game);
-        return;
-    }
+            NavigationService.NavigateTo(
+                new DialogueViewModel(dialogue.Id, "/Assets/UI/guilde_background.png"),
+                Game);
+            return;
+        }
 
-    var pendingSummaries = new Queue<QuestSummaryData>(Game.LastQuestSummaries);
+        var pendingSummaries = new Queue<QuestSummaryData>(Game.LastQuestSummaries);
 
-    foreach (var data in DequeueAll(pendingSummaries))
-    {
-        await PlayCoinFlipAsync();
-        await ShowSummaryAsync(data);
+        foreach (var data in DequeueAll(pendingSummaries))
+        {
+            await PlayCoinFlipAsync();
+            await ShowSummaryAsync(data);
+        }
     }
-}
 
     private static IEnumerable<QuestSummaryData> DequeueAll(Queue<QuestSummaryData> queue)
     {
