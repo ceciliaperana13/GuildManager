@@ -1,6 +1,6 @@
 {
   "GuildId": 1,
-  "Gold": 1740,
+  "Gold": 840,
   "Food": 2500,
   "CurrentTurn": 0,
   "Members": [
@@ -11,9 +11,13 @@
     {
       "Username": "Henry",
       "JoinedAt": "2026-09-27T14:54:12.5624798Z"
+    },
+    {
+      "Username": "test11",
+      "JoinedAt": "2026-09-28T06:54:29.8878001Z"
     }
   ],
   "Characters": [],
   "StoryFlags": [],
-  "LastUpdated": "2026-09-28T02:52:28.9582291Z"
+  "LastUpdated": "2026-09-28T07:11:34.234876Z"
 }

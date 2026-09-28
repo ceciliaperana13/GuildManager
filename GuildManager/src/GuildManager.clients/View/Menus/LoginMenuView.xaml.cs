@@ -65,6 +65,13 @@ public partial class LoginMenuView : UserControl
             Game game = new Game(result.Username, 1, 0, gold, food, 1, 0);
             game.SetCoopMode(AppSession.IsCoop);
 
+            if (AppSession.IsCoop)
+            {
+                // Connexion temps réel : reçoit ResourcesUpdated quand un autre
+                // joueur achète, gagne ou consomme de l'or / de la nourriture.
+                await GuildRealtimeService.StartAsync(AppSession.ApiBaseUrl);
+            }
+
             NavigationService.NavigateTo(new GuildViewModel(), game);
         }
         catch (Exception ex)

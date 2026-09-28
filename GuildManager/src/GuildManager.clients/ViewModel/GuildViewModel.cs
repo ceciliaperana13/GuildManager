@@ -35,10 +35,15 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
         GuildRealtimeService.ResourcesUpdated += OnResourcesUpdated;
     }
 
+    // L'événement SignalR arrive sur un thread d'arrière-plan : on repasse
+    // sur le thread UI avant de toucher au Game et aux bindings.
     private void OnResourcesUpdated(ResourcesResponse resources)
     {
-        Game.SyncResources(resources.Gold, resources.Food);
-        RefreshResources();
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            Game.SyncResources(resources.Gold, resources.Food);
+            RefreshResources();
+        });
     }
 
     public void RefreshResources()
