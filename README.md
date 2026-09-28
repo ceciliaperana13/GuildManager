@@ -136,7 +136,7 @@ Depuis le menu principal, choisissez **Solo** ou **Coop**.
 2. Saisissez l'adresse IP de l'hôte.
 3. Créez un compte ou connectez-vous.
 
-> Le port **5080** doit être joignable : autorisez-le dans le pare-feu de l'hôte si les joueurs sont sur des machines différentes.
+> Le port  doit être joignable : autorisez-le dans le pare-feu de l'hôte si les joueurs sont sur des machines différentes.
 
 ---
 
