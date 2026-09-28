@@ -83,7 +83,7 @@ public class AdventurerManager
 
         // Prices :
         int goldPrice = 100 + 20 * lvl; // à modifier selon les stats du perso
-        int foodPrice = 10 + 2 * lvl;
+        int foodPrice = 10 + lvl;
 
         return new Adventurer(newId, generateRandomName(type), job, lvl, 0, health, defense, magic, physic, image, [], false, 0, false, false, goldPrice, foodPrice);
     }

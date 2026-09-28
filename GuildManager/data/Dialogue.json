@@ -711,7 +711,10 @@
     "endsGame": false,
     "requiresDialogueIds": [
       "act4_alchimistes_confinement_victory",
-      "act4_culte_defense_victory"
+      "act4_culte_defense_victory",
+      "act4_culte_victory",
+      "act4_alchimistes_victory"
+      
     ],
     "effects": {
       "unlockQuest": {

@@ -29,7 +29,7 @@ public class Game
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
     public string? LastCompletedStoryDialogueId { get; private set; }
-    public bool IsDefeated() => this.gold <= 0&& this.food <= 0 ;
+    public bool IsDefeated() => this.gold <= 0 || this.food <= 0 ;
 
     
     public List<QuestSummaryData> LastQuestSummaries { get; private set; } = new();
@@ -94,10 +94,9 @@ public class Game
         Console.WriteLine(adventurer.name + " recruté (coop).");
     }
 
-
-    // Achat en coop : l'or partagé est déjà débité côté API (voir
-    // RecruitmentView.OnBuyClicked) avant l'appel à cette méthode.
-    // L'aventurier reste local à ce joueur, comme en solo.
+    // Co-op purchase: the shared gold is already deducted on the API side (see
+    // RecruitmentView.OnBuyClicked) before this method is called.
+    // The adventurer remains local to this player, just as in solo play.
     public void refreshSpecialadventurers()
     {
         

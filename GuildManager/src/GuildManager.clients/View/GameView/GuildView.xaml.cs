@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
@@ -201,4 +202,17 @@ public partial class GuildView : UserControl
 
         return tcs.Task;
     }
+
+    public void Lose_or_Win_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.L)
+        {
+            NavigationService.NavigateTo(new DefeatViewModel(Game, "Votre guilde a fait faillite, faute d'or."), Game);
+        }
+        else if (e.Key == Key.W)
+        {
+            NavigationService.NavigateTo(new VictoryViewModel(Game), Game);
+        }
+    }
+
 }
