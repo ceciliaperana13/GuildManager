@@ -27,7 +27,7 @@ public partial class MainMenuView : UserControl
 
     private void OnQuitButtonClicked(object sender, RoutedEventArgs e)
     {
-        // Logique pour quitter l'application
+        // Logic for exiting the application
         Application.Current.Shutdown();
     }
 }

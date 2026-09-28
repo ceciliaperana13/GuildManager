@@ -127,8 +127,8 @@ public class AdventurerManager
             Console.WriteLine($"{adventurer.name} soigné");
             adventurer.AdventurerHeal();
         }
-        // Plus besoin de persister ici : l'objet est déjà à jour en mémoire.
-        // La sauvegarde réelle passe désormais par GameSaveDto/SaveSoloService.
+        // No need to persist here: the object is already up to date in memory.
+        // Actual saving is now handled via GameSaveDto/SaveSoloService.
     }
 }
 

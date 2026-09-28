@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.SignalR;
 namespace GuildManager.Api.Hubs;
 
 
-/// Hub SignalR pour la guilde coop. Chaque client rejoint un groupe = sa guilde,
-/// et reçoit les events poussés par le serveur (ressources partagées, membres, etc.).
+
+/// SignalR hub for the co-op guild. Each client joins a group corresponding to their guild,
+/// and receives events pushed by the server (shared resources, members, etc.).
 public class GuildHub : Hub
 {
     public override async Task OnConnectedAsync()

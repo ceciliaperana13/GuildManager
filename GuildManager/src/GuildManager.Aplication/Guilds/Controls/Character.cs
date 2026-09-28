@@ -23,7 +23,7 @@ public class Character
         this.refreshPower();
     }
 
-    public Character(string name, string image) // pour les perso non combattants
+    public Character(string name, string image) //for non-combatant characters
     {
         this.name = name;
         this.image = image;

@@ -78,8 +78,8 @@ public class AuthController : ControllerBase
 
         _logger.LogInformation("Nouvel utilisateur inscrit : {Username}", username);
 
-        // Tout nouvel utilisateur est automatiquement considéré comme membre
-        // de la guilde coop partagée (data/saves.json).
+        // Every new user is automatically considered a member
+        // of the shared co-op guild (data/saves.json).
         await _membership.AddMemberIfNotExistsAsync(username);
 
         return Ok(new UserResponse(user.Id, user.Username, user.Email));
@@ -106,8 +106,8 @@ public class AuthController : ControllerBase
 
         _logger.LogInformation("Connexion réussie : {Username}", username);
 
-        // Filet de sécurité : si un compte existant (créé avant cette fonctionnalité)
-        // n'est pas encore membre de la guilde coop, on le rattrape ici aussi.
+        // Safety net: if an existing account (created before this feature)
+         // is not yet a member of the co-op guild, we catch it here as well.
         await _membership.AddMemberIfNotExistsAsync(username);
 
         return Ok(new UserResponse(user.Id, user.Username, user.Email));

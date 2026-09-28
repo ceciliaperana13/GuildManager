@@ -13,7 +13,7 @@ public enum StartupMode
 
 public partial class StartupView : UserControl
 {
-    public event Action<StartupMode, string>? ModeSelected; // mode, hostIp — vide si Solo
+    public event Action<StartupMode, string>? ModeSelected; // mode, hostIp — Solo if Empty
 
     public StartupView() => InitializeComponent();
 

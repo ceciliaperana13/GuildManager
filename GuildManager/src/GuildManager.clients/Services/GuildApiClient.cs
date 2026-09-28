@@ -16,7 +16,8 @@ public class GuildApiClient
         _client = new HttpClient { BaseAddress = new Uri(AppSession.ApiBaseUrl) };
     }
 
-    // Débite le pot commun partagé (or ou nourriture) et récupère le nouveau solde.
+    
+    // Debits the shared common pool (gold or food) and retrieves the new balance.
     public async Task<(bool Success, ResourcesResponse? Resources, string? Error)> TransferResourceAsync(string resourceType, int amount)
     {
         var response = await _client.PostAsJsonAsync("api/guild/resources/transfer",
@@ -32,10 +33,9 @@ public class GuildApiClient
         return (true, result, null);
     }
 
-    // Ajuste le pot commun d'un delta signé (positif = gain, négatif = perte),
-    // utilisé après un passage de tour local (récompenses de quête, nourriture
-    // consommée) pour garder le solde partagé synchronisé et sauvegardé pour
-    // tous les joueurs de la guilde coop.
+    // Adjusts the shared pool by a signed delta (positive = gain, negative = loss),
+    // used after a local turn update (quest rewards, food consumed) to keep
+    // the shared balance synchronized and saved for all players in the co-op guild.
     public async Task<(bool Success, ResourcesResponse? Resources, string? Error)> AdjustResourcesAsync(int goldDelta, int foodDelta)
     {
         var response = await _client.PostAsJsonAsync("api/guild/resources/adjust",

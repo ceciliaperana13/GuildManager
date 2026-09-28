@@ -75,7 +75,7 @@ public partial class SoloMenuView : UserControl
     var saves = saveSoloService.LoadAll();
 
     var latestSave = saves
-        .Where(s => s.PlayerName == "test") // en dur pour l'instant, comme OnNewGameClicked
+        .Where(s => s.PlayerName == "test") // hardcoded for now, like OnNewGameClicked
         .OrderByDescending(s => s.LastPlayedAt)
         .FirstOrDefault();
 

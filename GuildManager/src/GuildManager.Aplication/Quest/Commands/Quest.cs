@@ -137,9 +137,9 @@ public Quest(string name, string type, int lvl, string description, List<Monster
         this.winRate = refreshWinRate();
     }
 
-    // AdventurerManager ne persiste plus rien sur disque (voir refactor
-    // d'AdventurerManager) : la mutation en mémoire ci-dessous suffit,
-    // la sauvegarde complète est écrite ailleurs (SaveSoloService / API coop).
+    // AdventurerManager no longer persists anything to disk (see AdventurerManager
+    // refactoring): the in-memory mutation below is sufficient;
+    // the full save is written elsewhere (SaveSoloService / co-op API).
     public bool acceptQuest(AdventurerManager adventurerManager)
     {
         if (this.adventurers.Count > 0)

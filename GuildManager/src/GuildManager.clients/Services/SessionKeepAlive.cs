@@ -12,8 +12,7 @@ public static class SessionKeepAlive
 
     public static void Start(string apiBaseUrl, string playerName)
     {
-        Stop(); // évite les doublons si appelé plusieurs fois
-
+        Stop(); // avoids duplicates if called multiple times
         _client = new HttpClient { BaseAddress = new Uri(apiBaseUrl) };
 
         _ = _client.PostAsJsonAsync("api/session/hello", new { PlayerName = playerName });

@@ -21,7 +21,8 @@ namespace GuildManager.Client.View;
 
 public partial class CoopMenuView : UserControl
 {
-    private static WebApplication? _apiApp; // static : reste vivante tant que l'appli tourne
+    private static WebApplication? _apiApp; // static: remains alive as long as the app is running
+
 
     public CoopMenuView()
     {

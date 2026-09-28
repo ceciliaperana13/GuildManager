@@ -31,8 +31,8 @@ public class RecruitmentViewModel : IScreenViewModel, INotifyPropertyChanged
         LoadCandidates();
     }
 
-    // Candidats indépendants par joueur, en solo comme en coop : seuls l'or et la
-    // nourriture sont partagés (cf. RecruitmentView.OnBuyClicked).
+    // Independent candidates per player, in both solo and co-op modes: only gold and
+    // food are shared (see RecruitmentView.OnBuyClicked).
     private void LoadCandidates()
     {
         IsLoading = true;

@@ -34,9 +34,12 @@ public class Game
     
     public List<QuestSummaryData> LastQuestSummaries { get; private set; } = new();
 
-    // Coop = or/nourriture partagés via l'API ; aventuriers, candidats, xp, niveaux
-    // et quêtes restent indépendants par joueur (mêmes règles qu'en solo).
+    // Coop = gold/food shared via the API; adventurers, candidates, XP, levels,
+    // and quests remain independent for each player (same rules as in solo mode).
     public bool IsCoop { get; private set; }
+
+    private int _syncedGold;
+    private int _syncedFood;
 
     public Game(string playerName, int turn, int mainProgress, int gold, int food, int prestige, int xp)
     {
@@ -48,14 +51,43 @@ public class Game
         this.prestige = prestige;
         this.xp = xp;
         this.turnInProgress = true;
-         this.questManager.refreshQuests(this.prestige, this.storyFlags);
+        this._syncedGold = gold;
+        this._syncedFood = food;
+        this.questManager.refreshQuests(this.prestige, this.storyFlags);
     }
 
     public void SetCoopMode(bool isCoop) => IsCoop = isCoop;
 
-    // Achat en coop : l'or partagé est déjà débité côté API (voir
-    // RecruitmentView.OnBuyClicked) avant l'appel à cette méthode.
-    // L'aventurier reste local à ce joueur, comme en solo.
+
+    public (int GoldDelta, int FoodDelta) PendingCoopDelta()
+        => (gold - _syncedGold, food - _syncedFood);
+
+    // Called by SignalR: takes the server balance without losing local gains not yet sent
+    public void SyncResources(int serverGold, int serverFood)
+    {
+        var (dg, df) = PendingCoopDelta();
+        _syncedGold = serverGold;
+        _syncedFood = serverFood;
+        gold = serverGold + dg;
+        food = serverFood + df;
+    }
+
+    // Called after a successful send: the server is the authority, nothing left pending
+    public void CommitResources(int serverGold, int serverFood)
+    {
+        _syncedGold = gold = serverGold;
+        _syncedFood = food = serverFood;
+    }
+
+    // Local spending (co-op purchase); it will be sent by CoopSync.PushAsync()
+    public void SpendResources(int goldCost, int foodCost)
+    {
+        gold -= goldCost;
+        food -= foodCost;
+    }
+    // Co-op purchase: the shared gold is already deducted on the API side (see
+    // RecruitmentView.OnBuyClicked) before this method is called.
+    // The adventurer remains local to this player, just as in solo play.
     public void AddPurchasedAdventurerCoop(Adventurer adventurer)
     {
         adventurerManager.AddAdventurer(adventurer);
@@ -353,9 +385,4 @@ public void passTurn()
         this.itemManager.refreshInventory();
     }
 
-    public void SyncResources(int gold, int food)
-    {
-        this.gold = gold;
-        this.food = food;
-    }
 }

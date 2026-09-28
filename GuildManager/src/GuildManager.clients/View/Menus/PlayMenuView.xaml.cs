@@ -27,8 +27,9 @@ public partial class PlayMenuView : UserControl
 
     private void OnCoopClicked(object sender, RoutedEventArgs e)
     {
-        // Vers le menu coop : hébergement d'une partie ou connexion à un hôte distant.
-        // La création du Game et de l'AdventurerManager se fait côté serveur (CoopMenuView_Loaded).
+        
+        // To the co-op menu: hosting a game or connecting to a remote host.
+        // The Game and AdventurerManager are created on the server side (CoopMenuView_Loaded).
         NavigationService.NavigateTo(new CoopMenuViewModel());
     }
 }

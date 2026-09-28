@@ -17,9 +17,9 @@ public class SaveSoloService
 
     public SaveSoloService(string? filePath = null)
     {
-        // Même logique de chemin que le store coop (Path.Combine("data", "saves.json")
-        // dans CoopMenuView) : relatif au répertoire de travail courant, pas au
-        // dossier de compilation, pour que les deux saves vivent au même endroit.
+        // Same path logic as the coop save file (Path.Combine("data", "saves.json")
+        // in CoopMenuView): relative to the current working directory, not the
+        // build folder, so that both save files reside in the same location.
         _filePath = filePath ?? Path.Combine("data", "savesolo.json");
     }
 
@@ -53,7 +53,7 @@ public class SaveSoloService
         File.WriteAllText(_filePath, json);
     }
 
-    /// Crée une nouvelle save solo et l'ajoute à la liste existante.
+    /// Creates a new solo save and adds it to the existing list.
     public GameSaveDto CreateNewSave(Game game)
     {
         var saves = LoadAll();
@@ -63,7 +63,7 @@ public class SaveSoloService
         return newSave;
     }
 
-    /// Met à jour une save existante (ex: après passTurn()).
+    /// Updates an existing save (e.g., after passTurn()).
     public void UpdateSave(Guid saveId, Game game)
     {
         var saves = LoadAll();
@@ -86,7 +86,7 @@ public class SaveSoloService
         SaveAll(saves);
     }
 
-    /// Charge une save précise et reconstruit un Game jouable à partir d'elle.
+    /// Loads a specific save and reconstructs a playable Game from it.
     public Game? LoadGame(Guid saveId)
     {
         var saves = LoadAll();

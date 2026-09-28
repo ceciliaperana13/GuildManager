@@ -63,9 +63,9 @@ public class JsonSaveFileStore : ISaveFileStore
 
     private async Task<GuildSaveState> LoadInternalAsync()
     {
-        // Un fichier absent OU vide (0 octet) doit être traité pareil : on repart
-        // d'un état de guilde neuf plutôt que de planter sur DeserializeAsync,
-        // qui lève "input does not contain any JSON tokens" sur un flux vide.
+        // A missing OR empty (0-byte) file should be treated the same way: start
+        // from a fresh guild state rather than crashing on DeserializeAsync,
+        // which throws "input does not contain any JSON tokens" on an empty stream.
         if (!File.Exists(_path) || new FileInfo(_path).Length == 0)
             return new GuildSaveState();
 
@@ -77,8 +77,8 @@ public class JsonSaveFileStore : ISaveFileStore
         }
         catch (JsonException)
         {
-            // Fichier présent mais corrompu/illisible : on ne bloque pas le jeu,
-            // on repart d'un état neuf plutôt que de crasher au démarrage.
+            // File exists but is corrupt/unreadable: do not block the game;
+            // start from a fresh state instead of crashing on startup.
             return new GuildSaveState();
         }
     }

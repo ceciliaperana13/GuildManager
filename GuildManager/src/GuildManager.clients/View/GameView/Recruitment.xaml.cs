@@ -36,8 +36,9 @@ public partial class RecruitmentView : UserControl
         if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
             return;
 
-        // Le candidat est toujours généré localement (solo comme coop) : on le
-        // retrouve dans adventurersToHire pour récupérer l'objet Adventurer complet.
+        
+        // The candidate is always generated locally (whether in solo or co-op mode):
+        // look them up in adventurersToHire to retrieve the complete Adventurer object.
         var adventurer = viewModel.Game.adventurerManager.adventurersToHire
             .FirstOrDefault(a => a.id == _selectedCandidate.Id);
 
@@ -49,7 +50,7 @@ public partial class RecruitmentView : UserControl
 
         if (AppSession.IsCoop)
         {
-            // Vérification locale (le solde est synchronisé en temps réel par SignalR)
+            // Local check (the balance is synchronized in real time via SignalR)
             if (viewModel.Game.gold < adventurer.goldPrice)
             {
                 PurchaseText.Text = "Pas assez d'or dans le pot commun.";
@@ -61,8 +62,8 @@ public partial class RecruitmentView : UserControl
                 return;
             }
 
-            // Or ET nourriture débités d'un coup sur le pot commun partagé.
-            // L'aventurier reste local à ce joueur, indépendant des autres.
+            // Gold and food deducted at once from the shared pool.
+            // The adventurer remains local to this player, independent of the others.
             var apiClient = new GuildApiClient();
             var (success, resources, error) = await apiClient.AdjustResourcesAsync(
                 -adventurer.goldPrice, -adventurer.foodPrice);

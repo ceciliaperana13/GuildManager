@@ -45,7 +45,7 @@ public class GameSaveDto
         };
     }
 
-    // Reconstruit un Game à partir de cette save (pour le "Continuer")
+    // Reconstructs a Game from this save (for "Continue")
     public Game ToGame()
     {
         var game = new Game(PlayerName, Turn, MainProgress, Gold, Food, Prestige, Xp);

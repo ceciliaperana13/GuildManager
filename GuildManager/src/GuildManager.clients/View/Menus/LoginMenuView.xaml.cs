@@ -67,8 +67,8 @@ public partial class LoginMenuView : UserControl
 
             if (AppSession.IsCoop)
             {
-                // Connexion temps réel : reçoit ResourcesUpdated quand un autre
-                // joueur achète, gagne ou consomme de l'or / de la nourriture.
+                // Real-time connection: receives ResourcesUpdated when another
+                // player buys, earns, or consumes gold/food.
                 await GuildRealtimeService.StartAsync(AppSession.ApiBaseUrl);
             }
 

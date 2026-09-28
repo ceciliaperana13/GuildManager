@@ -11,5 +11,5 @@ public class MainMenuViewModel : IScreenViewModel
 // ViewModel/CoopMenuViewModel.cs
 public class CoopMenuViewModel : IScreenViewModel
 {
-    public string BackgroundPath => "/Assets/UI/background_menu.jpg"; // même fond que Menu/Solo
+    public string BackgroundPath => "/Assets/UI/background_menu.jpg";
 }

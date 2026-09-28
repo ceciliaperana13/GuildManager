@@ -22,8 +22,8 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
 
     public void SetGame(Game game)
     {
-        // Si on avait déjà une souscription (revenue sur cet écran après
-        // une navigation), on se désinscrit d'abord pour éviter les doublons.
+        // If a subscription already exists (having returned to this screen after
+        // navigating), unsubscribe first to avoid duplicates.
         GuildRealtimeService.ResourcesUpdated -= OnResourcesUpdated;
 
         Game = game;
@@ -31,7 +31,8 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
         OnPropertyChanged(nameof(Food));
         OnPropertyChanged(nameof(Prestige));
 
-        // On se réabonne pour être notifié des futurs changements de ressources.
+        
+        // We re-subscribe to be notified of future resource changes.
         GuildRealtimeService.ResourcesUpdated += OnResourcesUpdated;
     }
 

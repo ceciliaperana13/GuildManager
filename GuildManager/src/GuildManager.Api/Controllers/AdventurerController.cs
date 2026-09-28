@@ -33,9 +33,9 @@ public class AdventurerController : ControllerBase
         _logger = logger;
     }
 
-    // Roster complet des aventuriers déjà recrutés par la guilde (par opposition
-    // aux candidats au recrutement de /to-hire). C'est cette liste que le client
-    // doit utiliser pour la sélection des participants à une quête en coop.
+    // Complete roster of adventurers already recruited by the guild (as opposed 
+    //  to candidates available for recruitment via /to-hire). This is the list 
+    //  that the client should use to select participants for a co-op quest.
     [HttpGet]
     public IActionResult GetRoster()
     {
@@ -43,8 +43,8 @@ public class AdventurerController : ControllerBase
         return Ok(dtos);
     }
 
-    // Liste des candidats actuellement proposés au recrutement pour la guilde coop.
-    // Régénérée automatiquement si elle est vide (ex: juste après le démarrage du serveur).
+   // List of candidates currently available for recruitment by the co-op guild.
+   // Automatically regenerated if empty (e.g. immediately after server startup).²
     [HttpGet("to-hire")]
     public async Task<IActionResult> GetToHire()
     {
@@ -52,10 +52,9 @@ public class AdventurerController : ControllerBase
         {
             var state = await _coopStore.LoadAsync();
             _adventurerManager.refreshadventurersToHire(Math.Max(state.CurrentTurn > 0 ? 1 : 1, 1));
-            // NB: prestige n'est pas encore suivi côté GuildSaveState.
-            // En attendant, on génère avec prestige = 1 par défaut.
+            // NOTE: prestige is not tracked in GuildSaveState yet
+            // For now, generate with prestige = 1 by default.
         }
-
         var dtos = _adventurerManager.adventurersToHire.Select(ToDto).ToList();
         return Ok(dtos);
     }

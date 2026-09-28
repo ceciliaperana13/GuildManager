@@ -98,7 +98,7 @@ public class QuestManager
         if (target is null)
             throw new InvalidOperationException($"Quête '{questName}' introuvable.");
 
-        // si "adventurers" n'existe pas encore, on le crée
+        // if "adventurers" does not yet exist, create it
         if (target["adventurers"] is not JsonArray adventurers)
         {
             adventurers = new JsonArray();
@@ -128,7 +128,7 @@ public class QuestManager
         }
         else if (quest.TimeoutFlag is not null && storyFlags is not null && quest.LastCompletionSucceeded is null)
         {
-            // la quête n'a jamais été acceptée/résolue -> elle expire vraiment
+            // the quest was never accepted/resolved -> it actually expires
             storyFlags[quest.TimeoutFlag] = true;
         }   
         }
@@ -159,7 +159,7 @@ public Quest UnlockStoryQuest(string questName, int? expiresAfterTurns, string? 
 {
     Quest? existing = this.quests.FirstOrDefault(q => q.name == questName && q.IsStoryQuest);
     if (existing is not null)
-        return existing; // déjà débloquée, on ne duplique pas
+        return existing; // already unlocked; do not duplicate
 
     Quest template = generateQuestsFromJson("data/quest.json")
         .FirstOrDefault(q => q.name == questName)

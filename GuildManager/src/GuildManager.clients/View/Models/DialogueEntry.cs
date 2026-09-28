@@ -19,7 +19,7 @@ public class DialogueEntry
     public string? RequiresDialogueId { get; set; }
     public List<string>? RequiresDialogueIds { get; set; }
     public int? AdvancesActTo { get; set; }
-    public string? EndingResult { get; set; } // "victory" ou "defeat"
+    public string? EndingResult { get; set; } // "victory" or "defeat"
 }
 
 public class DialogueChoice

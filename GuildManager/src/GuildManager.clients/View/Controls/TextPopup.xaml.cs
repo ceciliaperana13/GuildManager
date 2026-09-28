@@ -21,5 +21,5 @@ public partial class TextPopup : UserControl
     }
 
     private void OnBackgroundClicked(object sender, MouseButtonEventArgs e) => CancelRequested?.Invoke();
-    private void OnPanelClicked(object sender, MouseButtonEventArgs e) => e.Handled = true; // évite de fermer en cliquant le panneau
+    private void OnPanelClicked(object sender, MouseButtonEventArgs e) => e.Handled = true; // prevents closing the panel by clicking it
 }
