@@ -71,11 +71,11 @@ public partial class GuildView : UserControl
 {
     if (Game is null) return;
 
-    Game.passTurn();
 
     int goldBefore = Game.gold;
     int foodBefore = Game.food;
 
+    Game.passTurn();
     // En coop, l'or/la nourriture gagnés ou consommés pendant ce tour doivent
     // être répercutés sur le pot commun partagé (saves.json côté serveur),
     // pour que tous les joueurs voient le même solde à jour.

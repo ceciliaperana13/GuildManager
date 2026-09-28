@@ -29,7 +29,7 @@ public class Game
     bool turnInProgress;
     bool isCoop; // à utiliser pour le mode coop ?
     public string? LastCompletedStoryDialogueId { get; private set; }
-    public bool IsDefeated() => this.gold <= 0;
+    public bool IsDefeated() => this.gold <= 0&& this.food <= 0 ;
 
     
     public List<QuestSummaryData> LastQuestSummaries { get; private set; } = new();
@@ -118,8 +118,8 @@ public class Game
     {
         if (this.xp >= 100 * prestige)
         {
-            this.prestige++;
             this.xp -= 100 * prestige;
+            this.prestige++;
         }
     }
 

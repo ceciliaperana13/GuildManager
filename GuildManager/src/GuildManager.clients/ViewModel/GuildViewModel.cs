@@ -37,8 +37,11 @@ public class GuildViewModel : IScreenViewModel, IGameAwareViewModel, INotifyProp
 
     private void OnResourcesUpdated(ResourcesResponse resources)
     {
-        Game.SyncResources(resources.Gold, resources.Food);
-        RefreshResources();
+               Application.Current.Dispatcher.Invoke(() =>
+        {
+            Game.SyncResources(resources.Gold, resources.Food);
+            RefreshResources();
+        });
     }
 
     public void RefreshResources()

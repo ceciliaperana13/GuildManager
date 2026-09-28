@@ -155,7 +155,7 @@ public class AdventurerManager
     switch (characterId)
     {
         case "aventurier_prometteur":
-            (name, job, image, health, defense, magic, physic) = ("Aventurier Prometteur", "guerrier", "/Assets/character/perso speciaux/epeiste.png", 50, 12, 4, 20);
+            (name, job, image, health, defense, magic, physic) = ("Erwann", "guerrier", "/Assets/character/perso speciaux/epeiste.png", 50, 12, 4, 20);
             break;
         case "sorcier":
             (name, job, image, health, defense, magic, physic) = ("Sorcier", "mage", "/Assets/character/perso speciaux/sorcier2.png", 45, 6, 25, 8);
@@ -164,7 +164,7 @@ public class AdventurerManager
             (name, job, image, health, defense, magic, physic) = ("Alchimiste", "mage", "/Assets/character/perso speciaux/alchimiste.png", 40, 5, 22, 10);
             break;
         case "nain":
-            (name, job, image, health, defense, magic, physic) = ("Nain", "tank", "/Assets/character/perso speciaux/tankNain1.png", 65, 25, 3, 10);
+            (name, job, image, health, defense, magic, physic) = ("Zarakaï", "tank", "/Assets/character/perso speciaux/tankNain1.png", 65, 25, 3, 10);
             break;
         default:
             return null;

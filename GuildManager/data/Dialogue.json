@@ -24,7 +24,7 @@
     "characterId": "chef_de_guilde",
     "lines": [
       "J'ai quelqu'un à te présenter.",
-      "Voici [Aventurier Prometteur]. On m'a dit le plus grand bien de lui, je pense qu'il pourra t'être précieux.",
+      "Voici Erwann. On m'a dit le plus grand bien de lui, je pense qu'il pourra t'être précieux.",
       "Justement, j'ai reçu un décret royal ce matin. Un clan d'orcs s'est installé dans les montagnes et se comporte de façon... étrange.",
       "Le roi veut que la guilde règle ça, et vite. Tu n'as qu'un nombre limité de tours avant que la situation ne dégénère."
     ],
@@ -44,7 +44,7 @@
     "id": "act1_victory",
     "act": 1,
     "trigger": "questResult",
-    "speaker": "Aventurier Prometteur",
+    "speaker": "Erwann",
     "characterId": "aventurier_prometteur",
     "lines": [
       "Mission accomplie. Le clan orc est neutralisé.",
@@ -69,13 +69,13 @@
     "endsGame": false,
     "requiresDialogueId": "act1_intro",
     "advancesActTo": 2,
-    "image": null
+    "image": "character/perso speciaux/epeiste.png"
   },
   {
     "id": "act1_defeat_01",
     "act": 1,
     "trigger": "questResult",
-    "speaker": "Aventurier Prometteur",
+    "speaker": "Erwann",
     "characterId": "aventurier_prometteur",
     "lines": [
       "On... on n'a pas réussi. Ils étaient trop nombreux, trop organisés.",
@@ -84,7 +84,7 @@
     "choices": null,
     "endsGame": false,
     "requiresDialogueId": "act1_intro",
-    "image": null
+    "image": "character/perso speciaux/epeiste.png"
   },
   {
     "id": "act1_defeat_02",
@@ -191,7 +191,7 @@
     "id": "act2_esprits_victory",
     "act": 2,
     "trigger": "questResult",
-    "speaker": "Aventurier Prometteur",
+    "speaker": "Erwann",
     "characterId": "aventurier_prometteur",
     "lines": [
       "C'était bien des morts-vivants, invoqués par un nécromancien.",
@@ -201,13 +201,13 @@
     "endsGame": false,
     "requiresDialogueId": "act2_esprits_intro",
     "condition": "flag_act2_esprits == true",
-    "image": null
+    "image": "character/perso speciaux/epeiste.png"
   },
   {
     "id": "act2_esprits_victory_cristal",
     "act": 2,
     "trigger": "questResult",
-    "speaker": "Aventurier Prometteur",
+    "speaker": "Erwann",
     "characterId": "aventurier_prometteur",
     "lines": [
       "C'était bien des morts-vivants, invoqués par un nécromancien.",
@@ -218,7 +218,7 @@
     "endsGame": false,
     "condition": "flag_cristal_analyse == true",
     "requiresDialogueId": "act2_esprits_intro",
-    "image": null
+    "image": "character/perso speciaux/epeiste.png"
   },
   {
     "id": "act2_esprits_defeat",
@@ -266,7 +266,7 @@
     "id": "act2_monstre_victory",
     "act": 2,
     "trigger": "questResult",
-    "speaker": "Aventurier Prometteur",
+    "speaker": "Erwann",
     "characterId": "aventurier_prometteur",
     "lines": [
       "On l'a eue. Mais ce n'était pas une bête naturelle : une chimère, assemblée de toutes pièces.",
@@ -276,7 +276,7 @@
     "endsGame": false,
     "requiresDialogueId": "act2_monstre_intro",
     "condition": "flag_act2_monstre == true",
-    "image": null
+    "image": "character/perso speciaux/epeiste.png"
   },
   {
     "id": "act2_monstre_defeat",
@@ -402,7 +402,7 @@
     "id": "act3_donjon_victory",
     "act": 3,
     "trigger": "questResult",
-    "speaker": "Nain",
+    "speaker": "Zarakaï",
     "characterId": "nain_tank",
     "lines": [
       "Par les barbes de mes ancêtres... des golems ! J'étais tombé en embuscade, seul, depuis des jours.",
@@ -420,7 +420,7 @@
     "endsGame": false,
     "advancesActTo": 4,
     "requiresDialogueId": "act3_disparitions_teaser",
-    "image": null
+    "image": "character/perso speciaux/tankNain2.png"
   },
   {
     "id": "act3_donjon_defeat",

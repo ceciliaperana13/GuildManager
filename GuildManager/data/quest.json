@@ -152,7 +152,7 @@
         "def": 3,
         "magicAttack": 0,
         "physicAttack": 12,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/orc.png"
       },
       {
         "name": "Guerrier Orc",
@@ -161,7 +161,7 @@
         "def": 3,
         "magicAttack": 0,
         "physicAttack": 12,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/orc.png"
       },
       {
         "name": "Chef Orc",
@@ -170,7 +170,7 @@
         "def": 4,
         "magicAttack": 5,
         "physicAttack": 15,
-        "image": "assets/...png"
+        "image": "/Assets/character/monstre/chef_orc.png"
       }
     ],
     "adventurers": [],
@@ -251,7 +251,7 @@
         "def": 8,
         "magicAttack": 10,
         "physicAttack": 22,
-        "image": "assets/...png"
+        "image":  "/Assets/character/monstre/hydre.png"
       }
     ],
     "adventurers": [],
@@ -542,5 +542,71 @@
   },
   "remainingTime": 1,
   "inProgress": false
-}
+  },
+  {
+    "name": "Confinement de la ville",
+    "type": "Combat",
+    "lvl": 34,
+    "description": "Une horde de mutants s'échappe des égouts et envahit la capitale. Il faut organiser le confinement avant que la ville ne tombe.",
+    "enemies": [
+      { "name": "Mutant Déchaîné", "lvl": 30, "health": 100, "def": 7, "magicAttack": 15, "physicAttack": 22, "image": "assets/...png" },
+      { "name": "Mutant Déchaîné", "lvl": 30, "health": 100, "def": 7, "magicAttack": 15, "physicAttack": 22, "image": "assets/...png" },
+      { "name": "Mutant Déchaîné", "lvl": 30, "health": 100, "def": 7, "magicAttack": 15, "physicAttack": 22, "image": "assets/...png" },
+      { "name": "Mutant Colossal", "lvl": 33, "health": 160, "def": 10, "magicAttack": 10, "physicAttack": 30, "image": "assets/...png" }
+    ],
+    "adventurers": [],
+    "rewards": { "gold": 800, "food": 40, "prestige": 600, "items": [] },
+    "remainingTime": 3,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Défense de la capitale",
+    "type": "Combat",
+    "lvl": 34,
+    "description": "Des hordes de morts-vivants déferlent sur la ville. Il faut organiser la défense de la capitale sans attendre.",
+    "enemies": [
+      { "name": "Mort-vivant déchaîné", "lvl": 30, "health": 90, "def": 7, "magicAttack": 12, "physicAttack": 22, "image": "assets/...png" },
+      { "name": "Mort-vivant déchaîné", "lvl": 30, "health": 90, "def": 7, "magicAttack": 12, "physicAttack": 22, "image": "assets/...png" },
+      { "name": "Mort-vivant déchaîné", "lvl": 30, "health": 90, "def": 7, "magicAttack": 12, "physicAttack": 22, "image": "assets/...png" },
+      { "name": "Abomination de chair nécrosée", "lvl": 34, "health": 180, "def": 10, "magicAttack": 20, "physicAttack": 28, "image": "assets/...png" }
+    ],
+    "adventurers": [],
+    "rewards": { "gold": 800, "food": 40, "prestige": 600, "items": [] },
+    "remainingTime": 3,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Confrontation finale avec Macaron le Charlatan",
+    "type": "Combat",
+    "lvl": 46,
+    "description": "Macaron marche sur la capitale, transformé en être suprême. C'est le dernier affrontement.",
+    "enemies": [
+      { "name": "Macaron le Charlatan (forme parfaite)", "lvl": 46, "health": 450, "def": 20, "magicAttack": 45, "physicAttack": 45, "image": "assets/...png" },
+      { "name": "Mutant Suprême", "lvl": 40, "health": 150, "def": 12, "magicAttack": 20, "physicAttack": 30, "image": "assets/...png" },
+      { "name": "Mutant Suprême", "lvl": 40, "health": 150, "def": 12, "magicAttack": 20, "physicAttack": 30, "image": "assets/...png" }
+    ],
+    "adventurers": [],
+    "rewards": { "gold": 3000, "food": 150, "prestige": 2500, "items": [] },
+    "remainingTime": 5,
+    "inProgress": false,
+    "isStoryQuest": true
+  },
+  {
+    "name": "Confrontation finale avec la Liche",
+    "type": "Combat",
+    "lvl": 46,
+    "description": "Libérée par le sacrifice de ses adeptes, la Liche s'apprête à lever une armée de morts-vivants sur le royaume.",
+    "enemies": [
+      { "name": "La Liche", "lvl": 48, "health": 500, "def": 25, "magicAttack": 60, "physicAttack": 25, "image": "assets/...png" },
+      { "name": "Garde Squelette", "lvl": 40, "health": 110, "def": 14, "magicAttack": 0, "physicAttack": 26, "image": "assets/...png" },
+      { "name": "Garde Squelette", "lvl": 40, "health": 110, "def": 14, "magicAttack": 0, "physicAttack": 26, "image": "assets/...png" }
+    ],
+    "adventurers": [],
+    "rewards": { "gold": 3000, "food": 150, "prestige": 2500, "items": [] },
+    "remainingTime": 5,
+    "inProgress": false,
+    "isStoryQuest": true
+  }
 ]

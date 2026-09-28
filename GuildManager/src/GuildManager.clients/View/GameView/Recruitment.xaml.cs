@@ -32,51 +32,64 @@ public partial class RecruitmentView : UserControl
     }
 
     private async void OnBuyClicked(object sender, RoutedEventArgs e)
-{
-    if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
-        return;
-
-    // Le candidat est toujours généré localement (solo comme coop) : on le
-    // retrouve dans adventurersToHire pour récupérer l'objet Adventurer complet.
-    var adventurer = viewModel.Game.adventurerManager.adventurersToHire
-        .FirstOrDefault(a => a.id == _selectedCandidate.Id);
-
-    if (adventurer is null)
     {
-        PurchaseText.Text = "Cet aventurier n'est plus disponible.";
-        return;
-    }
+        if (_selectedCandidate is null || DataContext is not RecruitmentViewModel viewModel)
+            return;
 
-    if (AppSession.IsCoop)
-    {
-        // Mode coop : seul l'or est partagé, débité via l'API. L'aventurier
-        // reste local à ce joueur, indépendant des autres.
-        var apiClient = new GuildApiClient();
-        var (success, resources, error) = await apiClient.TransferResourceAsync("gold", adventurer.goldPrice);
+        // Le candidat est toujours généré localement (solo comme coop) : on le
+        // retrouve dans adventurersToHire pour récupérer l'objet Adventurer complet.
+        var adventurer = viewModel.Game.adventurerManager.adventurersToHire
+            .FirstOrDefault(a => a.id == _selectedCandidate.Id);
 
-        if (!success)
+        if (adventurer is null)
         {
-            PurchaseText.Text = error ?? "Achat impossible.";
+            PurchaseText.Text = "Cet aventurier n'est plus disponible.";
             return;
         }
 
-        viewModel.Game.SyncResources(resources!.Gold, resources.Food);
-        viewModel.Game.AddPurchasedAdventurerCoop(adventurer);
-        viewModel.Game.adventurerManager.adventurersToHire.Remove(adventurer);
-    }
-    else
-    {
-        bool bought = viewModel.Game.buyAdventurer(adventurer);
-        if (!bought)
+        if (AppSession.IsCoop)
         {
-            PurchaseText.Text = "Pas assez d'or, ou recrutement déjà effectué ce tour-ci.";
-            return;
-        }
-    }
+            // Vérification locale (le solde est synchronisé en temps réel par SignalR)
+            if (viewModel.Game.gold < adventurer.goldPrice)
+            {
+                PurchaseText.Text = "Pas assez d'or dans le pot commun.";
+                return;
+            }
+            if (viewModel.Game.food < adventurer.foodPrice)
+            {
+                PurchaseText.Text = "Pas assez de nourriture dans le pot commun.";
+                return;
+            }
 
-    viewModel.Candidates.Remove(_selectedCandidate);
-    ClosePurchaseDialog();
-}
+            // Or ET nourriture débités d'un coup sur le pot commun partagé.
+            // L'aventurier reste local à ce joueur, indépendant des autres.
+            var apiClient = new GuildApiClient();
+            var (success, resources, error) = await apiClient.AdjustResourcesAsync(
+                -adventurer.goldPrice, -adventurer.foodPrice);
+
+            if (!success)
+            {
+                PurchaseText.Text = error ?? "Achat impossible.";
+                return;
+            }
+
+            viewModel.Game.SyncResources(resources!.Gold, resources.Food);
+            viewModel.Game.AddPurchasedAdventurerCoop(adventurer);
+            viewModel.Game.adventurerManager.adventurersToHire.Remove(adventurer);
+        }
+        else
+        {
+            bool bought = viewModel.Game.buyAdventurer(adventurer);
+            if (!bought)
+            {
+                PurchaseText.Text = "Pas assez d'or, ou recrutement déjà effectué ce tour-ci.";
+                return;
+            }
+        }
+
+        viewModel.Candidates.Remove(_selectedCandidate);
+        ClosePurchaseDialog();
+    }
 
     private void OnCancelPurchaseClicked(object sender, RoutedEventArgs e) => ClosePurchaseDialog();
 
