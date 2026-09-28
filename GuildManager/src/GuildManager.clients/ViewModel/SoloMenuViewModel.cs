@@ -1,4 +1,5 @@
-using GuildManager.Aplication.Guilds.Controls;
+using System;
+using GuildManager.Client.Services;
 
 namespace GuildManager.Client.ViewModel;
 
@@ -6,7 +7,18 @@ public class SoloMenuViewModel : IScreenViewModel
 {
     public string BackgroundPath => "/Assets/UI/background_menu.jpg";
 
-    // À relier par le système de sauvegarde : true si une partie existante peut être chargée.
-    // Laisser à true par défaut pour l'instant ; le bouton "Continuer" reste cliquable.
-    public bool HasSave { get; set; } = true;
+    // true si savesolo.json contient au moins une sauvegarde : c'est ce qui
+    public bool HasSave { get; }
+
+    public SoloMenuViewModel()
+    {
+        try
+        {
+            HasSave = new SaveSoloService().LoadAll().Count > 0;
+        }
+        catch (Exception)
+        {
+            HasSave = false;
+        }
+    }
 }

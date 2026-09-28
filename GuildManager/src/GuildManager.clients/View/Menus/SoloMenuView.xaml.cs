@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GuildManager.Client.ViewModel;
@@ -14,15 +15,23 @@ namespace GuildManager.Client.View;
 
 public partial class SoloMenuView : UserControl
 {
+    // Évite un double clic pendant qu'une action est en cours.
+    // On ne touche pas à ContinueButton.IsEnabled en code : il est piloté
+    // par le binding "HasSave" du XAML, et l'écraser casserait ce binding.
+    private bool _isBusy;
+
     public SoloMenuView()
     {
         InitializeComponent();
     }
 
+    //  Nouvelle partie 
+
     private async void OnNewGameClicked(object sender, RoutedEventArgs e)
     {
+        if (_isBusy) return;
+        _isBusy = true;
         NewGameButton.IsEnabled = false;
-        ContinueButton.IsEnabled = false;
         StatusText.Text = "Connexion à la base locale...";
 
         try
@@ -48,6 +57,10 @@ public partial class SoloMenuView : UserControl
             Console.WriteLine("Connexion à la base locale : OK");
             StatusText.Text = "Connexion à la base locale : OK";
 
+            // Évite de rester en mode coop si on vient du menu coop
+            AppSession.IsCoop = false;
+            AppSession.IsHost = false;
+
             Game game = new Game("test", 1, 0, 10000, 10000, 1, 0);
 
             var saveSoloService = new SaveSoloService();
@@ -64,30 +77,52 @@ public partial class SoloMenuView : UserControl
         finally
         {
             NewGameButton.IsEnabled = true;
-            ContinueButton.IsEnabled = true;
+            _isBusy = false;
         }
     }
 
+    //  Continuer : charge la dernière save de savesolo.json 
+
     private void OnContinueClicked(object sender, RoutedEventArgs e)
     {
-        StatusText.Text = "Chargement de la dernière sauvegarde...";
-   var saveSoloService = new SaveSoloService();
-    var saves = saveSoloService.LoadAll();
+        if (_isBusy) return;
 
-    var latestSave = saves
-        .Where(s => s.PlayerName == "test") // en dur pour l'instant, comme OnNewGameClicked
-        .OrderByDescending(s => s.LastPlayedAt)
-        .FirstOrDefault();
+        try
+        {
+            StatusText.Text = "Chargement de la dernière sauvegarde...";
 
-    if (latestSave is null)
-    {
-        StatusText.Text = "Aucune sauvegarde trouvée.";
-        return;
-    }
+            var saveSoloService = new SaveSoloService();
 
-    Game game = saveSoloService.LoadGame(latestSave.SaveId)!;
-    NavigationService.CurrentSaveId = latestSave.SaveId;
+            var latestSave = saveSoloService.LoadAll()
+                .OrderByDescending(s => s.LastPlayedAt)
+                .FirstOrDefault();
 
-    NavigationService.NavigateTo(new GuildViewModel(), game);
+            if (latestSave is null)
+            {
+                StatusText.Text = "Aucune sauvegarde trouvée.";
+                return;
+            }
+
+            Game? game = saveSoloService.LoadGame(latestSave.SaveId);
+            if (game is null)
+            {
+                StatusText.Text = "La dernière sauvegarde est illisible.";
+                return;
+            }
+
+            // On s'assure de ne pas rester en mode coop
+            AppSession.IsCoop = false;
+            AppSession.IsHost = false;
+
+            // Les prochaines sauvegardes (UpdateSave) cibleront cette save-là
+            NavigationService.CurrentSaveId = latestSave.SaveId;
+            Console.WriteLine($"Save solo chargée : {latestSave.SaveId} (tour {latestSave.Turn})");
+
+            NavigationService.NavigateTo(new GuildViewModel(), game);
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text = $"Erreur au chargement : {ex.Message}";
+        }
     }
 }
